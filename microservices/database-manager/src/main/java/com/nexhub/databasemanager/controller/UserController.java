@@ -1,38 +1,52 @@
 package com.nexhub.databasemanager.controller;
 
 import com.nexhub.databasemanager.model.User;
-import com.nexhub.databasemanager.repository.UserRepository;
+import com.nexhub.databasemanager.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin
 public class UserController implements IUserController{
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
+
 
     @Override
     @PutMapping("/add")
     public void addUser(@RequestBody User newUser) {
-        userRepository.save(newUser);
+        userService.saveUser(newUser);
     }
 
     @Override
-    public User getUser(String userId) {
-        return null;
+    @GetMapping("/get/id/{userId}")
+    public Optional<User> getUser(@PathVariable long userId) {
+        return userService.getUserById(userId);
     }
 
     @Override
-    public List<User> getUserFollowings(String userId) {
-        return null;
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @Override
-    public List<User> getUserFollowers(String userId) {
-        return null;
+    @DeleteMapping("/delete/id/{userId}")
+    public void deleteUser(@PathVariable long userId) {
+        userService.deleteUser(userId);
     }
+
+    @Override
+    @GetMapping("/get/username/{name}")
+    public List<User> getAllUsersOfName(@PathVariable String name) {
+        return userService.getUsersByName(name);
+    }
+
+
 }

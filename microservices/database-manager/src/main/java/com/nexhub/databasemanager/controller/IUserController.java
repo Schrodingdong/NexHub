@@ -1,14 +1,14 @@
 package com.nexhub.databasemanager.controller;
 
-import com.nexhub.databasemanager.model.Resource;
 import com.nexhub.databasemanager.model.User;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserController {
-    public void addUser(User newUser);
-    public User getUser(String userId);
-    public List<User> getUserFollowings(String userId);
-    public List<User> getUserFollowers(String userId);
+    void addUser(User newUser);
+    Optional<User> getUser(long userId);
+    List<User> getAllUsers();
+    void deleteUser(long userId);
+    List<User> getAllUsersOfName(String name);
 }

@@ -12,27 +12,27 @@ import static org.springframework.data.neo4j.core.schema.Relationship.Direction.
 public class User {
     @Id
     @GeneratedValue
-    private final String userId;
-    @Property("username")
+    private final long userId;
     private String username;
-    @Property("mail")
     private String mail;
-    @Relationship(type = "HAS_A", direction = OUTGOING)
-    private Set<Resource> userResources = new HashSet<>();
+
+//    @Relationship(type = "HAS_A", direction = OUTGOING)
+//    private Set<Resource> userResources = new HashSet<>();
+//    @Relationship(type = "FOLLOWS", direction = OUTGOING)
+//    private Set<Category> userCategoryFollowing = new HashSet<>();
     @Relationship(type = "FOLLOWS", direction = OUTGOING)
     private Set<User> userFollowing = new HashSet<>();
     @Relationship(type = "FOLLOWS", direction = INCOMING)
     private Set<User> userFollowers = new HashSet<>();
-    @Relationship(type = "FOLLOWS", direction = OUTGOING)
-    private Set<Category> userCategoryFollowing = new HashSet<>();
 
-    public User(String userId, String username, String mail) {
+
+    public User(long userId, String username, String mail) {
         this.userId = userId;
         this.username = username;
         this.mail = mail;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
