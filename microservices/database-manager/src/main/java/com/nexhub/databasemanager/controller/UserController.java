@@ -5,6 +5,7 @@ import com.nexhub.databasemanager.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -46,6 +47,30 @@ public class UserController implements IUserController{
     @GetMapping("/get/username/{name}")
     public List<User> getAllUsersOfName(@PathVariable String name) {
         return userService.getUsersByName(name);
+    }
+
+    @Override
+    @PutMapping("/update/id/{userId}")
+    public void updateUser(@PathVariable long userId,@RequestBody User modifiedUser) {
+        User oldUser = null;
+        String newUsername;
+        String newMail;
+        try{
+            oldUser = userService.getUserById(userId).get();
+
+            newUsername = modifiedUser.getUsername();
+            newMail = modifiedUser.getMail();
+
+            oldUser.setUsername(
+                    (newUsername == null)? oldUser.getUsername() : newUsername
+            );
+            oldUser.setMail(
+                    (newMail == null)? oldUser.getMail() : newMail
+            );
+            userService.saveUser(oldUser);
+        } catch(NoSuchElementException e){
+            userService.saveUser(modifiedUser);
+        }
     }
 
 

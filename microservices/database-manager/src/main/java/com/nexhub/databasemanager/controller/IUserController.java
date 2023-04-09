@@ -11,4 +11,5 @@ public interface IUserController {
     List<User> getAllUsers();
     void deleteUser(long userId);
     List<User> getAllUsersOfName(String name);
+    void updateUser(long userId, User modifiedUser);
 }
