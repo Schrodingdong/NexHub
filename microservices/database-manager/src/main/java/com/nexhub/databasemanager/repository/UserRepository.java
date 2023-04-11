@@ -13,4 +13,7 @@ import java.util.Set;
 public interface UserRepository extends Neo4jRepository<User, Long> {
     @Query("MATCH (u:User {username: $name}) RETURN u")
     List<User> getUsersByName(@Param("name") String name);
+    @Query("MATCH (u:User {mail: $mail}) RETURN count(u) > 0")
+    boolean isMailTaken(@Param("mail") String mail);
+
 }

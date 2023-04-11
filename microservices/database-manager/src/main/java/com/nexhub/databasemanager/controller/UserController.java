@@ -2,6 +2,8 @@ package com.nexhub.databasemanager.controller;
 
 import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.service.UserService;
+import jdk.jfr.ContentType;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,17 +24,23 @@ public class UserController implements IUserController{
     @Override
     @PutMapping("/add")
     public void addUser(@RequestBody User newUser) {
-        userService.saveUser(newUser);
+        try {
+            userService.saveUser(newUser);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     @GetMapping("/get/id/{userId}")
+    @ResponseStatus(HttpStatus.OK)
     public Optional<User> getUser(@PathVariable long userId) {
         return userService.getUserById(userId);
     }
 
     @Override
-    @GetMapping("/all")
+    @GetMapping("/get/all")
+    @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
@@ -45,6 +53,7 @@ public class UserController implements IUserController{
 
     @Override
     @GetMapping("/get/username/{name}")
+    @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsersOfName(@PathVariable String name) {
         return userService.getUsersByName(name);
     }
@@ -68,8 +77,12 @@ public class UserController implements IUserController{
                     (newMail == null)? oldUser.getMail() : newMail
             );
             userService.saveUser(oldUser);
-        } catch(NoSuchElementException e){
-            userService.saveUser(modifiedUser);
+        } catch(Exception e){
+            try {
+                userService.saveUser(modifiedUser);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 

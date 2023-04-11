@@ -2,12 +2,9 @@ package com.nexhub.databasemanager.service;
 
 import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.repository.UserRepository;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -26,19 +23,25 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    public long getUserId(@NonNull User u){
-        return u.getUserId();
-    }
-
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
-    public void saveUser(User u){
+    public void saveUser(User u) throws Exception {
+        /**
+         * We want to have unity of mail
+         * */
+        boolean mailTaken = userRepository.isMailTaken(u.getMail());
+        if (mailTaken){
+            throw new Exception("The email : " +u.getMail()+" is already taken :/");
+        }
         userRepository.save(u);
     }
     public void deleteUser(long userId){
         userRepository.deleteById(userId);
+    }
+    public void deleteAll(){
+        userRepository.deleteAll();
     }
 
 }
