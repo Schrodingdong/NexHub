@@ -1,14 +1,14 @@
 package com.nexhub.databasemanager.controller;
 
+import com.nexhub.databasemanager.exception.BadRequestException;
 import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.service.UserService;
-import jdk.jfr.ContentType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -23,18 +23,15 @@ public class UserController implements IUserController{
 
     @Override
     @PutMapping("/add")
-    public void addUser(@RequestBody User newUser) {
-        try {
-            userService.saveUser(newUser);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public User addUser(@RequestBody @NotNull @Valid User newUser) throws BadRequestException {
+        return userService.saveUser(newUser);
     }
 
     @Override
     @GetMapping("/get/id/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<User> getUser(@PathVariable long userId) {
+    public User getUser(@PathVariable @NotNull @Valid long userId) {
         return userService.getUserById(userId);
     }
 
@@ -47,43 +44,23 @@ public class UserController implements IUserController{
 
     @Override
     @DeleteMapping("/delete/id/{userId}")
-    public void deleteUser(@PathVariable long userId) {
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteUser(@PathVariable @NotNull @Valid long userId) {
         userService.deleteUser(userId);
     }
 
     @Override
     @GetMapping("/get/username/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsersOfName(@PathVariable String name) {
+    public List<User> getAllUsersOfName(@PathVariable @NotNull @Valid String name) {
         return userService.getUsersByName(name);
     }
 
     @Override
     @PutMapping("/update/id/{userId}")
-    public void updateUser(@PathVariable long userId,@RequestBody User modifiedUser) {
-        User oldUser = null;
-        String newUsername;
-        String newMail;
-        try{
-            oldUser = userService.getUserById(userId).get();
-
-            newUsername = modifiedUser.getUsername();
-            newMail = modifiedUser.getMail();
-
-            oldUser.setUsername(
-                    (newUsername == null)? oldUser.getUsername() : newUsername
-            );
-            oldUser.setMail(
-                    (newMail == null)? oldUser.getMail() : newMail
-            );
-            userService.saveUser(oldUser);
-        } catch(Exception e){
-            try {
-                userService.saveUser(modifiedUser);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public User updateUser(@PathVariable @NotNull long userId,@RequestBody @Valid User modifiedUser) {
+       return userService.updateUser(userId, modifiedUser);
     }
 
 

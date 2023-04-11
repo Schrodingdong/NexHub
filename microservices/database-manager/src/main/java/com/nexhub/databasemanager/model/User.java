@@ -1,6 +1,12 @@
 package com.nexhub.databasemanager.model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.neo4j.core.schema.*;
+import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +19,11 @@ public class User {
     @Id
     @GeneratedValue
     private final long userId;
+    @NotBlank
+    @NotNull
     private String username;
+    @Email
+    @NotNull
     private String mail;
 
 //    @Relationship(type = "HAS_A", direction = OUTGOING)
