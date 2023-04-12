@@ -1,6 +1,7 @@
 package com.nexhub.databasemanager.controller;
 
 import com.nexhub.databasemanager.exception.BadRequestException;
+import com.nexhub.databasemanager.model.Resource;
 import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.service.UserService;
 import jakarta.validation.Valid;
@@ -36,11 +37,33 @@ public class UserController implements IUserController{
     }
 
     @Override
+    @GetMapping("/get/mail/{mail}")
+    @ResponseStatus(HttpStatus.OK)
+    public User getUserByMail(@PathVariable String mail) {
+        return userService.getUserByMail(mail);
+    }
+
+    @Override
     @GetMapping("/get/all")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
+    @Override
+    @GetMapping("/get/from-user/{userId}/res/all")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Resource> getAllResourcesFromUser(@PathVariable @NotNull long userId) {
+        return userService.getAllResourcesFromUser(userId);
+    }
+
+    @Override
+    @GetMapping("/get/from-user/{userId}/res/all/public")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Resource> getAllPublicResourcesFromUser(long userId){
+        return userService.getAllPublicResourcesFromUser(userId);
+    }
+
 
     @Override
     @DeleteMapping("/delete/id/{userId}")

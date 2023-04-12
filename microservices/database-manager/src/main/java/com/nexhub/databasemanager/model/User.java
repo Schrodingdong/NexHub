@@ -26,14 +26,16 @@ public class User {
     @NotNull
     private String mail;
 
-//    @Relationship(type = "HAS_A", direction = OUTGOING)
-//    private Set<Resource> userResources = new HashSet<>();
+    @Relationship(type = "HAS_A", direction = OUTGOING)
+    private Set<Resource> userResources = new HashSet<>();
+
+    // TODO
 //    @Relationship(type = "FOLLOWS", direction = OUTGOING)
 //    private Set<Category> userCategoryFollowing = new HashSet<>();
-    @Relationship(type = "FOLLOWS", direction = OUTGOING)
-    private Set<User> userFollowing = new HashSet<>();
-    @Relationship(type = "FOLLOWS", direction = INCOMING)
-    private Set<User> userFollowers = new HashSet<>();
+//    @Relationship(type = "FOLLOWS", direction = OUTGOING)
+//    private Set<User> userFollowing = new HashSet<>();
+//    @Relationship(type = "FOLLOWS", direction = INCOMING)
+//    private Set<User> userFollowers = new HashSet<>();
 
 
     public User(long userId, String username, String mail) {
@@ -45,7 +47,6 @@ public class User {
     public long getUserId() {
         return userId;
     }
-
 
     public String getUsername() {
         return username;
@@ -63,14 +64,20 @@ public class User {
         this.mail = mail;
     }
 
+    public Set<Resource> getUserResources() {
+        return userResources;
+    }
+
+    public void setUserResources(Set<Resource> userResources) {
+        this.userResources = userResources;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", mail='" + mail + '\'' +
-                ", userFollowing=" + userFollowing +
-                ", userFollowers=" + userFollowers +
                 '}';
     }
 }

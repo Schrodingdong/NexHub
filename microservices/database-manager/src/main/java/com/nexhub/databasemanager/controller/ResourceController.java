@@ -37,10 +37,8 @@ public class ResourceController implements IResourceController {
     }
 
     @Override
-    @GetMapping("/get/from-user/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Resource> getAllResourcesFromUser(@PathVariable @NotNull long userId) {
-        return resourceService.getAllResourcesFromUser(userId);
+    public List<Resource> getAllResources() {
+        return resourceService.getAllResources();
     }
 
     @Override

@@ -35,11 +35,7 @@ public class ResourceService {
     public List<Resource> getAllResources(){
         return resourceRepository.findAll();
     }
-    public List<Resource> getAllResourcesFromUser(@NotNull long userId){
-        if (userService.userExists(userId) == false)
-            return null;
-        return resourceRepository.getAllResourcesFromUser(userId);
-    }
+
     public Resource saveResource(@NotNull long userId, @NotNull Resource r){
         if (userService.userExists(userId)){
             resourceRepository.save(r);
@@ -56,6 +52,7 @@ public class ResourceService {
         if(selectedRes != null){
             String resourceName = modifiedResource.getResourceName();
             ResVisibility visibility = modifiedResource.getResVisibility();
+            String resDescription = modifiedResource.getResourceDescription();
 
             selectedRes.setResVisibility(
                     (visibility == null)?
@@ -66,6 +63,11 @@ public class ResourceService {
                     (resourceName == null || resourceName.isEmpty())?
                             selectedRes.getResourceName() :
                             resourceName
+            );
+            selectedRes.setResourceDescription(
+                    (resDescription == null || resDescription.isEmpty())?
+                            selectedRes.getResourceDescription() :
+                            resDescription
             );
 
             return saveResource(userId, modifiedResource);

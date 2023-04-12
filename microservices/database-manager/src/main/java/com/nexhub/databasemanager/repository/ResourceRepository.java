@@ -21,9 +21,7 @@ public interface ResourceRepository extends Neo4jRepository<Resource, Long> {
             "DETACH DELETE (r)")
     Resource deleteResourceById(@Param("resId") long resID);
 
-    @Query( "MATCH (r:Resource)<-[:HAS_A]-(u:user {userId: $userId}" +
-            "RETURN r")
-    List<Resource> getAllResourcesFromUser(@Param("userId") long userId);
+
 
     // TODO implement methods related to CATEGROY
 }

@@ -1,5 +1,7 @@
 package com.nexhub.databasemanager.repository;
 
+import com.nexhub.databasemanager.model.ResVisibility;
+import com.nexhub.databasemanager.model.Resource;
 import com.nexhub.databasemanager.model.User;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -15,7 +17,18 @@ public interface UserRepository extends Neo4jRepository<User, Long> {
     List<User> getUsersByName(@Param("name") String name);
     @Query("MATCH (u:User {mail: $mail}) RETURN count(u) > 0")
     boolean isMailTaken(@Param("mail") String mail);
+    @Query("MATHC (u:User {mail: $mail} RETURN u")
+    User getUserByMail(@Param("mail") String mail);
+
 
     // TODO implement methods for the RESOURCES
+    @Query( "MATCH (r:Resource)<-[:HAS_A]-(u:user {userId: $userId}" +
+            "RETURN r")
+    List<Resource> getAllResourcesFromUser(@Param("userId") long userId);
+    @Query( "MATCH (r:Resource {resVisibility: 0})<-[:HAS_A]-(u:user {userId: $userId}" +
+            "RETURN r")
+    List<Resource> getAllPublicResourcesFromUser(@Param("userId") long userId);
+
+
     // TODO implement methods for the CATEGORY
 }

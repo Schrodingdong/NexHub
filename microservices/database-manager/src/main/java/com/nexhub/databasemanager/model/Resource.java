@@ -14,7 +14,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static org.springframework.data.neo4j.core.schema.Relationship.Direction.INCOMING;
-import static org.springframework.data.neo4j.core.schema.Relationship.Direction.OUTGOING;
 
 
 @Node
@@ -25,6 +24,9 @@ public class Resource {
     @NotBlank
     @NotNull
     private String resourceName;
+    @NotBlank
+    @NotNull
+    private String resourceDescription;
     @NotBlank
     @NotNull
     private String resBucketId;
@@ -39,10 +41,11 @@ public class Resource {
 
     public Resource(@NotNull long resourceId,
                     @NotNull String resourceName,
-                    ResVisibility resVisibility,
+                    String resourceDescription, ResVisibility resVisibility,
                     @NotNull Set<User> resourceHolders) {
         this.resourceId = resourceId;
         this.resourceName = resourceName;
+        this.resourceDescription = resourceDescription;
         this.resourceHolders = resourceHolders;
         this.resBucketId = resourceBucketIdGenerator();
         this.resVisibility = (resVisibility == null)? ResVisibility.PRIVATE : resVisibility;
@@ -98,5 +101,13 @@ public class Resource {
                 ", resVisibility=" + resVisibility +
                 ", resourceHolders=" + resourceHolders +
                 '}';
+    }
+
+    public String getResourceDescription() {
+        return resourceDescription;
+    }
+
+    public void setResourceDescription(String resourceDescription) {
+        this.resourceDescription = resourceDescription;
     }
 }

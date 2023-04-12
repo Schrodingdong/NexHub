@@ -1,6 +1,7 @@
 package com.nexhub.databasemanager.service;
 
 import com.nexhub.databasemanager.exception.BadRequestException;
+import com.nexhub.databasemanager.model.Resource;
 import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.repository.UserRepository;
 import jakarta.validation.constraints.NotNull;
@@ -32,9 +33,22 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.orElse(null);
     }
+    public User getUserByMail(@NotNull String mail){
+        return userRepository.getUserByMail(mail);
+    }
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
+
+    public List<Resource> getAllResourcesFromUser(@NotNull long userId){
+        if (userExists(userId) == false)
+            return null;
+        return userRepository.getAllResourcesFromUser(userId);
+    }
+    public List<Resource> getAllPublicResourcesFromUser(@NotNull long userId){
+        return userRepository.getAllPublicResourcesFromUser(userId);
+    }
+
     public User saveUser(@NotNull User u) throws BadRequestException{
         boolean mailTaken = userRepository.isMailTaken(u.getMail());
         if (mailTaken){
