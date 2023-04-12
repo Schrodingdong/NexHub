@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,5 +85,14 @@ class UserRepositoryTest {
         String mail2 = "myCustomMail@gmail.com";
         boolean mailTaken2 = testUserRepository.isMailTaken(mail2);
         Assertions.assertThat(mailTaken2).isFalse();
+    }
+
+
+    @Test
+    void getUserByUd_notExists(){
+        long id = 69;
+        Optional<User> u = testUserRepository.findById(id);
+        Assertions.assertThat(u.isPresent())
+                .isFalse();
     }
 }

@@ -22,7 +22,7 @@ public class UserController implements IUserController{
 
 
     @Override
-    @PutMapping("/add")
+    @PostMapping("/add")
     @ResponseStatus(HttpStatus.OK)
     public User addUser(@RequestBody @NotNull @Valid User newUser) throws BadRequestException {
         return userService.saveUser(newUser);

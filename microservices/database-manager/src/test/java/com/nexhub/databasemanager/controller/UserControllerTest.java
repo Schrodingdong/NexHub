@@ -42,7 +42,7 @@ class UserControllerTest {
     @Test
     void httpRequestMatching_addUser() throws Exception{
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/users/add")
+                MockMvcRequestBuilders.post("/users/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user))
         ).andExpect(MockMvcResultMatchers.status().isOk());

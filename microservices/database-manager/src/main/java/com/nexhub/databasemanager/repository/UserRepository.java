@@ -16,4 +16,6 @@ public interface UserRepository extends Neo4jRepository<User, Long> {
     @Query("MATCH (u:User {mail: $mail}) RETURN count(u) > 0")
     boolean isMailTaken(@Param("mail") String mail);
 
+    // TODO implement methods for the RESOURCES
+    // TODO implement methods for the CATEGORY
 }

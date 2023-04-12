@@ -4,18 +4,26 @@ import com.nexhub.databasemanager.exception.BadRequestException;
 import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.repository.UserRepository;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
+    @Autowired
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    public boolean userExists(@NotNull long userId){
+        Optional<User> userOptional = userRepository.findById(userId);
+        User fetchedUser = userOptional.orElse(null);
+        return (fetchedUser == null)? false : true;
+    }
 
     public List<User> getUsersByName(String name){
         return userRepository.getUsersByName(name);
@@ -46,10 +54,14 @@ public class UserService {
             String newMail = modifiedUser.getMail();
 
             selectedUser.setUsername(
-                    (newUsername == null)? selectedUser.getUsername() : newUsername
+                    (newUsername == null || newUsername.isEmpty())?
+                            selectedUser.getUsername() :
+                            newUsername
             );
             selectedUser.setMail(
-                    (newMail == null)? selectedUser.getMail() : newMail
+                    (newMail == null || newMail.isEmpty())?
+                            selectedUser.getMail() :
+                            newMail
             );
             return saveUser(selectedUser);
         } else {
