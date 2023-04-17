@@ -21,13 +21,15 @@ public interface UserRepository extends Neo4jRepository<User, Long> {
     User getUserByMail(@Param("mail") String mail);
 
 
-    // TODO implement methods for the RESOURCES
-    @Query( "MATCH (r:Resource)<-[:HAS_A]-(u:user {userId: $userId}" +
-            "RETURN r")
-    List<Resource> getAllResourcesFromUser(@Param("userId") long userId);
-    @Query( "MATCH (r:Resource {resVisibility: 0})<-[:HAS_A]-(u:user {userId: $userId}" +
-            "RETURN r")
-    List<Resource> getAllPublicResourcesFromUser(@Param("userId") long userId);
+//    // TODO implement methods for the RESOURCES
+//    @Query( "MATCH (r:Resource)<-[:HAS_A]-(u:User) " +
+//            "WHERE ID(u) = $userId " +
+//            "RETURN r")
+//    List<Resource> getAllResourcesFromUser(@Param("userId") long userId);
+//    @Query( "MATCH (r:Resource {resVisibility: 'PUBLIC'})<-[:HAS_A]-(u:User) " +
+//            "WHERE ID(u) = $userId " +
+//            "RETURN r")
+//    List<Resource> getAllPublicResourcesFromUser(@Param("userId") long userId);
 
 
     // TODO implement methods for the CATEGORY

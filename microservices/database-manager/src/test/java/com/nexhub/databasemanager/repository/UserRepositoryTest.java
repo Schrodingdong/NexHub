@@ -1,5 +1,7 @@
 package com.nexhub.databasemanager.repository;
 
+import com.nexhub.databasemanager.model.ResVisibility;
+import com.nexhub.databasemanager.model.Resource;
 import com.nexhub.databasemanager.model.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.repository.query.Param;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,8 @@ class UserRepositoryTest {
 
     @Autowired
     private UserRepository testUserRepository;
+    @Autowired
+    private ResourceRepository resourceRepository;
 
     User user,user1,user2,user3,user4;
     List<User> allUsers;
@@ -52,6 +57,7 @@ class UserRepositoryTest {
     @AfterEach
     void tearDown() {
         testUserRepository.deleteAll();
+        resourceRepository.deleteAll();
     }
 
     @Test

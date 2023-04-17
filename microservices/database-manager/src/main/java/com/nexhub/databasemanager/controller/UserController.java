@@ -50,19 +50,19 @@ public class UserController implements IUserController{
         return userService.getAllUsers();
     }
 
-    @Override
-    @GetMapping("/get/from-user/{userId}/res/all")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Resource> getAllResourcesFromUser(@PathVariable @NotNull long userId) {
-        return userService.getAllResourcesFromUser(userId);
-    }
-
-    @Override
-    @GetMapping("/get/from-user/{userId}/res/all/public")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Resource> getAllPublicResourcesFromUser(long userId){
-        return userService.getAllPublicResourcesFromUser(userId);
-    }
+//    @Override
+//    @GetMapping("/get/from-user/{userId}/res/all")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Resource> getAllResourcesFromUser(@PathVariable @NotNull long userId) {
+//        return userService.getAllResourcesFromUser(userId);
+//    }
+//
+//    @Override
+//    @GetMapping("/get/from-user/{userId}/res/all/public")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Resource> getAllPublicResourcesFromUser(long userId){
+//        return userService.getAllPublicResourcesFromUser(userId);
+//    }
 
 
     @Override

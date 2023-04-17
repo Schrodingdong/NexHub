@@ -32,25 +32,30 @@ public class Resource {
     private String resBucketId;
     @NotBlank
     @NotNull
-    private ResVisibility resVisibility;
+    private String resVisibility;
 
 //    @Relationship(type = "OF_CATEGORY", direction = OUTGOING)
 //    private Set<Category> resourceCategory = new HashSet<>();
     @Relationship(type = "HAS_A", direction = INCOMING )
     private Set<User> resourceHolders = new HashSet<>();
 
-    public Resource(@NotNull long resourceId,
-                    @NotNull String resourceName,
-                    String resourceDescription, ResVisibility resVisibility,
-                    @NotNull Set<User> resourceHolders) {
+//    public Resource(@NotNull long resourceId,
+//                    @NotNull String resourceName,
+//                    String resourceDescription,
+//                    ResVisibility resVisibility) {
+//        this.resourceId = resourceId;
+//        this.resourceName = resourceName;
+//        this.resourceDescription = resourceDescription;
+//        this.resBucketId = resourceBucketIdGenerator();
+//        this.resVisibility = (resVisibility == null)? ResVisibility.PRIVATE : resVisibility;
+//    }
+    public Resource(long resourceId, String resourceName, String resourceDescription, String resBucketId, String resVisibility) {
         this.resourceId = resourceId;
         this.resourceName = resourceName;
         this.resourceDescription = resourceDescription;
-        this.resourceHolders = resourceHolders;
-        this.resBucketId = resourceBucketIdGenerator();
-        this.resVisibility = (resVisibility == null)? ResVisibility.PRIVATE : resVisibility;
+        this.resBucketId = resBucketId;
+        this.resVisibility = resVisibility;
     }
-
 
     private String resourceBucketIdGenerator(){
         String resName = this.resourceName;
@@ -60,8 +65,11 @@ public class Resource {
         String salt = new String(array, Charset.forName("UTF-8"));
         // result string
         String result = resName+salt;
-        result = resName+"-"+result.hashCode();
+        result = resName+"-"+Math.abs(result.hashCode());
         return result;
+    }
+    public void addHolder(User u){
+        resourceHolders.add(u);
     }
 
     public long getResourceId() {
@@ -76,7 +84,7 @@ public class Resource {
         return resBucketId;
     }
 
-    public ResVisibility getResVisibility() {
+    public String getResVisibility() {
         return resVisibility;
     }
 
@@ -88,8 +96,16 @@ public class Resource {
         this.resourceName = resourceName;
     }
 
-    public void setResVisibility(ResVisibility resVisibility) {
+    public void setResVisibility(String resVisibility) {
         this.resVisibility = resVisibility;
+    }
+
+    public void setResBucketId(String resBucketId) {
+        this.resBucketId = resBucketId;
+    }
+
+    public void setResourceHolders(Set<User> resourceHolders) {
+        this.resourceHolders = resourceHolders;
     }
 
     @Override

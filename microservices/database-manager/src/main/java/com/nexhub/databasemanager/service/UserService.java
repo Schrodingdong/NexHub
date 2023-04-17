@@ -40,14 +40,14 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<Resource> getAllResourcesFromUser(@NotNull long userId){
-        if (userExists(userId) == false)
-            return null;
-        return userRepository.getAllResourcesFromUser(userId);
-    }
-    public List<Resource> getAllPublicResourcesFromUser(@NotNull long userId){
-        return userRepository.getAllPublicResourcesFromUser(userId);
-    }
+//    public List<Resource> getAllResourcesFromUser(@NotNull long userId){
+//        if (userExists(userId) == false)
+//            return null;
+//        return userRepository.getAllResourcesFromUser(userId);
+//    }
+//    public List<Resource> getAllPublicResourcesFromUser(@NotNull long userId){
+//        return userRepository.getAllPublicResourcesFromUser(userId);
+//    }
 
     public User saveUser(@NotNull User u) throws BadRequestException{
         boolean mailTaken = userRepository.isMailTaken(u.getMail());

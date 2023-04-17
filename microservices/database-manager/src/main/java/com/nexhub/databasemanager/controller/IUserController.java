@@ -11,8 +11,8 @@ public interface IUserController {
     User getUser(long userId);
     User getUserByMail(String mail);
     List<User> getAllUsers();
-    List<Resource> getAllResourcesFromUser(long userId);
-    List<Resource> getAllPublicResourcesFromUser(long userId);
+//    List<Resource> getAllResourcesFromUser(long userId);
+//    List<Resource> getAllPublicResourcesFromUser(long userId);
     User updateUser(long userId, User modifiedUser);
     void deleteUser(long userId);
     List<User> getAllUsersOfName(String name);

@@ -16,12 +16,11 @@ import java.util.Optional;
 public class ResourceService {
     @Autowired
     private final ResourceRepository resourceRepository;
-    @Autowired
-    private final UserService userService;
+//    @Autowired
+//    private final UserService userService;
 
-    public ResourceService(ResourceRepository resourceRepository, UserService userService) {
+    public ResourceService(ResourceRepository resourceRepository) {
         this.resourceRepository = resourceRepository;
-        this.userService = userService;
     }
 
 
@@ -35,23 +34,27 @@ public class ResourceService {
     public List<Resource> getAllResources(){
         return resourceRepository.findAll();
     }
-
-    public Resource saveResource(@NotNull long userId, @NotNull Resource r){
-        if (userService.userExists(userId)){
-            resourceRepository.save(r);
-            resourceRepository.linkToUser(r.getResourceId(), userId);
-            return r;
-        }
-        return null;
+    public List<Resource> getAllResourcesFromUser(long userId){
+        return resourceRepository.getAllResourcesFromUser(userId);
     }
-    public Resource updateResource(@NotNull long resId,@NotNull Resource modifiedResource,@NotNull long userId) throws BadRequestException{
+    public List<Resource> getAllPublicResourcesFromUser(long userId){
+        return resourceRepository.getAllPublicResourcesFromUser(userId);
+    }
+    public Resource saveResourceForUser(@NotNull Resource r, @NotNull long userId){
+        resourceRepository.save(r);
+        resourceRepository.linkToUser(r.getResourceId(), userId);
+        return r;
+    }
+    public Resource updateResource(
+            @NotNull long resId,
+            @NotNull Resource modifiedResource) throws BadRequestException{
         if (modifiedResource == null){
             throw new BadRequestException("No Input Data");
         }
         Resource selectedRes = getResourceById(resId);
         if(selectedRes != null){
             String resourceName = modifiedResource.getResourceName();
-            ResVisibility visibility = modifiedResource.getResVisibility();
+            String visibility = modifiedResource.getResVisibility();
             String resDescription = modifiedResource.getResourceDescription();
 
             selectedRes.setResVisibility(
@@ -70,14 +73,14 @@ public class ResourceService {
                             resDescription
             );
 
-            return saveResource(userId, modifiedResource);
+            return resourceRepository.save(selectedRes);
         } else {
-            return saveResource(userId, modifiedResource);
+            return resourceRepository.save(modifiedResource);
         }
     }
 
     public void deleteResource(@NotNull long resId){
-        resourceRepository.deleteResourceById(resId);
+        resourceRepository.deleteById(resId);
     }
     public void deleteAll(){
         resourceRepository.deleteAll();

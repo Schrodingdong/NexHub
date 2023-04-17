@@ -5,6 +5,7 @@ import com.nexhub.databasemanager.service.ResourceService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,8 @@ public class ResourceController implements IResourceController {
     @Override
     @PostMapping("/add/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public Resource addResourceToUser(@RequestBody @Valid Resource resource, @PathVariable @NotNull long userId) {
-        return resourceService.saveResource(userId, resource);
+    public Resource addResourceForUser(@RequestBody @Valid Resource resource,@PathVariable long userId) {
+        return resourceService.saveResourceForUser(resource,userId);
     }
 
     @Override
@@ -37,6 +38,8 @@ public class ResourceController implements IResourceController {
     }
 
     @Override
+    @GetMapping("/get/all")
+    @ResponseStatus(HttpStatus.OK)
     public List<Resource> getAllResources() {
         return resourceService.getAllResources();
     }
@@ -49,16 +52,30 @@ public class ResourceController implements IResourceController {
     }
 
     @Override
-    @PutMapping("/update/from-user/{userId}/resource-id/{resId}")
+    @GetMapping("/get/all-from-user/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public Resource updateResourceForUser(@PathVariable long resId,@RequestBody @Valid Resource resource, @PathVariable @NotNull long userId) {
-        return resourceService.updateResource(resId, resource, userId);
+    public List<Resource> getALlResourcesFromUser(@PathVariable @NotNull long userId) {
+        return resourceService.getAllResourcesFromUser(userId);
+    }
+
+    @Override
+    @GetMapping("/get/public-from-user/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Resource> getAllPublicResourcesFromUser(@PathVariable @NotNull long userId) {
+        return resourceService.getAllPublicResourcesFromUser(userId);
+    }
+
+    @Override
+    @PutMapping("/update/{resId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Resource updateResourceForUser(@PathVariable long resId,@RequestBody @Valid Resource resource) {
+        return resourceService.updateResource(resId, resource);
     }
 
     @Override
     @DeleteMapping("/delete/{resId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteResourceFromUser(long resId) {
+    public void deleteResourceFromUser(@PathVariable long resId) {
         resourceService.deleteResource(resId);
     }
 
