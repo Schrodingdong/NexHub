@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -100,5 +101,43 @@ class UserRepositoryTest {
         Optional<User> u = testUserRepository.findById(id);
         Assertions.assertThat(u.isPresent())
                 .isFalse();
+    }
+
+    @Test
+    void followUser(){
+        User u1 = testUserRepository.findAll().get(0);
+        User u2 = testUserRepository.findAll().get(1);
+        testUserRepository.followUser(u1.getUserId(), u2.getUserId());
+        Set<User> u1Following = testUserRepository.findById(u1.getUserId()).get().getUserFollowing();
+        Set<User> u2Followers = testUserRepository.findById(u2.getUserId()).get().getUserFollowers();
+        Assertions.assertThat(u1Following)
+                .filteredOn(inUser -> inUser.getUserId() == u2.getUserId());
+        Assertions.assertThat(u2Followers)
+                .filteredOn(inUser -> inUser.getUserId() == u1.getUserId());
+    }
+
+    @Test
+    void userFollowers(){
+        User u1 = testUserRepository.findAll().get(0);
+        User u2 = testUserRepository.findAll().get(1);
+        User u3 = testUserRepository.findAll().get(2);
+        testUserRepository.followUser(u2.getUserId(), u1.getUserId());
+        testUserRepository.followUser(u3.getUserId(), u1.getUserId());
+        List<User> followers = testUserRepository.userFollowers(u1.getUserId());
+        Assertions.assertThat(followers)
+                .hasSize(2)
+                .filteredOn(inUser -> inUser.getUserId() == u2.getUserId() || inUser.getUserId() == u1.getUserId());
+    }
+    @Test
+    void userFollowing(){
+        User u1 = testUserRepository.findAll().get(0);
+        User u2 = testUserRepository.findAll().get(1);
+        User u3 = testUserRepository.findAll().get(2);
+        testUserRepository.followUser(u1.getUserId(), u2.getUserId());
+        testUserRepository.followUser(u1.getUserId(), u3.getUserId());
+        List<User> following = testUserRepository.userFollowing(u1.getUserId());
+        Assertions.assertThat(following)
+                .hasSize(2)
+                .filteredOn(inUser -> inUser.getUserId() == u2.getUserId() || inUser.getUserId() == u1.getUserId());
     }
 }

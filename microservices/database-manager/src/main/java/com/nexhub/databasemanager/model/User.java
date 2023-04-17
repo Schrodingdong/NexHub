@@ -32,10 +32,10 @@ public class User {
     // TODO
 //    @Relationship(type = "FOLLOWS", direction = OUTGOING)
 //    private Set<Category> userCategoryFollowing = new HashSet<>();
-//    @Relationship(type = "FOLLOWS", direction = OUTGOING)
-//    private Set<User> userFollowing = new HashSet<>();
-//    @Relationship(type = "FOLLOWS", direction = INCOMING)
-//    private Set<User> userFollowers = new HashSet<>();
+    @Relationship(type = "FOLLOWS", direction = OUTGOING)
+    private Set<User> userFollowing = new HashSet<>();
+    @Relationship(type = "FOLLOWS", direction = INCOMING)
+    private Set<User> userFollowers = new HashSet<>();
 
 
     public User(long userId, String username, String mail) {
@@ -70,6 +70,22 @@ public class User {
 
     public void setUserResources(Set<Resource> userResources) {
         this.userResources = userResources;
+    }
+
+    public Set<User> getUserFollowing() {
+        return userFollowing;
+    }
+
+    public void setUserFollowing(Set<User> userFollowing) {
+        this.userFollowing = userFollowing;
+    }
+
+    public Set<User> getUserFollowers() {
+        return userFollowers;
+    }
+
+    public void setUserFollowers(Set<User> userFollowers) {
+        this.userFollowers = userFollowers;
     }
 
     @Override

@@ -17,20 +17,21 @@ public interface UserRepository extends Neo4jRepository<User, Long> {
     List<User> getUsersByName(@Param("name") String name);
     @Query("MATCH (u:User {mail: $mail}) RETURN count(u) > 0")
     boolean isMailTaken(@Param("mail") String mail);
-    @Query("MATHC (u:User {mail: $mail} RETURN u")
+    @Query("MATCH (u:User {mail: $mail} RETURN u")
     User getUserByMail(@Param("mail") String mail);
 
+    @Query("MATCH (u:User) " +
+            "MATCH (u_toFollow:User) " +
+            "WHERE ID(u) = $userId and ID(u_toFollow) = $toFollowId " +
+            "MERGE (u)-[:FOLLOWS]->(u_toFollow)")
+    void followUser(@Param("userId") long userId, @Param("toFollowId") long toFollowId);
+    @Query( "MATCH (u:User)<-[:FOLLOWS]-(followers:User) " +
+            "WHERE ID(u) = $userId " +
+            "RETURN followers")
+    List<User> userFollowers(@Param("userId") long userId);
+    @Query( "MATCH (u:User)-[:FOLLOWS]->(followings:User) " +
+            "WHERE ID(u) = $userId " +
+            "RETURN followings")
+    List<User> userFollowing(@Param("userId") long userId);
 
-//    // TODO implement methods for the RESOURCES
-//    @Query( "MATCH (r:Resource)<-[:HAS_A]-(u:User) " +
-//            "WHERE ID(u) = $userId " +
-//            "RETURN r")
-//    List<Resource> getAllResourcesFromUser(@Param("userId") long userId);
-//    @Query( "MATCH (r:Resource {resVisibility: 'PUBLIC'})<-[:HAS_A]-(u:User) " +
-//            "WHERE ID(u) = $userId " +
-//            "RETURN r")
-//    List<Resource> getAllPublicResourcesFromUser(@Param("userId") long userId);
-
-
-    // TODO implement methods for the CATEGORY
 }
