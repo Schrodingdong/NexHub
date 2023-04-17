@@ -40,14 +40,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-//    public List<Resource> getAllResourcesFromUser(@NotNull long userId){
-//        if (userExists(userId) == false)
-//            return null;
-//        return userRepository.getAllResourcesFromUser(userId);
-//    }
-//    public List<Resource> getAllPublicResourcesFromUser(@NotNull long userId){
-//        return userRepository.getAllPublicResourcesFromUser(userId);
-//    }
+    public List<User> getUserFollowers(@NotNull Long userId){
+        return userRepository.userFollowers(userId);
+    }
+    public List<User> getUserFollowing(@NotNull Long userId){
+        return userRepository.userFollowing(userId);
+    }
 
     public User saveUser(@NotNull User u) throws BadRequestException{
         boolean mailTaken = userRepository.isMailTaken(u.getMail());
@@ -56,6 +54,9 @@ public class UserService {
         }
         userRepository.save(u);
         return u;
+    }
+    public void followUser(@NotNull Long userId, @NotNull Long followId){
+        userRepository.followUser(userId, followId);
     }
 
     public User updateUser(@NotNull long userId, @NotNull User modifiedUser) throws BadRequestException{

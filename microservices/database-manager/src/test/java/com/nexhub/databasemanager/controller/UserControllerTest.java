@@ -126,4 +126,24 @@ class UserControllerTest {
         ).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
+    @Test
+    void getUserFollowing() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/get/69/following")
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void getUserFollowers() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/get/69/followers")
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void followUser() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/users/69/follows/420")
+        ).andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }

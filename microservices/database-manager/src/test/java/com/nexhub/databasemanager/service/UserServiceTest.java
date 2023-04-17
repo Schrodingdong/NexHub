@@ -75,6 +75,18 @@ class UserServiceTest {
     }
 
     @Test
+    void getUserFollowers(){
+        testUserService.getUserFollowers(69L);
+        Mockito.verify(userRepository).userFollowers(69L);
+    }
+
+    @Test
+    void getUserFollowing(){
+        testUserService.getUserFollowing(69L);
+        Mockito.verify(userRepository).userFollowing(69L);
+    }
+
+    @Test
     void saveUser_mailDiff() throws Exception {
         testUserService.saveUser(user);
         ArgumentCaptor<User> argumentCaptor =
@@ -92,6 +104,11 @@ class UserServiceTest {
         Assertions.assertThatThrownBy(() -> testUserService.saveUser(user))
                 .isInstanceOf(BadRequestException.class)
                 .hasMessageContaining("The email : " +user.getMail()+" is already taken :/");
+    }
+    @Test
+    void followUser(){
+        testUserService.followUser(1L,2L);
+        Mockito.verify(userRepository).followUser(1l,2l);
     }
 
     @Test

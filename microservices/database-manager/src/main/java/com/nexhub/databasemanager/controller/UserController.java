@@ -5,7 +5,9 @@ import com.nexhub.databasemanager.model.Resource;
 import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +32,13 @@ public class UserController implements IUserController{
     }
 
     @Override
+    @PutMapping("/{userId}/follows/{followId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void followUser(@PathVariable @NotNull long userId, @PathVariable @NotNull long followId) {
+        userService.followUser(userId, followId);
+    }
+
+    @Override
     @GetMapping("/get/id/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable @NotNull @Valid long userId) {
@@ -50,19 +59,19 @@ public class UserController implements IUserController{
         return userService.getAllUsers();
     }
 
-//    @Override
-//    @GetMapping("/get/from-user/{userId}/res/all")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<Resource> getAllResourcesFromUser(@PathVariable @NotNull long userId) {
-//        return userService.getAllResourcesFromUser(userId);
-//    }
-//
-//    @Override
-//    @GetMapping("/get/from-user/{userId}/res/all/public")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<Resource> getAllPublicResourcesFromUser(long userId){
-//        return userService.getAllPublicResourcesFromUser(userId);
-//    }
+    @Override
+    @GetMapping("/get/{userId}/following")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getUserFollowing(@PathVariable long userId) {
+        return userService.getUserFollowing(userId);
+    }
+
+    @Override
+    @GetMapping("/get/{userId}/followers")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getUserFollowers(@PathVariable long userId) {
+        return userService.getUserFollowers(userId);
+    }
 
 
     @Override
