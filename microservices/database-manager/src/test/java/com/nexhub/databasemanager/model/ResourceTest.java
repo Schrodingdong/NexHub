@@ -18,24 +18,19 @@ class ResourceTest {
     void setUp() {
 
         u = new User(
-                69,
                 "schrodingdong",
                 "schrodingdong@gmail.com"
         );
         Set<User> userSet=new HashSet<>();
 
         r = new Resource(
-                0,
                 "Guide To java",
                 "Simple guide for java haha",
-                "auo",
                 ResVisibility.PUBLIC.name()
         );
         r2 = new Resource(
-                0,
                 "Guide To java",
                 "Simple guidefjdsqolifj for java haha",
-                "joe biden wake up",
                 ResVisibility.PUBLIC.name()
         );
     }

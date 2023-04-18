@@ -28,11 +28,11 @@ class UserServiceTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         testUserService = new UserService(userRepository);
 
-        user_old = new User(69,"schrodingdong","schrodingdong@gmail.com"); // added because passing by reference problems
-        user = new User(69,"schrodingdong","schrodingdong@gmail.com");
-        modifiedUser_sameId_diffUsername = new User(69,"newName","schrodingdong@gmail.com");
-        modifiedUser_sameId_diffMail = new User(69,"schrodingdong","othermail@gmail.com");
-        modifiedUser_diffId = new User(420,"newName","schrodingdong@gmail.com");
+        user_old = new User("schrodingdong","schrodingdong@gmail.com"); // added because passing by reference problems
+        user = new User("schrodingdong","schrodingdong@gmail.com");
+        modifiedUser_sameId_diffUsername = new User("newName","schrodingdong@gmail.com");
+        modifiedUser_sameId_diffMail = new User("schrodingdong","othermail@gmail.com");
+        modifiedUser_diffId = new User("newName","schrodingdong@gmail.com");
     }
 
     @AfterEach
@@ -139,8 +139,11 @@ class UserServiceTest {
         long id2 = 420;
         BDDMockito.given(userRepository.findById(id2))
                 .willReturn(Optional.empty());
+        ArgumentCaptor<User> captoe = ArgumentCaptor.forClass(User.class);
         User returnedUser = testUserService.updateUser(id2, modifiedUser_diffId);
-        Assertions.assertThat(returnedUser.getUserId()).isNotEqualTo(user_old.getUserId());
+        Mockito.verify(userRepository).save(captoe.capture());
+        User caughtUser = captoe.getValue();
+        Assertions.assertThat(caughtUser).isEqualTo(modifiedUser_diffId);
     }
 
     @Test

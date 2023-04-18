@@ -43,13 +43,11 @@ class ResourceControllerTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         resourceController = new ResourceController(resourceService);
         resource = new Resource(
-                0,
                 "guideToJava",
                 "description1-u1",
-                "kal",
                 ResVisibility.PUBLIC.name()
         );
-        user = new User(69420,"schrodingdong","schrodingdong@gmail.com");
+        user = new User("schrodingdong","schrodingdong@gmail.com");
     }
     @AfterEach
     void tearDown() throws Exception {

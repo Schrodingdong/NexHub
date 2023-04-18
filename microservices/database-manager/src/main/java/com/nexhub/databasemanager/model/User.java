@@ -18,7 +18,7 @@ import static org.springframework.data.neo4j.core.schema.Relationship.Direction.
 public class User {
     @Id
     @GeneratedValue
-    private final long userId;
+    private long userId;
     @NotBlank
     @NotNull
     private String username;
@@ -38,8 +38,7 @@ public class User {
     private Set<User> userFollowers = new HashSet<>();
 
 
-    public User(long userId, String username, String mail) {
-        this.userId = userId;
+    public User(String username, String mail) {
         this.username = username;
         this.mail = mail;
     }
@@ -94,6 +93,9 @@ public class User {
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", mail='" + mail + '\'' +
+                ", userResources=" + userResources +
+                ", userFollowing=" + userFollowing +
+                ", userFollowers=" + userFollowers +
                 '}';
     }
 }

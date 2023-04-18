@@ -21,44 +21,38 @@ public class UserService {
     }
 
     public boolean userExists(@NotNull long userId){
-        Optional<User> userOptional = userRepository.findById(userId);
-        User fetchedUser = userOptional.orElse(null);
-        return (fetchedUser == null)? false : true;
+        User user = userRepository.findByUserId(userId);
+        return (user == null)? false : true;
     }
-
     public List<User> getUsersByName(String name){
         return userRepository.getUsersByName(name);
     }
     public User getUserById(@NotNull Long id){
-        Optional<User> userOptional = userRepository.findById(id);
-        return userOptional.orElse(null);
+        User user = userRepository.findByUserId(id);
+        return user;
     }
     public User getUserByMail(@NotNull String mail){
         return userRepository.getUserByMail(mail);
     }
     public List<User> getAllUsers(){
-        return userRepository.findAll();
+        return userRepository.findAllUsers();
     }
-
     public List<User> getUserFollowers(@NotNull Long userId){
         return userRepository.userFollowers(userId);
     }
     public List<User> getUserFollowing(@NotNull Long userId){
         return userRepository.userFollowing(userId);
     }
-
     public User saveUser(@NotNull User u) throws BadRequestException{
         boolean mailTaken = userRepository.isMailTaken(u.getMail());
         if (mailTaken){
             throw new BadRequestException("The email : " +u.getMail()+" is already taken :/");
         }
-        userRepository.save(u);
-        return u;
+        return userRepository.saveToGraph(u.getUsername(), u.getMail());
     }
     public void followUser(@NotNull Long userId, @NotNull Long followId){
         userRepository.followUser(userId, followId);
     }
-
     public User updateUser(@NotNull long userId, @NotNull User modifiedUser) throws BadRequestException{
         if(modifiedUser == null){
             throw new BadRequestException("No Input Data");
@@ -78,14 +72,13 @@ public class UserService {
                             selectedUser.getMail() :
                             newMail
             );
-            return saveUser(selectedUser);
+            return userRepository.updateUser(selectedUser.getUserId(), selectedUser.getUsername(),selectedUser.getMail());
         } else {
-            return saveUser(modifiedUser);
+            return userRepository.saveToGraph(modifiedUser.getUsername(),modifiedUser.getMail());
         }
 
 
     }
-
     public void deleteUser(long userId){
         userRepository.deleteById(userId);
     }

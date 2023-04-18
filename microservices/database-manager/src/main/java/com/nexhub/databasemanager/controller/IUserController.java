@@ -16,5 +16,6 @@ public interface IUserController {
     List<User> getUserFollowers(long userId);
     User updateUser(long userId, User modifiedUser);
     void deleteUser(long userId);
+    void deleteAll();
     List<User> getAllUsersOfName(String name);
 }

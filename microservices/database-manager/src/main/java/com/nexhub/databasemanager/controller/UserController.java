@@ -73,12 +73,18 @@ public class UserController implements IUserController{
         return userService.getUserFollowers(userId);
     }
 
-
     @Override
     @DeleteMapping("/delete/id/{userId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUser(@PathVariable @NotNull @Valid long userId) {
         userService.deleteUser(userId);
+    }
+
+    @Override
+    @DeleteMapping("/delete/all")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void deleteAll(){
+        userService.deleteAll();
     }
 
     @Override
@@ -91,7 +97,7 @@ public class UserController implements IUserController{
     @Override
     @PutMapping("/update/id/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@PathVariable @NotNull long userId,@RequestBody @Valid User modifiedUser) {
+    public User updateUser(@PathVariable @NotNull long userId,@RequestBody User modifiedUser) {
        return userService.updateUser(userId, modifiedUser);
     }
 

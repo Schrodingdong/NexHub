@@ -71,15 +71,15 @@ class ResourceServiceTest {
 
     @Test
     void saveResourceForUser() {
-        Resource r = new Resource(1,"resName","resDesc","hh", ResVisibility.PUBLIC.name());
+        Resource r = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
         resourceService.saveResourceForUser(r,69);
         Mockito.verify(resourceRepository).save(r);
     }
 
     @Test
     void updateResource_modificationNotNullAllChanged() {
-        Resource r = new Resource(1,"resName","resDesc","hh", ResVisibility.PUBLIC.name());
-        Resource r_modif = new Resource(1,"resNameNew","resDescNew","hh", ResVisibility.PRIVATE.name());
+        Resource r = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
+        Resource r_modif = new Resource("resNameNew","resDescNew", ResVisibility.PRIVATE.name());
 
         Mockito.when(resourceRepository.findById(1L)).thenReturn(Optional.of(r));
         resourceService.updateResource(r.getResourceId(),r_modif);
@@ -97,8 +97,8 @@ class ResourceServiceTest {
 
     @Test
     void updateResource_modificationNotNullNothingChanged() {
-        Resource r = new Resource(1,"resName","resDesc","hh", ResVisibility.PUBLIC.name());
-        Resource r_modif = new Resource(1,"resName","resDesc","hh", ResVisibility.PUBLIC.name());
+        Resource r = new Resource("resName","resDesc",ResVisibility.PUBLIC.name());
+        Resource r_modif = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
 
         Mockito.when(resourceRepository.findById(1L)).thenReturn(Optional.of(r));
 
@@ -116,7 +116,7 @@ class ResourceServiceTest {
 
     @Test
     void updateResource_modificationNull() {
-        Resource r = new Resource(1,"resName","resDesc","hh", ResVisibility.PUBLIC.name());
+        Resource r = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
 
         Mockito.when(resourceRepository.findById(-1L)).thenReturn(Optional.empty());
         Assertions.assertThatThrownBy(()->resourceService.updateResource(-1,null))
@@ -126,7 +126,7 @@ class ResourceServiceTest {
 
     @Test
     void updateResource_selectionNull() {
-        Resource r_modif = new Resource(1,"resName","resDesc","hh", ResVisibility.PUBLIC.name());
+        Resource r_modif = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
 
         Mockito.when(resourceRepository.findById(-1L)).thenReturn(Optional.empty());
         resourceService.updateResource(-1,r_modif);

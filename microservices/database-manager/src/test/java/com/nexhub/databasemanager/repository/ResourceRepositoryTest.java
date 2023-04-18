@@ -35,12 +35,10 @@ class ResourceRepositoryTest {
 
     @BeforeEach
     void setUp(){
-        u1 = new User(0, "hamza", "hamzaalami@gmail.com");
-        u2 = new User(1, "oumaima", "oumaima2@gmail.com");
-        userRepository.save(u1);
-        userRepository.save(u2);
-        u1 = userRepository.findAll().get(0);
-        u2 = userRepository.findAll().get(1);
+        u1 = new User("hamza", "hamzaalami@gmail.com");
+        u2 = new User("oumaima", "oumaima2@gmail.com");
+        u1 = userRepository.save(u1);
+        u2 = userRepository.save(u2);
         Set<User> userSet1 = new HashSet<>();
         Set<User> userSet2 = new HashSet<>();
         userSet1.add(u1);
@@ -49,50 +47,43 @@ class ResourceRepositoryTest {
         System.out.println("[INFO] - instantiated : ");
         System.out.println(u1);
         System.out.println(u2);
+        System.out.println("---------------------------------------------");
         r1 = new Resource(
-                0,
                 "guideToJava",
                 "description1-u1",
-                "kal",
                 ResVisibility.PUBLIC.name()
         );
         r2 = new Resource(
-                1,
                 "Devops in a nutshell",
                 "description2-u1",
-                "hhh",
                 ResVisibility.PUBLIC.name()
         );
         r3 = new Resource(
-                2,
                 "SPRINGBOOT",
                 "description1-private-u1",
-                "lmao",
                 ResVisibility.PRIVATE.name()
         );
         r1.addHolder(u1);
         r2.addHolder(u1);
         r3.addHolder(u1);
         r4 = new Resource(
-                3,
                 "Devops in a nutshell",
                 "description-u2",
-                "heh",
                 ResVisibility.PUBLIC.name()
         );
         r4.addHolder(u2);
 
+
+        r1 = testResourceRepository.save(r1);
+        r2 = testResourceRepository.save(r2);
+        r3 = testResourceRepository.save(r3);
+        r4 = testResourceRepository.save(r4);
         System.out.println("[INFO] - instantiated : ");
         System.out.println(r1);
         System.out.println(r2);
         System.out.println(r3);
         System.out.println(r4);
-        Resource tmp = testResourceRepository.save(r1);
-        System.out.println(tmp);
-        testResourceRepository.save(r2);
-        testResourceRepository.save(r3);
-        testResourceRepository.save(r4);
-        System.out.println(testResourceRepository.findAll());
+        System.out.println("---------------------------------------------");
     }
 
     @AfterEach
@@ -120,31 +111,22 @@ class ResourceRepositoryTest {
 
     @Test
     void getAllResourcesFromUser_userExists(){
-        List<User> userList= userRepository.findAll();
-        long userId = userList.get(0).getUserId();
-        List<Resource> resList = testResourceRepository.findAll();
-        long resId1 = resList.get(0).getResourceId();
-        long resId2 = resList.get(1).getResourceId();
-        // link resources to it
-        testResourceRepository.linkToUser(resId1,userId);
-        testResourceRepository.linkToUser(resId2,userId);
+        long userId = u1.getUserId();
+        long resId1 = r1.getResourceId();
+        long resId2 = r2.getResourceId();
+        long resId3 = r3.getResourceId();
         // test method
-        System.out.println(userList.get(0));
         List<Resource> fetchedRes = testResourceRepository.getAllResourcesFromUser(userId);
         Assertions.assertThat(fetchedRes)
-                .hasSize(2)
-                .filteredOn(res -> res.getResourceId() == resId1 || res.getResourceId() == resId2);
+                .hasSize(3)
+                .filteredOn(res -> res.getResourceId() == resId1 ||
+                        res.getResourceId() == resId2 ||
+                        res.getResourceId() == resId3);
     }
 
     @Test
     void getAllResourcesFromUser_userNotExists(){
         long userId = -1;
-        List<Resource> resList = testResourceRepository.findAll();
-        long resId1 = resList.get(0).getResourceId();
-        long resId2 = resList.get(1).getResourceId();
-        // link resources to it
-        testResourceRepository.linkToUser(resId1,userId);
-        testResourceRepository.linkToUser(resId2,userId);
         // test method
         List<Resource> fetchedRes = testResourceRepository.getAllResourcesFromUser(userId);
         Assertions.assertThat(fetchedRes).isEmpty();
@@ -152,46 +134,36 @@ class ResourceRepositoryTest {
 
     @Test
     void getAllPublicResourcesFromUser(){
-        List<User> userList= userRepository.findAll();
-        long userId = userList.get(0).getUserId();
-        List<Resource> resList = testResourceRepository.findAll();
-        long resId1 = resList.get(0).getResourceId();
-        long resId2 = resList.get(1).getResourceId();
-        long resId3 = resList.get(2).getResourceId();
-        long resId4 = resList.get(3).getResourceId();
-        // link resources to it
-        testResourceRepository.linkToUser(resId1,userId);
-        testResourceRepository.linkToUser(resId2,userId);
-        testResourceRepository.linkToUser(resId3,userId);
-        testResourceRepository.linkToUser(resId4,userId);
+        long userId = u1.getUserId();
 
         List<Resource> resPublicList = testResourceRepository.getAllPublicResourcesFromUser(userId);
         Assertions.assertThat(resPublicList)
+                .hasSize(2)
                 .filteredOn(res -> res.getResVisibility().equals("PUBLIC"));
     }
 
     @Test
     void linkToUser_userExists() {
-        List<Resource> resList = testResourceRepository.findAll();
-        long resId = resList.get(0).getResourceId();
-        List<User> userList= userRepository.findAll();
-        long userId = userList.get(0).getUserId();
+        Resource rToAdd = new Resource("newToAdd","deschahah",ResVisibility.PUBLIC.name());
+        rToAdd = testResourceRepository.save(rToAdd);
+        long resId = rToAdd.getResourceId();
+        long userId = u1.getUserId();
         testResourceRepository.linkToUser(
                 resId,
                 userId
         );
+        Resource fetchedRes = testResourceRepository.findById(resId).get();
         Assertions.assertThat(
-                    testResourceRepository.findById(resId).get().getResourceHolders()
+                    fetchedRes.getResourceHolders()
                 )
-                .filteredOn(user -> user.toString().equals(userRepository.findById(userId).get().toString()));
+                .filteredOn(user -> user.getUserId() == u1.getUserId());
     }
 
     @Test
     void deleteResourceById() {
-        System.out.println(testResourceRepository.findAll());
-        Resource r = testResourceRepository.findAll().get(0);
-        testResourceRepository.deleteById(r.getResourceId());
-        Assertions.assertThat(testResourceRepository.findById(r.getResourceId()).isPresent())
+        long resId = r4.getResourceId();
+        testResourceRepository.deleteById(resId);
+        Assertions.assertThat(testResourceRepository.findById(resId).isPresent())
                 .isFalse();
     }
 }

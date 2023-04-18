@@ -30,11 +30,11 @@ class UserRepositoryTest {
     List<User> allUsers;
     @BeforeEach
     void setUp() {
-        user = new User(0, "hamza", "hamzaalami@gmail.com");
-        user1 = new User(1, "hamza", "hamzaalami1@gmail.com");
-        user2 = new User(2, "hamza", "hamzaalami2@gmail.com");
-        user3 = new User(3, "oumaima", "oumaimaAitBouchouar@gmail.com");
-        user4 = new User(4, "ali", "aliNabloussi@gmail.com");
+        user = new User("hamza", "hamzaalami@gmail.com");
+        user1 = new User( "hamza", "hamzaalami1@gmail.com");
+        user2 = new User( "hamza", "hamzaalami2@gmail.com");
+        user3 = new User( "oumaima", "oumaimaAitBouchouar@gmail.com");
+        user4 = new User( "ali", "aliNabloussi@gmail.com");
         allUsers = new ArrayList<>();
         allUsers.add(user);
         allUsers.add(user1);

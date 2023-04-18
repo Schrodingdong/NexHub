@@ -16,23 +16,20 @@ import java.util.Optional;
 public class ResourceService {
     @Autowired
     private final ResourceRepository resourceRepository;
-//    @Autowired
-//    private final UserService userService;
 
     public ResourceService(ResourceRepository resourceRepository) {
         this.resourceRepository = resourceRepository;
     }
 
-
     public Resource getResourceById(@NotNull long id){
-        Optional<Resource> resOptional = resourceRepository.findById(id);
-        return resOptional.orElse(null);
+        Resource res = resourceRepository.getResourceById(id);
+        return res;
     }
     public List<Resource> getResourcesByName(String name){
         return resourceRepository.getResourceByName(name);
     }
     public List<Resource> getAllResources(){
-        return resourceRepository.findAll();
+        return resourceRepository.getAllResources();
     }
     public List<Resource> getAllResourcesFromUser(long userId){
         return resourceRepository.getAllResourcesFromUser(userId);
@@ -41,11 +38,11 @@ public class ResourceService {
         return resourceRepository.getAllPublicResourcesFromUser(userId);
     }
     public Resource saveResourceForUser(@NotNull Resource r, @NotNull long userId){
-        resourceRepository.save(r);
+        r = resourceRepository.saveToGraph(r.getResourceName(), r.getResourceDescription(), r.getResBucketId(), r.getResVisibility());
         resourceRepository.linkToUser(r.getResourceId(), userId);
         return r;
     }
-    public Resource updateResource(
+    public Resource updateResource (
             @NotNull long resId,
             @NotNull Resource modifiedResource) throws BadRequestException{
         if (modifiedResource == null){
@@ -73,9 +70,9 @@ public class ResourceService {
                             resDescription
             );
 
-            return resourceRepository.save(selectedRes);
+            return resourceRepository.updateResource(selectedRes.getResourceId(), selectedRes.getResourceName(), selectedRes.getResourceDescription(), selectedRes.getResVisibility());
         } else {
-            return resourceRepository.save(modifiedResource);
+            throw new BadRequestException("Resource doesn't exist");
         }
     }
 

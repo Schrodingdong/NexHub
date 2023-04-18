@@ -13,12 +13,20 @@ import java.util.List;
 import java.util.Set;
 @Repository
 public interface UserRepository extends Neo4jRepository<User, Long> {
+    @Query("MERGE (u:User {username: $username, mail:$mail}) RETURN u")
+    User saveToGraph(@Param("username")String username, @Param("mail") String mail);
+    @Query("MATCH (u:User) WHERE ID(u) = $userId SET u.username=$newUsername SET u.mail=$newMail RETURN u")
+    User updateUser(@Param("userId") long userId, @Param("newUsername") String newUsername, @Param("newMail")String newMail);
     @Query("MATCH (u:User {username: $name}) RETURN u")
     List<User> getUsersByName(@Param("name") String name);
     @Query("MATCH (u:User {mail: $mail}) RETURN count(u) > 0")
     boolean isMailTaken(@Param("mail") String mail);
     @Query("MATCH (u:User {mail: $mail} RETURN u")
     User getUserByMail(@Param("mail") String mail);
+    @Query("MATCH (u:User) WHERE ID(u) = $userId RETURN u")
+    User findByUserId(@Param("userId") long userId);
+    @Query("MATCH (u:User) return u")
+    List<User> findAllUsers();
 
     @Query("MATCH (u:User) " +
             "MATCH (u_toFollow:User) " +

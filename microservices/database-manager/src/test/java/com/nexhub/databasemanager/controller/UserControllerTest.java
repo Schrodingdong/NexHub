@@ -35,8 +35,8 @@ class UserControllerTest {
     private User user,user_noMail;
     @BeforeEach
     void setUp(){
-        user = new User(69420,"schrodingdong","schrodingdong@gmail.com");
-        user_noMail = new User(69420, "schrodingdong", null);
+        user = new User("schrodingdong","schrodingdong@gmail.com");
+        user_noMail = new User("schrodingdong", null);
     }
 
     @Test

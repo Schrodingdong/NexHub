@@ -20,15 +20,13 @@ import static org.springframework.data.neo4j.core.schema.Relationship.Direction.
 public class Resource {
     @Id
     @GeneratedValue
-    private final long resourceId;
+    private long resourceId;
     @NotBlank
     @NotNull
     private String resourceName;
     @NotBlank
     @NotNull
     private String resourceDescription;
-    @NotBlank
-    @NotNull
     private String resBucketId;
     @NotBlank
     @NotNull
@@ -39,26 +37,16 @@ public class Resource {
     @Relationship(type = "HAS_A", direction = INCOMING )
     private Set<User> resourceHolders = new HashSet<>();
 
-//    public Resource(@NotNull long resourceId,
-//                    @NotNull String resourceName,
-//                    String resourceDescription,
-//                    ResVisibility resVisibility) {
-//        this.resourceId = resourceId;
-//        this.resourceName = resourceName;
-//        this.resourceDescription = resourceDescription;
-//        this.resBucketId = resourceBucketIdGenerator();
-//        this.resVisibility = (resVisibility == null)? ResVisibility.PRIVATE : resVisibility;
-//    }
-    public Resource(long resourceId, String resourceName, String resourceDescription, String resBucketId, String resVisibility) {
-        this.resourceId = resourceId;
+    public Resource(String resourceName, String resourceDescription,String resVisibility) {
         this.resourceName = resourceName;
         this.resourceDescription = resourceDescription;
-        this.resBucketId = resBucketId;
+        this.resBucketId = resourceBucketIdGenerator();
         this.resVisibility = resVisibility;
     }
 
     private String resourceBucketIdGenerator(){
         String resName = this.resourceName;
+        resName = resName.replaceAll("\\s+","_");
         // Salt generation
         byte[] array = new byte[15];
         new Random().nextBytes(array);

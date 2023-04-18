@@ -12,16 +12,11 @@ class UserTest {
     @BeforeEach
     void setUp() {
         user = new User(
-                69,
                 "schrodingdong",
                 "schrodingdong@gmail.com"
         );
     }
 
-    @Test
-    void getUserId() {
-        Assertions.assertThat(user.getUserId()).isEqualTo(69);
-    }
 
     @Test
     void setUsername(){

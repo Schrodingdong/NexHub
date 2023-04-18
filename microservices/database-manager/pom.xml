@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.nexhub</groupId>
 	<artifactId>database-manager</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>database-manager</name>
-	<description>Microservice for handling database transaction</description>
+	<description>Microservice for handling NEO4J database transaction</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
