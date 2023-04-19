@@ -3,22 +3,17 @@ package com.nexhub.databasemanager.repository;
 import com.nexhub.databasemanager.model.ResVisibility;
 import com.nexhub.databasemanager.model.Resource;
 import com.nexhub.databasemanager.model.User;
-import com.nexhub.databasemanager.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Example;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @SpringBootTest
@@ -139,7 +134,7 @@ class ResourceRepositoryTest {
         List<Resource> resPublicList = testResourceRepository.getAllPublicResourcesFromUser(userId);
         Assertions.assertThat(resPublicList)
                 .hasSize(2)
-                .filteredOn(res -> res.getResVisibility().equals("PUBLIC"));
+                .filteredOn(res -> res.getResourceVisibility().equals("PUBLIC"));
     }
 
     @Test

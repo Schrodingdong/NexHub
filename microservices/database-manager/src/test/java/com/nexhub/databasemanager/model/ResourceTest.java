@@ -1,7 +1,6 @@
 package com.nexhub.databasemanager.model;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,10 +36,10 @@ class ResourceTest {
 
     @Test
     void checkResBucketIdUnicity(){
-        System.out.println(r.getResBucketId());
-        System.out.println(r2.getResBucketId());
-        Assertions.assertThat(r.getResBucketId())
-                .isNotEqualTo(r2.getResBucketId());
+        System.out.println(r.getResourceBucketId());
+        System.out.println(r2.getResourceBucketId());
+        Assertions.assertThat(r.getResourceBucketId())
+                .isNotEqualTo(r2.getResourceBucketId());
     }
 
 }

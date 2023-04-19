@@ -1,16 +1,13 @@
 package com.nexhub.databasemanager.service;
 
 import com.nexhub.databasemanager.exception.BadRequestException;
-import com.nexhub.databasemanager.model.ResVisibility;
 import com.nexhub.databasemanager.model.Resource;
-import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.repository.ResourceRepository;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ResourceService {
@@ -38,9 +35,9 @@ public class ResourceService {
         return resourceRepository.getAllPublicResourcesFromUser(userId);
     }
     public Resource saveResourceForUser(@NotNull Resource r, @NotNull long userId){
-        r = resourceRepository.saveToGraph(r.getResourceName(), r.getResourceDescription(), r.getResBucketId(), r.getResVisibility());
-        resourceRepository.linkToUser(r.getResourceId(), userId);
-        return r;
+        Resource rSaved = resourceRepository.saveToGraph(r.getResourceName(), r.getResourceDescription(), r.getResourceBucketId(), r.getResourceVisibility());
+        resourceRepository.linkToUser(rSaved.getResourceId(), userId);
+        return rSaved;
     }
     public Resource updateResource (
             @NotNull long resId,
@@ -51,12 +48,12 @@ public class ResourceService {
         Resource selectedRes = getResourceById(resId);
         if(selectedRes != null){
             String resourceName = modifiedResource.getResourceName();
-            String visibility = modifiedResource.getResVisibility();
+            String visibility = modifiedResource.getResourceVisibility();
             String resDescription = modifiedResource.getResourceDescription();
 
-            selectedRes.setResVisibility(
+            selectedRes.setResourceVisibility(
                     (visibility == null)?
-                            selectedRes.getResVisibility() :
+                            selectedRes.getResourceVisibility() :
                             visibility
             );
             selectedRes.setResourceName(
@@ -70,7 +67,7 @@ public class ResourceService {
                             resDescription
             );
 
-            return resourceRepository.updateResource(selectedRes.getResourceId(), selectedRes.getResourceName(), selectedRes.getResourceDescription(), selectedRes.getResVisibility());
+            return resourceRepository.updateResource(selectedRes.getResourceId(), selectedRes.getResourceName(), selectedRes.getResourceDescription(), selectedRes.getResourceVisibility());
         } else {
             throw new BadRequestException("Resource doesn't exist");
         }

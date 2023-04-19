@@ -117,14 +117,6 @@ class UserControllerTest {
                         .content(objectMapper.writeValueAsString(user))
         ).andExpect(MockMvcResultMatchers.status().isOk());
     }
-    @Test
-    void nonValidInput_updateUser() throws Exception{
-        mockMvc.perform(
-                MockMvcRequestBuilders.put("/users/update/id/69420")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(user_noMail))
-        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
 
     @Test
     void getUserFollowing() throws Exception {

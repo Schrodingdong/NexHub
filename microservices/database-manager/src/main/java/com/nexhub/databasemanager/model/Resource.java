@@ -27,21 +27,21 @@ public class Resource {
     @NotBlank
     @NotNull
     private String resourceDescription;
-    private String resBucketId;
+    private String resourceBucketId;
     @NotBlank
     @NotNull
-    private String resVisibility;
+    private String resourceVisibility;
 
 //    @Relationship(type = "OF_CATEGORY", direction = OUTGOING)
 //    private Set<Category> resourceCategory = new HashSet<>();
     @Relationship(type = "HAS_A", direction = INCOMING )
     private Set<User> resourceHolders = new HashSet<>();
 
-    public Resource(String resourceName, String resourceDescription,String resVisibility) {
+    public Resource(String resourceName, String resourceDescription,String resourceVisibility) {
         this.resourceName = resourceName;
         this.resourceDescription = resourceDescription;
-        this.resBucketId = resourceBucketIdGenerator();
-        this.resVisibility = resVisibility;
+        this.resourceBucketId = resourceBucketIdGenerator();
+        this.resourceVisibility = resourceVisibility;
     }
 
     private String resourceBucketIdGenerator(){
@@ -68,12 +68,12 @@ public class Resource {
         return resourceName;
     }
 
-    public String getResBucketId() {
-        return resBucketId;
+    public String getResourceBucketId() {
+        return resourceBucketId;
     }
 
-    public String getResVisibility() {
-        return resVisibility;
+    public String getResourceVisibility() {
+        return resourceVisibility;
     }
 
     public Set<User> getResourceHolders() {
@@ -84,12 +84,12 @@ public class Resource {
         this.resourceName = resourceName;
     }
 
-    public void setResVisibility(String resVisibility) {
-        this.resVisibility = resVisibility;
+    public void setResourceVisibility(String resourceVisibility) {
+        this.resourceVisibility = resourceVisibility;
     }
 
-    public void setResBucketId(String resBucketId) {
-        this.resBucketId = resBucketId;
+    public void setResourceBucketId(String resourceBucketId) {
+        this.resourceBucketId = resourceBucketId;
     }
 
     public void setResourceHolders(Set<User> resourceHolders) {
@@ -101,8 +101,8 @@ public class Resource {
         return "Resource{" +
                 "resourceId=" + resourceId +
                 ", resourceName='" + resourceName + '\'' +
-                ", resBucketId='" + resBucketId + '\'' +
-                ", resVisibility=" + resVisibility +
+                ", resBucketId='" + resourceBucketId + '\'' +
+                ", resVisibility=" + resourceVisibility +
                 ", resourceHolders=" + resourceHolders +
                 '}';
     }

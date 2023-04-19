@@ -31,7 +31,7 @@ public interface ResourceRepository extends Neo4jRepository<Resource, Long> {
             "RETURN r")
     List<Resource> getAllResourcesFromUser(@Param("userId") long userId);
 
-    @Query( "MATCH (r:Resource {resVisibility: 'PUBLIC'})<-[:HAS_A]-(u:User) " +
+    @Query( "MATCH (r:Resource {resourceVisibility: 'PUBLIC'})<-[:HAS_A]-(u:User) " +
             "WHERE ID(u) = $userId " +
             "RETURN r")
     List<Resource> getAllPublicResourcesFromUser(@Param("userId") long userId);

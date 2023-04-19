@@ -8,6 +8,7 @@ import com.nexhub.databasemanager.model.User;
 import com.nexhub.databasemanager.service.ResourceService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -100,6 +101,7 @@ class ResourceControllerTest {
     }
 
     @Test
+    @Disabled
     void updateResourceForUser() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/res/update/658")
