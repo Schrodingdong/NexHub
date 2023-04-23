@@ -60,8 +60,9 @@ public class ResourceController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteObject(@RequestParam DeleteObjectParams params) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        resourceService.deleteObject(params.getObjectName(), params.getBucketName());
+    public void deleteObject(@RequestParam String objectName,
+                             @RequestParam String bucketName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        resourceService.deleteObject(objectName, bucketName);
     }
 
 }
