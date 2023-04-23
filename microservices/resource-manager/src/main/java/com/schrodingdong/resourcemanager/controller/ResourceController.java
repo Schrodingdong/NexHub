@@ -2,6 +2,7 @@ package com.schrodingdong.resourcemanager.controller;
 
 import com.schrodingdong.resourcemanager.model.DeleteObjectParams;
 import com.schrodingdong.resourcemanager.model.DownloadObjectParams;
+import com.schrodingdong.resourcemanager.model.FileUploadResponse;
 import com.schrodingdong.resourcemanager.model.UploadObjectParams;
 import com.schrodingdong.resourcemanager.service.ResourceService;
 import io.minio.UploadObjectArgs;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -24,8 +26,18 @@ public class ResourceController {
     private ResourceService resourceService;
 
     @PostMapping("/upload")
-    public void uploadObject(@RequestBody UploadObjectParams params) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        resourceService.uploadObject(params.getFileName(), params.getResId(), params.getBucketName());
+    public ResponseEntity<?> uploadObject(@RequestParam String resId,
+                                          @RequestParam String bucketName,
+                                          @RequestParam ("file") MultipartFile multipartFile) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        String fileName = multipartFile.getOriginalFilename();
+        long size = multipartFile.getSize();
+        String path = resourceService.uploadObject(multipartFile, fileName, resId, bucketName);
+
+        FileUploadResponse response = new FileUploadResponse();
+        response.setFileName(fileName);
+        response.setSize(size);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping(
             value = "/download"

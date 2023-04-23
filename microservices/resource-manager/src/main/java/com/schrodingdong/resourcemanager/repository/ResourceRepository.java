@@ -29,6 +29,7 @@ public class ResourceRepository {
     public void downloadObject(String objectName, String resPath, String bucketName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         minioClient.downloadObject(
                 DownloadObjectArgs.builder()
+                        .overwrite(true)
                         .bucket(bucketName)
                         .object(objectName)
                         .filename(resPath)
