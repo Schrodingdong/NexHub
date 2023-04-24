@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+  postgres-db:
+    container_name: postgres-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: registration
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+
+  authentication-service:
+    container_name: auth-service
+    image: authentication-service
+    ports:
+      - "8888:8888"
+    expose:
+      - 8888
