@@ -3,11 +3,10 @@ server:
     include-message: always
     include-binding-errors: always
 
-
 spring:
   datasource:
-    password: oumaima
-    url: jdbc:postgresql://localhost:5432/registration
+    url: jdbc:postgresql://postgres-db:5432/registration
+    password: password
     username: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -36,4 +35,3 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
-

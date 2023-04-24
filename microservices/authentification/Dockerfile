@@ -1,4 +1,4 @@
-FROM openjdk:19
+FROM openjdk:latest
 EXPOSE 8080
-ADD target/authentification.jar authentification.jar
-ENTRYPOINT ["java", "-jar","/authentification.jar"]
+ADD target/authentication-1.0.jar authentication-1.0.jar
+ENTRYPOINT ["java", "-jar","/authentication-1.0.jar"]

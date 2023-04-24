@@ -8,15 +8,15 @@
         <version>3.0.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>authentification</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>authentification</name>
-    <description>authentification</description>
+    <groupId>com.nexhub</groupId>
+    <artifactId>authentication</artifactId>
+    <version>1.0</version>
+    <name>authentication</name>
+    <description>NexHub authentication service</description>
     <!--<properties>
         <java.version>15</java.version>
-
     </properties> -->
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -62,10 +62,8 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-
             </plugin>
         </plugins>
-
     </build>
 
 </project>
