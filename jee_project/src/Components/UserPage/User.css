@@ -1,0 +1,29 @@
+.user-page{
+    display: inline-block;
+    gap: 3rem;
+    width: 100%;
+    height: 100%;
+}
+.user-page-down{
+    display: inline-flex;
+    width: 100%;
+}
+.user-header{
+    width: 100%;
+    height: 50px;
+}
+.left{
+    width: 30%;
+    float: left;
+
+}
+.right{
+    width: 30%;
+    float: right;
+
+
+}
+.resource{
+    width: 60%;
+
+}

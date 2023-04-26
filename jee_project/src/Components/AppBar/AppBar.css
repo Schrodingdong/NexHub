@@ -1,0 +1,70 @@
+.user-page-header{
+    background-color: #1A1A40;
+    width: 100%;
+    display: inline-flex;
+    gap: 2rem;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 40px;
+    justify-content: space-between;
+    height: 80px;
+}
+
+.user-page-info{
+    display: inline-flex;
+    gap: 2rem;
+
+}
+.user-page-info img{
+    border-radius: 50%;
+    width: 3.3rem;
+    height: 3.3rem;
+}
+.user-page-info button{
+    border: 0;
+    border-radius: 50%;
+    background-color:transparent;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    padding-right: 10px;
+}
+.user-page-logo h2{
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Josefin Sans', sans-serif;
+    padding-left: 20px;
+  }
+  .user-page-logo span{
+    color: #7A0BC0;
+    font-family: 'Josefin Sans', sans-serif;
+  }
+
+  .user-page-search {
+    height: 40px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    border-radius: 50px;
+  }
+  .user-page-search input{
+    background: transparent;
+    border: 0;
+    outline: none;
+    padding-left: 20px;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+  }
+  ::placeholder{
+    color: #00000030;
+  }
+.user-page-search button{
+    border: 0;
+    border-radius: 30px;
+    background-color:transparent;
+    width: 60px;
+    height: 40px;
+    cursor: pointer;
+    background-color: rgb(237, 237, 237);
+}

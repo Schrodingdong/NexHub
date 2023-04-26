@@ -1,0 +1,52 @@
+.user-profile{
+    background-color: #EBDAF6;
+    height: 300px;
+    padding-top: 12%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+}
+.user-profile p{
+   font-weight: bold;
+   font-size: 15px;
+}
+.user-profile button{
+    border: none;
+    width: 2rem;
+    height: 2rem;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.user-profile img {
+    border-radius: 50%;
+    width: 10rem;
+    height: 10rem;
+    align-items: center;
+}
+
+.user-profile-down{
+    display: flex;
+    gap: 3rem;
+    width: 100%;
+    height: 100%;
+    margin-top: 100px;
+
+
+}
+.user-info{
+
+    width: 30%;
+    float: left
+}
+.user-resource{ 
+    width: 70%;
+
+}
+.user-following{
+
+    width: 30%;
+    float: right;
+}

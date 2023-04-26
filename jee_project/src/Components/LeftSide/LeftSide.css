@@ -1,0 +1,30 @@
+.user-page-card{
+    background-color: #fff;
+    margin-left: 30px;
+    margin-top: 80px;
+    width: 300px;
+    height: 350px;
+    border: 0;
+    border-radius: 30px;
+    display: grid;
+    justify-items: center;
+    align-content: stretch;
+    padding-top: 10px;
+    box-shadow: 3px 3px #edecec;
+
+}
+.user-page-card button{
+    background-color: #1A1A40;
+    color: white;
+    width: 250px;
+    border: 0;
+    border-radius: 30px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}

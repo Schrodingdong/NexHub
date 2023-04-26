@@ -1,0 +1,20 @@
+.update-image{
+    height: 100px;
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, .3);
+    padding: 1rem 1.5rem;
+    padding-left: calc(1rem * 3.5);
+    border-radius: 20px;
+    width: 100%;
+    transition: background .5s;
+    text-align: center;
+}
+.update-image input {
+    display: none;
+}
+.update-image label{
+    cursor: pointer;
+    font-size: 15px;
+    font-family: 'Roboto' sans-serif;
+}
