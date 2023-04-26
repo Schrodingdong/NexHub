@@ -1,12 +1,18 @@
 server:
+  port: 8081
   error:
     include-message: always
     include-binding-errors: always
 
 spring:
+  cloud:
+    discovery:
+      enabled: true
+  application:
+    name: authentification-service
   datasource:
-    url: jdbc:postgresql://postgres-db:5432/registration
-    password: password
+    url: jdbc:postgresql://localhost:5432/registration
+    password: oumaima
     username: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -35,3 +41,11 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+

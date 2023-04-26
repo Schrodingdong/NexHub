@@ -1,8 +1,18 @@
 spring:
+  cloud:
+    discovery:
+      enabled: true
+  application:
+    name: database-manager
   neo4j:
     authentication:
       username: neo4j
       password: viTqWS71H4PyD-t1T3uZpU8PfarCXMVlsU8OIQxnBl8
     uri: neo4j+s://54d52f8a.databases.neo4j.io
 server:
-  port: 8080
+  port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
