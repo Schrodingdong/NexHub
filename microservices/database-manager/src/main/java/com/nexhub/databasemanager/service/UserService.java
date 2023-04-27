@@ -48,7 +48,7 @@ public class UserService {
         if (mailTaken){
             throw new BadRequestException("The email : " +u.getMail()+" is already taken :/");
         }
-        return userRepository.saveToGraph(u.getUsername(), u.getMail());
+        return userRepository.saveToGraph(u.getUsername(), u.getMail(), u.getBucketId());
     }
     public void followUser(@NotNull Long userId, @NotNull Long followId){
         userRepository.followUser(userId, followId);
@@ -74,7 +74,7 @@ public class UserService {
             );
             return userRepository.updateUser(selectedUser.getUserId(), selectedUser.getUsername(),selectedUser.getMail());
         } else {
-            return userRepository.saveToGraph(modifiedUser.getUsername(),modifiedUser.getMail());
+            return userRepository.saveToGraph(modifiedUser.getUsername(),modifiedUser.getMail(), modifiedUser.getBucketId());
         }
 
 

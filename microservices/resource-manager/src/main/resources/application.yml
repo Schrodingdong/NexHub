@@ -1,12 +1,25 @@
 server:
-  port: 8080
+  port: 8083
 
 spring:
   application:
     name: resource-manager
   cloud:
     discovery:
-      enabled: true
+      enabled: false
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+minio:
+  url: http://minio-db:9000
+  username: minio
+  password: miniominio
+
+metadata-db:
+  url: http://metadata-db-manager-service:8082
+
 eureka:
   client:
     service:

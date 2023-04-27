@@ -92,11 +92,14 @@ class UserServiceTest {
         testUserService.saveUser(user);
         ArgumentCaptor<String> captoe1 = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> captoe2 = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(userRepository).saveToGraph(captoe1.capture(), captoe2.capture());
+        ArgumentCaptor<String> captoe3 = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(userRepository).saveToGraph(captoe1.capture(), captoe2.capture(), captoe3.capture());
         Assertions.assertThat(captoe1.getValue())
                 .isEqualTo(user.getUsername());
         Assertions.assertThat(captoe2.getValue())
                 .isEqualTo(user.getMail());
+        Assertions.assertThat(captoe3.getValue())
+                .isEqualTo(user.getBucketId());
     }
 
     @Test

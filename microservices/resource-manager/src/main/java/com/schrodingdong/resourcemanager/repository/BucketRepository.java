@@ -5,6 +5,7 @@ import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.RemoveBucketArgs;
 import io.minio.errors.*;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -12,16 +13,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @Repository
-public class BucketRepository {
-    private MinioClient minioClient;
-    BucketRepository(){
-        minioClient = MinioClient.builder()
-                .endpoint("http://localhost:9000")
-                .credentials("minio","miniominio")
-                .build();
-    }
-
-
+@NoArgsConstructor
+public class BucketRepository extends MinioRepository{
     public boolean bucketExists(String bucketName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         return minioClient.bucketExists(
                 BucketExistsArgs.builder().bucket(bucketName).build()

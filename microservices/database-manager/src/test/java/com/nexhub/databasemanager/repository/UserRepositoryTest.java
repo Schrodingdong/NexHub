@@ -140,4 +140,5 @@ class UserRepositoryTest {
                 .hasSize(2)
                 .filteredOn(inUser -> inUser.getUserId() == u2.getUserId() || inUser.getUserId() == u1.getUserId());
     }
+
 }
