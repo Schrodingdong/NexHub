@@ -29,11 +29,11 @@ class UserServiceTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         testUserService = new UserService(userRepository);
 
-        user_old = new User("schrodingdong","schrodingdong@gmail.com"); // added because passing by reference problems
-        user = new User("schrodingdong","schrodingdong@gmail.com");
-        modifiedUser_sameId_diffUsername = new User("newName","schrodingdong@gmail.com");
-        modifiedUser_sameId_diffMail = new User("schrodingdong","othermail@gmail.com");
-        modifiedUser_diffId = new User("newName","schrodingdong@gmail.com");
+        user_old = new User("schrodingdong","schrodingdong@gmail.com","bucketId2"); // added because passing by reference problems
+        user = new User("schrodingdong","schrodingdong@gmail.com","bucketId2");
+        modifiedUser_sameId_diffUsername = new User("newName","schrodingdong@gmail.com","bucketId2");
+        modifiedUser_sameId_diffMail = new User("schrodingdong","othermail@gmail.com","bucketId2");
+        modifiedUser_diffId = new User("newName","schrodingdong@gmail.com","bucketId2");
     }
 
     @AfterEach

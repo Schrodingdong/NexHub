@@ -3,14 +3,16 @@ server:
 
 spring:
   application:
-    name: resource-manager
+    name: resource-manager-service
   cloud:
     discovery:
-      enabled: false
+      enabled: true
   servlet:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  main:
+    allow-bean-definition-overriding: true
 
 minio:
   url: http://minio-db:9000
@@ -18,10 +20,10 @@ minio:
   password: miniominio
 
 metadata-db:
-  url: http://metadata-db-manager-service:8082
+  url: lb://metadata-db-manager-service
+  name: metadata-db-manager-service
 
 eureka:
   client:
-    service:
-      url:
-        defaultZone: http://localhost:8761/eureka
+    service-url:
+        defaultZone: http://discovery-service:8761/eureka

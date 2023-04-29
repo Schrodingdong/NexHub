@@ -4,8 +4,8 @@ import com.schrodingdong.resourcemanager.model.ResourceModel;
 import com.schrodingdong.resourcemanager.model.UploadResourceParams;
 import com.schrodingdong.resourcemanager.model.UserModel;
 import com.schrodingdong.resourcemanager.repository.ResourceRepository;
-import com.schrodingdong.resourcemanager.util.FeignServiceResourceMetadataDbManager;
-import com.schrodingdong.resourcemanager.util.FeignServiceUserMetadataDbManager;
+import com.schrodingdong.resourcemanager.util.FeignServiceResourceMetadataDbManagerResourceManagerService;
+import com.schrodingdong.resourcemanager.util.FeignServiceUserMetadataDbManagerResourceManagerService;
 import io.minio.errors.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class ResourceService implements IResourceService{
     @Autowired
     private BucketService bucketService;
     @Autowired
-    private FeignServiceUserMetadataDbManager userFeign;
+    private FeignServiceUserMetadataDbManagerResourceManagerService userFeign;
     @Autowired
-    private FeignServiceResourceMetadataDbManager resourceFeign;
+    private FeignServiceResourceMetadataDbManagerResourceManagerService resourceFeign;
 
     public ResourceService() {
     }

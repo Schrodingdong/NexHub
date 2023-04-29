@@ -4,15 +4,21 @@ server:
     include-message: always
     include-binding-errors: always
 
+metadata-db:
+  url: lb://metadata-db-manager-service
+  name: metadata-db-manager-service
+resource-manager-db:
+  url: lb://resource-manager-service
+  name: resource-manager-service
 spring:
   cloud:
     discovery:
       enabled: true
   application:
-    name: authentification-service
+    name: authentication-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/registration
-    password: oumaima
+    url: jdbc:postgresql://postgres-db:5432/registration
+    password: password
     username: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -46,6 +52,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone:  http://discovery-service:8761/eureka
 
 

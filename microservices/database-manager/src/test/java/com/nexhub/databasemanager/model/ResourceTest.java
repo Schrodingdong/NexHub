@@ -18,7 +18,7 @@ class ResourceTest {
 
         u = new User(
                 "schrodingdong",
-                "schrodingdong@gmail.com"
+                "schrodingdong@gmail.com","bucketId2"
         );
         Set<User> userSet=new HashSet<>();
 

@@ -1,0 +1,109 @@
+version: '3.3'
+services:
+  # Database containers
+  postgres-db:
+    container_name: postgres-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: registration
+    ports:
+      - "5432:5432"
+
+  minio-db:
+    container_name: minio-db
+    image: quay.io/minio/minio:latest
+    command: server --console-address ":9090" /data
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniominio
+    volumes:
+      - $HOME/minio/data:/data
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+
+  authentication-service:
+    container_name: auth-service
+    image: authentication-service
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+      gateway-service:
+        condition: service_healthy
+      resource-service:
+        condition: service_healthy
+      postgres-db:
+        condition: service_started
+
+  resource-service:
+    image: resource-manager-service
+    container_name: resource-manager-service
+    ports:
+      - "8083:8083"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8083/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+      gateway-service:
+        condition: service_healthy
+      metadata-db-manager-service:
+        condition: service_healthy
+      minio-db:
+        condition: service_started
+
+  metadata-db-manager-service:
+    container_name: metadata-db-manager-service
+    image: metadata-db-manager-service
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8082/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+      gateway-service:
+        condition: service_healthy
+
+  gateway-service:
+    container_name: gateway-service
+    image: gateway-service
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    depends_on:
+      discovery-service:
+        condition: service_healthy
+
+  discovery-service:
+    container_name: discovery-service
+    image: discovery-service
+    ports:
+      - "8761:8761"
+    expose:
+      - 8761
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761"]
+      interval: 10s
+      timeout: 10s
+      retries: 5

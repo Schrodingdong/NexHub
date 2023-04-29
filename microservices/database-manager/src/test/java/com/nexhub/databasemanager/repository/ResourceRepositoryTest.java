@@ -30,8 +30,8 @@ class ResourceRepositoryTest {
 
     @BeforeEach
     void setUp(){
-        u1 = new User("hamza", "hamzaalami@gmail.com");
-        u2 = new User("oumaima", "oumaima2@gmail.com");
+        u1 = new User("hamza", "hamzaalami@gmail.com","bucketId1");
+        u2 = new User("oumaima", "oumaima2@gmail.com","bucketId2");
         u1 = userRepository.save(u1);
         u2 = userRepository.save(u2);
         Set<User> userSet1 = new HashSet<>();

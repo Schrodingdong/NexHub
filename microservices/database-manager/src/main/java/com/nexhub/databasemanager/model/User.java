@@ -45,10 +45,11 @@ public class User {
     @Relationship(type = "HAS_A", direction = OUTGOING)
     private Set<Resource> userResources = new HashSet<>();
 
-    public User(String username, String mail) {
+    public User(String username, String mail, String bucketId) {
         this.username = username;
         this.mail = mail;
-        this.bucketId = generateBucketIdViaUserMail(this.mail);
+//        this.bucketId = generateBucketIdViaUserMail(this.mail);
+        this.bucketId = bucketId;
     }
     public String generateBucketIdViaUserMail(String userMail) {
         if(userMail == null) return null;

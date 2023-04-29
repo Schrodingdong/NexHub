@@ -1,4 +1,4 @@
-# NexHub - you're resource sharing hub !
+# NexHub - your resource sharing hub !
 
 This repository is for the J2EE project using the following technologies
 
@@ -12,10 +12,17 @@ This repository is for the J2EE project using the following technologies
 - Each microservice sits alone in a folder
 - When doing changes to a specific service, be sure to push from the root (the folder with the services folder)
 
-## Todo list :
-
-- [ ] Creating the Frontend
-- [ ] Creating the authentification service
-- [ ] Creating the Database management service
-- [ ] Creating the Resource Management service
-- [ ] Creating an API gateway to manage incoming requests
+## Building the project
+to build the microservices, be in the root folder of the project, and run the command: 
+- Build each microservice :
+   ```shell
+   ./mvnw package -DskipTests
+   ```
+- Create Docker Images for each microservice
+   ````shell
+   ./create-images.bat
+   ````
+- Set up the containers with the compose file
+   ````shell
+   docker-compose up
+   ````

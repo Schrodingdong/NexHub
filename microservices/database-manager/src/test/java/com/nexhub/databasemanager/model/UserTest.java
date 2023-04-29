@@ -13,7 +13,7 @@ class UserTest {
     void setUp() {
         user = new User(
                 "schrodingdong",
-                "schrodingdong@gmail.com"
+                "schrodingdong@gmail.com","bucketId"
         );
     }
 
