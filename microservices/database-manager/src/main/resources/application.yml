@@ -6,9 +6,9 @@ spring:
     name: metadata-db-manager-service
   neo4j:
     authentication:
-      username: neo4j
-      password: viTqWS71H4PyD-t1T3uZpU8PfarCXMVlsU8OIQxnBl8
-    uri: neo4j+s://54d52f8a.databases.neo4j.io
+      username: ${NEO4J_USERNAME}
+      password: ${NEO4J_PASSWORD}
+    uri: ${NEO4J_URI}
 server:
   port: 8082
 

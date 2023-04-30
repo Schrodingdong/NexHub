@@ -3,12 +3,12 @@ services:
   # Database containers
   postgres-db:
     container_name: postgres-db
-    image: postgres
+    image: postgres:latest
     restart: always
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-      POSTGRES_DB: registration
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
+      POSTGRES_USER: ${AUTH_DB_USERNAME}
+      POSTGRES_DB: ${AUTH_DB_NAME}
     ports:
       - "5432:5432"
 
@@ -17,8 +17,8 @@ services:
     image: quay.io/minio/minio:latest
     command: server --console-address ":9090" /data
     environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: miniominio
+      MINIO_ROOT_USER: ${MINIO_USERNAME}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     volumes:
       - $HOME/minio/data:/data
     ports:
@@ -30,8 +30,16 @@ services:
     image: authentication-service
     ports:
       - "8081:8081"
+    environment:
+      AUTH_DB_NAME: ${AUTH_DB_NAME}
+      AUTH_DB_PASSWORD: ${AUTH_DB_PASSWORD}
+      AUTH_DB_USERNAME: ${AUTH_DB_USERNAME}
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8081/actuator/health || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:8081/actuator/health || exit 1"
+        ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -50,8 +58,15 @@ services:
     container_name: resource-manager-service
     ports:
       - "8083:8083"
+    environment:
+      MINIO_USERNAME: ${MINIO_USERNAME}
+      MINIO_PASSWORD: ${MINIO_PASSWORD}
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8083/actuator/health || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:8083/actuator/health || exit 1"
+        ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -70,8 +85,16 @@ services:
     image: metadata-db-manager-service
     ports:
       - "8082:8082"
+    environment:
+      NEO4J_USERNAME: ${NEO4J_USERNAME}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_URI: ${NEO4J_URI}
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8082/actuator/health || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:8082/actuator/health || exit 1"
+        ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -87,7 +110,11 @@ services:
     ports:
       - "8080:8080"
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:8080/actuator/health || exit 1"
+        ]
       interval: 10s
       timeout: 10s
       retries: 5
@@ -103,7 +130,7 @@ services:
     expose:
       - 8761
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8761" ]
       interval: 10s
       timeout: 10s
       retries: 5

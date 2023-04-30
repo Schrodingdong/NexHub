@@ -16,8 +16,8 @@ spring:
 
 minio:
   url: http://minio-db:9000
-  username: minio
-  password: miniominio
+  username: ${MINIO_USERNAME}
+  password: ${MINIO_PASSWORD}
 
 metadata-db:
   url: lb://metadata-db-manager-service
