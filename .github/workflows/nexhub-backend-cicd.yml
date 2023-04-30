@@ -64,15 +64,17 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v2.1.1
+        with:
+          name: authentication-service
       - name: List contents of the folders
-        run: ls -r
+        run: ls -R
       - name: Build & push Docker image authentication-service
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: schrodingdong/nexhub-authentication-service
           tags: latest
           registry: docker.io
-          dockerfile: ./authentication-service/dockerfile
+          dockerfile: ./authentication-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -83,15 +85,17 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v2.1.1
+        with:
+          name: metadata-db-manager-service
       - name: List contents of the folders
-        run: ls -r
+        run: ls -R
       - name: Build & push Docker image metadata-db-manager-service
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: schrodingdong/nexhub-metadata-db-manager-service
           tags: latest
           registry: docker.io
-          dockerfile: ./metadata-db-manager-service/dockerfile
+          dockerfile: ./metadata-db-manager-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -102,15 +106,17 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v2.1.1
+        with:
+          name: resource-manager-service
       - name: List contents of the folders
-        run: ls -r
+        run: ls -R
       - name: Build & push Docker image resource-manager-service
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: schrodingdong/nexhub-resource-manager-service
           tags: latest
           registry: docker.io
-          dockerfile: ./resource-manager-service/dockerfile
+          dockerfile: ./resource-manager-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -121,15 +127,17 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v2.1.1
+        with:
+          name: gateway-service
       - name: List contents of the folders
-        run: ls -r
+        run: ls -R
       - name: Build & push Docker image gateway-service
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: schrodingdong/nexhub-gateway-service
           tags: latest
           registry: docker.io
-          dockerfile: ./gateway-service/dockerfile
+          dockerfile: ./gateway-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -140,14 +148,16 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v2.1.1
+        with:
+          name: discovery-service
       - name: List contents of the folders
-        run: ls -r
+        run: ls -R
       - name: Build & push Docker image discovery-service
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: schrodingdong/nexhub-discovery-service
           tags: latest
           registry: docker.io
-          dockerfile: ./discovery-service/dockerfile
+          dockerfile: ./discovery-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
