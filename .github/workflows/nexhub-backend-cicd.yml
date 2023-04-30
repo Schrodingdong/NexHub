@@ -1,12 +1,4 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Nexhub CICD 
+name: Nexhub CICD
 
 on:
   push:
@@ -14,80 +6,148 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  AUTH_SERVICE: authen
+
+
 jobs:
-  build-nexhub-discovery-service:
+  build-microservices:
+    name: build-microservices
     runs-on: ubuntu-latest
     steps:
-    - name: Github Checkout
-      uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: cd to microservice directory
-      run: cd ./microservices/discovery-service
-    - name: build nexhub-discovery-service
-      run: mvn package -DskipTests
-  build-nexhub-gateway-service:
+      - name: Github Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: build
+        run: mvn package -DskipTests
+
+      - name: upload artefacts for authentication-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: authentication-service
+          path: ./microservices/authentification
+
+      - name: upload artefacts for metadata-db-manager-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: metadata-db-manager-service
+          path: ./microservices/database-manager
+
+      - name: upload artefacts for resource-manager-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: resource-manager-service
+          path: ./microservices/resource-manager
+
+      - name: upload artefacts for gateway-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: gateway-service
+          path: ./microservices/gateway-service
+
+      - name: upload artefacts for discovery-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: discovery-service
+          path: ./microservices/discovery-service
+
+  push-to-dockerhub-authentication-service:
+    name: push-to-dockerhub-authentication-service
     runs-on: ubuntu-latest
+    needs: build-microservices
     steps:
-    - name: Github Checkout
-      uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: cd to microservice directory
-      run: cd ./microservices/gateway-service
-    - name: build nexhub-gateway-service
-      run: mvn package -DskipTests
-  build-nexhub-resource-manager-service:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+      - name: List contents of the folders
+        run: ls -r
+      - name: Build & push Docker image authentication-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-authentication-service
+          tags: latest
+          registry: docker.io
+          dockerfile: ./authentication-service/dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+  push-to-dockerhub-metadata-db-manager-service:
+    name: push-to-dockerhub-metadata-db-manager-service
     runs-on: ubuntu-latest
+    needs: build-microservices
     steps:
-    - name: Github Checkout
-      uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: cd to microservice directory
-      run: cd ./microservices/resource-manager
-    - name: build nexhub-resource-manager-service
-      run: mvn package -DskipTests
-  build-nexhub-metadata-db-manager-service:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+      - name: List contents of the folders
+        run: ls -r
+      - name: Build & push Docker image metadata-db-manager-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-metadata-db-manager-service
+          tags: latest
+          registry: docker.io
+          dockerfile: ./metadata-db-manager-service/dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+  push-to-dockerhub-resource-manager-service:
+    name: push-to-dockerhub-resource-manager-service
     runs-on: ubuntu-latest
+    needs: build-microservices
     steps:
-    - name: Github Checkout
-      uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: cd to microservice directory
-      run: cd ./microservices/database-manager
-    - name: build nexhub-metadata-db-manager-service
-      run: mvn package -DskipTests
-  build-nexhub-authentication-service:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+      - name: List contents of the folders
+        run: ls -r
+      - name: Build & push Docker image resource-manager-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-resource-manager-service
+          tags: latest
+          registry: docker.io
+          dockerfile: ./resource-manager-service/dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+  push-to-dockerhub-gateway-service:
+    name: push-to-dockerhub-gateway-service
     runs-on: ubuntu-latest
+    needs: build-microservices
     steps:
-    - name: Github Checkout
-      uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: cd to microservice directory
-      run: cd ./microservices/authentification
-    - name: build nexhub-authentication-service
-      run: mvn package -DskipTests
-    
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+      - name: List contents of the folders
+        run: ls -r
+      - name: Build & push Docker image gateway-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-gateway-service
+          tags: latest
+          registry: docker.io
+          dockerfile: ./gateway-service/dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+  push-to-dockerhub-discovery-service:
+    name: push-to-dockerhub-discovery-service
+    runs-on: ubuntu-latest
+    needs: build-microservices
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+      - name: List contents of the folders
+        run: ls -r
+      - name: Build & push Docker image discovery-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-discovery-service
+          tags: latest
+          registry: docker.io
+          dockerfile: ./discovery-service/dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
