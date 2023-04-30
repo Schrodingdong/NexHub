@@ -1,14 +1,12 @@
-name: Nexhub CICD
+name: Nexhub CICD for microservices
 
 on:
   push:
     branches: [ "main" ]
+    paths: 'microservices/**'
   pull_request:
     branches: [ "main" ]
-
-env:
-  AUTH_SERVICE: authen
-
+    paths: 'microservices/**'
 
 jobs:
   build-microservices:
@@ -74,7 +72,6 @@ jobs:
           image: schrodingdong/nexhub-authentication-service
           tags: latest
           registry: docker.io
-#          dockerfile: ./authentication-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -95,7 +92,6 @@ jobs:
           image: schrodingdong/nexhub-metadata-db-manager-service
           tags: latest
           registry: docker.io
-#          dockerfile: ./metadata-db-manager-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -116,7 +112,6 @@ jobs:
           image: schrodingdong/nexhub-resource-manager-service
           tags: latest
           registry: docker.io
-#          dockerfile: ./resource-manager-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -137,7 +132,6 @@ jobs:
           image: schrodingdong/nexhub-gateway-service
           tags: latest
           registry: docker.io
-#          dockerfile: ./gateway-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
@@ -158,6 +152,5 @@ jobs:
           image: schrodingdong/nexhub-discovery-service
           tags: latest
           registry: docker.io
-#          dockerfile: ./discovery-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
