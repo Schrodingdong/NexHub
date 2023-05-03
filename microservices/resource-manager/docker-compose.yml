@@ -24,6 +24,10 @@ services:
 
   metadata-db-manager-service:
     container_name: metadata-db-manager-service
-    image: metadata-db-manager-service
+    image: schrodingdong/nexhub-metadata-db-manager-service
     ports:
       - "8082:8082"
+    environment:
+      NEO4J_USERNAME: neo4j
+      NEO4J_PASSWORD: viTqWS71H4PyD-t1T3uZpU8PfarCXMVlsU8OIQxnBl8
+      NEO4J_URI: neo4j+s://54d52f8a.databases.neo4j.io

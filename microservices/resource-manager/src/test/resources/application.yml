@@ -1,0 +1,8 @@
+minio:
+  url: http://localhost:9000
+  username: minio
+  password: miniominio
+
+metadata-db:
+  url: http://localhost:8082
+  name: metadata-db-manager-service

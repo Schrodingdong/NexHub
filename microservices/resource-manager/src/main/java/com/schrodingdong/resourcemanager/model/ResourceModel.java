@@ -1,5 +1,6 @@
 package com.schrodingdong.resourcemanager.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,9 +12,13 @@ import java.util.Random;
 @Getter @Setter @ToString
 public class ResourceModel {
     private long resourceId;
+    @NotNull
     private String resourceName;
+    @NotNull
     private String resourceDescription;
+    @NotNull
     private String resourceBucketId;
+    @NotNull
     private String resourceVisibility;
 
     public ResourceModel(String resourceName, String resourceDescription, String resourceVisibility) {

@@ -6,7 +6,7 @@ spring:
     name: resource-manager-service
   cloud:
     discovery:
-      enabled: true
+      enabled: false
   servlet:
     multipart:
       max-file-size: 50MB
@@ -15,7 +15,7 @@ spring:
     allow-bean-definition-overriding: true
 
 minio:
-  url: http://minio-db:9000
+  url: ${MINIO_URL}
   username: ${MINIO_USERNAME}
   password: ${MINIO_PASSWORD}
 

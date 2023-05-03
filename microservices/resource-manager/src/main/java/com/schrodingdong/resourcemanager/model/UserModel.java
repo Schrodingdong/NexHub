@@ -1,5 +1,6 @@
 package com.schrodingdong.resourcemanager.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,8 +12,11 @@ import java.util.Random;
 @Getter @Setter @ToString
 public class UserModel {
     private long userId;
+    @NotNull
     private String username;
+    @NotNull
     private String mail;
+    @NotNull
     private String bucketId;
 
     public UserModel(long userId, String username, String mail) {
@@ -22,7 +26,7 @@ public class UserModel {
         this.bucketId = generateBucketIdViaUserMail(this.mail);
     }
 
-    public String generateBucketIdViaUserMail(String userMail) {
+    private String generateBucketIdViaUserMail(String userMail) {
         String firstPartOfMail = userMail.substring(0,userMail.indexOf('@'));
         // Salt generation
         byte[] array = new byte[15];

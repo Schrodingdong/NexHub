@@ -4,8 +4,10 @@ import com.schrodingdong.resourcemanager.model.FileUploadResponse;
 import com.schrodingdong.resourcemanager.model.UploadResourceParams;
 import com.schrodingdong.resourcemanager.service.ResourceService;
 import io.minio.errors.*;
+import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +21,20 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping("/resource")
 @CrossOrigin
 public class ResourceController {
-    @Autowired
-    private ResourceService resourceService;
+    private final ResourceService resourceService;
+
+    public ResourceController(ResourceService resourceService) {
+        this.resourceService = resourceService;
+    }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadObject(@RequestParam String userMail,
+    public ResponseEntity<?> uploadObject(@RequestParam ("file") MultipartFile multipartFile,
+                                          @RequestParam String userMail,
                                           @RequestParam String resourceDescription,
-                                          @RequestParam String resourceVisibility,
-                                          @RequestParam ("file") MultipartFile multipartFile) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+                                          @RequestParam String resourceVisibility) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        if (multipartFile.isEmpty()) {
+            return new ResponseEntity<>("Please select a file!", HttpStatus.NOT_FOUND);
+        }
         UploadResourceParams resParams = new UploadResourceParams(multipartFile,userMail,resourceDescription,resourceVisibility);
         resourceService.uploadResource(resParams);
 
@@ -34,23 +42,9 @@ public class ResourceController {
         response.setFileName(resParams.getFileName());
         response.setSize(resParams.getSize());
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity.ok()
+                .body(response);
     }
-//    @PostMapping("/upload")
-//    public ResponseEntity<?> uploadObject(@RequestParam String resId,
-//                                          @RequestParam String bucketName,
-//                                          @RequestParam ("file") MultipartFile multipartFile) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        String fileName = multipartFile.getOriginalFilename();
-//        long size = multipartFile.getSize();
-//        String path = resourceService.uploadResource(multipartFile, fileName, resId, bucketName);
-//
-//        FileUploadResponse response = new FileUploadResponse();
-//        response.setFileName(fileName);
-//        response.setSize(size);
-//
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-
 
     @GetMapping("/download")
     public ResponseEntity<?> downloadObject(@RequestParam String resourceId,
@@ -71,38 +65,19 @@ public class ResourceController {
     }
 
     @NotNull
-    private static String getExtension(String fileName) {
+    private String getExtension(String fileName) {
         int extensionIndex = fileName.indexOf('.');
         String extension = fileName.substring(extensionIndex+1);
         return extension;
     }
 
-//    @GetMapping("/download")
-//    public ResponseEntity<?> downloadObject(@RequestParam String objectName,
-//                                            @RequestParam String fileName,
-//                                            @RequestParam String bucketName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        // get file extensions
-//        Resource res = resourceService.downloadObject(objectName, fileName, bucketName);
-//        String fetchedFileName = res.getFile().getName();
-//        int extensionIndex = fetchedFileName.indexOf('.');
-//        String extension = fileName.substring(extensionIndex+1);
-//        fileName = fileName + "." + extension;
-//        String contentType = "application/octet-stream";
-//        String headerValue = "attachment; filename=\"" + fileName + "\"";
-//        if(res == null)
-//            return new ResponseEntity<>("File Not Found :/", HttpStatus.NOT_FOUND);
-//
-//        return ResponseEntity.ok()
-//                        .contentType(MediaType.parseMediaType(contentType))
-//                        .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
-//                        .body(res);
-//
-//    }
 
     @DeleteMapping("/delete")
-    public void deleteObject(@RequestParam String resourceId,
+    public ResponseEntity<?> deleteObject(@RequestParam String resourceId,
                              @RequestParam String userMail) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         resourceService.deleteResource(resourceId, userMail);
+        return ResponseEntity.ok()
+                .body("Resource of id : '"+resourceId+"' deleted");
     }
 
 }

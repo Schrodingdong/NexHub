@@ -7,8 +7,11 @@ import com.schrodingdong.resourcemanager.repository.ResourceRepository;
 import com.schrodingdong.resourcemanager.util.FeignServiceResourceMetadataDbManagerResourceManagerService;
 import com.schrodingdong.resourcemanager.util.FeignServiceUserMetadataDbManagerResourceManagerService;
 import io.minio.errors.*;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -25,96 +28,75 @@ import java.security.NoSuchAlgorithmException;
 
 @Service
 public class ResourceService implements IResourceService{
-    @Autowired
-    private ResourceRepository resourceRepository;
-    @Autowired
-    private BucketService bucketService;
-    @Autowired
-    private FeignServiceUserMetadataDbManagerResourceManagerService userFeign;
-    @Autowired
-    private FeignServiceResourceMetadataDbManagerResourceManagerService resourceFeign;
+    private final ResourceRepository resourceRepository;
+    private final BucketService bucketService;
+    private final FeignServiceUserMetadataDbManagerResourceManagerService userFeign;
+    private final FeignServiceResourceMetadataDbManagerResourceManagerService resourceFeign;
 
-    public ResourceService() {
+    public ResourceService(ResourceRepository resourceRepository, BucketService bucketService, FeignServiceUserMetadataDbManagerResourceManagerService userFeign, FeignServiceResourceMetadataDbManagerResourceManagerService resourceFeign) {
+        this.resourceRepository = resourceRepository;
+        this.bucketService = bucketService;
+        this.userFeign = userFeign;
+        this.resourceFeign = resourceFeign;
     }
 
     @Override
     public void uploadResource(UploadResourceParams uploadParams) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        resourceRepository.instanciateClient();
-        Path tmpSavePath = getSavePath(uploadParams.getFileName());
+        // get tmp save path
+        Path tmpSavePath = getTmpSavePath(uploadParams);
+
+        // get user and resource models
+        UserModel userModel = userFeign.getUserByMail(uploadParams.getUserMail());
+        ResourceModel resourceModel = new ResourceModel(
+                uploadParams.getFileName(),
+                uploadParams.getResourceDescription().isEmpty()? "" : uploadParams.getResourceDescription(),
+                uploadParams.getResourceVisibility()
+        );
+        
+        // save to Db
+        saveToMetadataDb(uploadParams, userModel, resourceModel);
+        saveToMinio(tmpSavePath, userModel, resourceModel);
+    }
+
+    private Path getTmpSavePath(UploadResourceParams uploadParams) throws IOException {
+        // get path to save the tmp file
+        Path tmpSavePath;
+        String extension = getExtension(uploadParams.getFileName());
+        String filePath = "fileToSave."+extension;
+        tmpSavePath = Paths.get(filePath);
+        // Save to the tmp file
         try (InputStream inputStream = uploadParams.getFileToUpload().getInputStream()) {
             Files.copy(inputStream, tmpSavePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ioe) {
             throw new IOException("Could not save file: " + uploadParams.getFileName(), ioe);
         }
-        // Save metadata
-        ResourceModel resourceModel =
-                saveResourceToMetadataDb(uploadParams.getFileName(), uploadParams.getResourceDescription(), uploadParams.getResourceVisibility(), uploadParams.getUserMail() );
-        // Save to minio
-        String bucketId= getBucketId(uploadParams.getUserMail());
+        return tmpSavePath;
+    }
+
+    private void saveToMetadataDb(UploadResourceParams uploadParams, @Valid UserModel userModel,@Valid ResourceModel resourceModel) {
+        long userId = userModel.getUserId();
+        resourceFeign.addResourceToUser(userId, resourceModel);
+    }
+
+    private void saveToMinio(Path tmpSavePath, @Valid UserModel userModel, @Valid ResourceModel resourceModel) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        String bucketId = userModel.getBucketId();
         resourceRepository.uploadResource(
                 tmpSavePath.toFile().getPath(),
                 resourceModel.getResourceBucketId(),
                 bucketId
         );
     }
-    private Path getSavePath(String fileName){
-        resourceRepository.instanciateClient();
-        String extension = getExtension(fileName);
-        String filePath = "fileToSave."+extension;
-        return Paths.get(filePath);
-    }
 
-    @NotNull
-    private static String getExtension(String fileName) {
+    private String getExtension(String fileName) {
         int extensionIndex = fileName.indexOf('.');
-        String extension = fileName.substring(extensionIndex+1);
-        return extension;
+        return fileName.substring(extensionIndex+1);
     }
-
-    private ResourceModel saveResourceToMetadataDb(String resourceName, String resourceDescription, String resourceVisibility, String userMail){
-        ResourceModel resourceMetadata = new ResourceModel(
-                resourceName,
-                resourceDescription.isEmpty()? "" : resourceDescription,
-                resourceVisibility
-        );
-        // communicate with the other service
-        // get userID by Mail
-        UserModel fetchedUser = userFeign.getUserByMail(userMail);
-        long userId = fetchedUser.getUserId();
-        // save res and link to that userID
-        return resourceFeign.addResourceToUser(userId, resourceMetadata);
-    }
-    private String getBucketId(String userMail){
-        // get User object by mail
-        UserModel fetchedUser = userFeign.getUserByMail(userMail);
-        // get its bucketId
-        return fetchedUser.getBucketId();
-    }
-
-//    @Deprecated
-//    public String uploadResource(MultipartFile multipartFile, String fileName, String resBucketId, String bucketName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        resourceRepository.instanciateClient();
-//        // Save locally
-//        int extensionIndex = fileName.indexOf('.');
-//        String extension = fileName.substring(extensionIndex+1);
-//        String filePath = "fileToSave."+extension;
-//        Path uploadPath = Paths.get(filePath);
-//        try (InputStream inputStream = multipartFile.getInputStream()) {
-//            Files.copy(inputStream, uploadPath, StandardCopyOption.REPLACE_EXISTING);
-//        } catch (IOException ioe) {
-//            throw new IOException("Could not save file: " + fileName, ioe);
-//        }
-//        // save to db
-//        resourceRepository.uploadResource(uploadPath.toFile().getPath(),resBucketId,bucketName);
-//        return uploadPath.toFile().getPath();
-//    }
-
 
     @Override
     public Resource downloadResource(String resourceId, String userMail, String downloadFileName) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        resourceRepository.instanciateClient();
         // get the bucket name
-        String bucketId = getBucketId(userMail);
+        UserModel userModel = userFeign.getUserByMail(userMail);
+        String bucketId = userModel.getBucketId();
         // download it to a temp folder
         String extension = getExtension(downloadFileName);
         String resPath = "fileToDownload."+extension;
@@ -125,26 +107,15 @@ public class ResourceService implements IResourceService{
         );
         // fetch it to send it in HTTP
         File f = new File(resPath);
-        return (f != null)? new UrlResource(f.toURI()) : null;
+        return new UrlResource(f.toURI());
     }
-
-//    public Resource downloadObject(String objectName, String fileName, String bucketName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        resourceRepository.instanciateClient();
-//        // download it to a temp folder
-//        String extension = getExtension(fileName);
-//        String resPath = "filetoDownload."+extension;
-//        resourceRepository.downloadResource(objectName,resPath,bucketName);
-//        // fetch it to send it in HTTP
-//        File f = new File(resPath);
-//        return (f != null)? new UrlResource(f.toURI()) : null;
-//    }
 
 
     @Override
     public void deleteResource(String resourceId, String userMail) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        resourceRepository.instanciateClient();
         // get the bucket name
-        String bucketId = getBucketId(userMail);
+        UserModel userModel = userFeign.getUserByMail(userMail);
+        String bucketId = userModel.getBucketId();
         resourceRepository.deleteResource(
                 resourceId,
                 bucketId
@@ -152,8 +123,4 @@ public class ResourceService implements IResourceService{
 
     }
 
-//    public void deleteObject(String objectName, String bucketName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-//        resourceRepository.instanciateClient();
-//        resourceRepository.deleteResource(objectName, bucketName);
-//    }
 }
