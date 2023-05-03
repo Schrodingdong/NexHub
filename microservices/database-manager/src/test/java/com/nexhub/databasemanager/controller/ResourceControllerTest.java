@@ -16,7 +16,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,36 +26,27 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc(addFilters = false)
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(ResourceController.class)
 class ResourceControllerTest {
-    @Mock
-    private ResourceService resourceService;
-    private ResourceController resourceController;
-    @Autowired
-    private ObjectMapper objectMapper;
     @Autowired
     private MockMvc mockMvc;
-    private AutoCloseable autoCloseable;
+    @MockBean
+    private ResourceService resourceService;
+    private ObjectMapper objectMapper;
 
     private Resource resource;
     private User user;
     @BeforeEach
     void setUp(){
-        autoCloseable = MockitoAnnotations.openMocks(this);
-        resourceController = new ResourceController(resourceService);
+        objectMapper = new ObjectMapper();
         resource = new Resource(
-                "guideToJava",
+                "guideToJava.pdf",
                 "description1-u1",
                 ResVisibility.PUBLIC.name()
         );
         user = new User("schrodingdong","schrodingdong@gmail.com","bucketId");
     }
-    @AfterEach
-    void tearDown() throws Exception {
-        autoCloseable.close();
-    }
+
 
 
     @Test
@@ -101,7 +94,6 @@ class ResourceControllerTest {
     }
 
     @Test
-    @Disabled
     void updateResourceForUser() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/res/update/658")

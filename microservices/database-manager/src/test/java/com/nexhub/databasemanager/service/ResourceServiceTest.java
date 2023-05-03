@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 
-@SpringBootTest
 class ResourceServiceTest {
 
     private ResourceService resourceService;
@@ -71,7 +70,7 @@ class ResourceServiceTest {
     @Test
     @Disabled
     void saveResourceForUser() {
-        Resource r = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
+        Resource r = new Resource("resName.pdf","resDesc", ResVisibility.PUBLIC.name());
         r = resourceService.saveResourceForUser(r,69);
         Mockito.verify(resourceRepository).saveToGraph(r.getResourceName(),r.getResourceDescription(), r.getResourceBucketId(), r.getResourceVisibility());
         Mockito.verify(resourceRepository).linkToUser(r.getResourceId(), 69);
@@ -79,8 +78,8 @@ class ResourceServiceTest {
 
     @Test
     void updateResource_modificationNotNullAllChanged() {
-        Resource r = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
-        Resource r_modif = new Resource("resNameNew","resDescNew", ResVisibility.PRIVATE.name());
+        Resource r = new Resource("resName.pdf","resDesc", ResVisibility.PUBLIC.name());
+        Resource r_modif = new Resource("resNameNew.pdf","resDescNew", ResVisibility.PRIVATE.name());
 
         Mockito.when(resourceRepository.getResourceById(r.getResourceId())).thenReturn(r);
         resourceService.updateResource(r.getResourceId(),r_modif);
@@ -92,7 +91,7 @@ class ResourceServiceTest {
         Mockito.verify(resourceRepository).updateResource(captoe.capture(), captoe1.capture(), captoe2.capture(),captoe3.capture());
 
         Assertions.assertThat(captoe1.getValue())
-                .isEqualTo("resNameNew");
+                .isEqualTo("resNameNew.pdf");
         Assertions.assertThat(captoe2.getValue())
                 .isEqualTo("resDescNew");
         Assertions.assertThat(captoe3.getValue())
@@ -101,8 +100,8 @@ class ResourceServiceTest {
 
     @Test
     void updateResource_modificationNotNullNothingChanged() {
-        Resource r = new Resource("resName","resDesc",ResVisibility.PUBLIC.name());
-        Resource r_modif = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
+        Resource r = new Resource("resName.pdf","resDesc",ResVisibility.PUBLIC.name());
+        Resource r_modif = new Resource("resName.pdf","resDesc", ResVisibility.PUBLIC.name());
         Mockito.when(resourceRepository.getResourceById(r.getResourceId())).thenReturn(r);
         resourceService.updateResource(r.getResourceId(),r_modif);
 
@@ -113,7 +112,7 @@ class ResourceServiceTest {
         Mockito.verify(resourceRepository).updateResource(captoe.capture(), captoe1.capture(), captoe2.capture(),captoe3.capture());
 
         Assertions.assertThat(captoe1.getValue())
-                .isEqualTo("resName");
+                .isEqualTo("resName.pdf");
         Assertions.assertThat(captoe2.getValue())
                 .isEqualTo("resDesc");
         Assertions.assertThat(captoe3.getValue())
@@ -122,7 +121,7 @@ class ResourceServiceTest {
 
     @Test
     void updateResource_modificationNull() {
-        Resource r = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
+        Resource r = new Resource("resName.pdf","resDesc", ResVisibility.PUBLIC.name());
 
         Mockito.when(resourceRepository.findById(-1L)).thenReturn(Optional.empty());
         Assertions.assertThatThrownBy(()->resourceService.updateResource(-1,null))
@@ -132,7 +131,7 @@ class ResourceServiceTest {
 
     @Test
     void updateResource_selectionNull() {
-        Resource r_modif = new Resource("resName","resDesc", ResVisibility.PUBLIC.name());
+        Resource r_modif = new Resource("resName.pdf","resDesc", ResVisibility.PUBLIC.name());
         Mockito.when(resourceRepository.findById(-1L)).thenReturn(Optional.empty());
         Assertions.assertThatThrownBy(()->resourceService.updateResource(-1,r_modif))
                 .isInstanceOf(BadRequestException.class)

@@ -6,24 +6,31 @@ import com.nexhub.databasemanager.model.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@SpringBootTest
+/**
+ * Disabled because of the dependency on the database
+ * */
 @ExtendWith(MockitoExtension.class)
+@DataNeo4jTest
+@Disabled
 class ResourceRepositoryTest {
-    @Autowired
-    private ResourceRepository testResourceRepository;
-    @Autowired
+    @MockBean
     private UserRepository userRepository;
-
+    @InjectMocks
+    private ResourceRepository testResourceRepository;
     private Resource r1,r2,r3,r4;
     private User u1,u2;
 
@@ -44,17 +51,17 @@ class ResourceRepositoryTest {
         System.out.println(u2);
         System.out.println("---------------------------------------------");
         r1 = new Resource(
-                "guideToJava",
+                "guideToJava.pdf",
                 "description1-u1",
                 ResVisibility.PUBLIC.name()
         );
         r2 = new Resource(
-                "Devops in a nutshell",
+                "Devops in a nutshell.pdf",
                 "description2-u1",
                 ResVisibility.PUBLIC.name()
         );
         r3 = new Resource(
-                "SPRINGBOOT",
+                "SPRINGBOOT.pdf",
                 "description1-private-u1",
                 ResVisibility.PRIVATE.name()
         );
@@ -62,7 +69,7 @@ class ResourceRepositoryTest {
         r2.addHolder(u1);
         r3.addHolder(u1);
         r4 = new Resource(
-                "Devops in a nutshell",
+                "Devops in a nutshell.pdf",
                 "description-u2",
                 ResVisibility.PUBLIC.name()
         );
@@ -90,7 +97,7 @@ class ResourceRepositoryTest {
 
     @Test
     void getResourceByName_nameExists() {
-        String name = "Devops in a nutshell";
+        String name = "Devops in a nutshell.pdf";
         List<Resource> resourceList = testResourceRepository.getResourceByName(name);
         Assertions.assertThat(resourceList.size())
                 .isEqualTo(2);
@@ -139,7 +146,7 @@ class ResourceRepositoryTest {
 
     @Test
     void linkToUser_userExists() {
-        Resource rToAdd = new Resource("newToAdd","deschahah",ResVisibility.PUBLIC.name());
+        Resource rToAdd = new Resource("newToAdd.pdf","deschahah",ResVisibility.PUBLIC.name());
         rToAdd = testResourceRepository.save(rToAdd);
         long resId = rToAdd.getResourceId();
         long userId = u1.getUserId();
