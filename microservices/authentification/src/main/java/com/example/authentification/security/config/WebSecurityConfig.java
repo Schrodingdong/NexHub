@@ -33,7 +33,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf().disable().authorizeHttpRequests()
-                .requestMatchers("/api/v*/registration/**").permitAll().anyRequest()
+                .requestMatchers("/api/v*/registration/**").permitAll().requestMatchers("/login").permitAll().anyRequest()
                 .authenticated().and()
                 .formLogin();
         return http.build();
@@ -45,6 +45,7 @@ public class WebSecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/login",configuration);
         return source;
     }
 
