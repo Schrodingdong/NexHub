@@ -29,6 +29,8 @@ to build the microservices, be in the root folder of the project, and run the co
   - AUTH_DB_USERNAME
   - AUTH_DB_PASSWORD
   - AUTH_DB_NAME
+  - AUTH_DB_URL
+  - MINIO_URL
   - MINIO_USERNAME
   - MINIO_PASSWORD
   - NEO4J_USERNAME

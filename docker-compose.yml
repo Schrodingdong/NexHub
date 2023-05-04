@@ -31,6 +31,7 @@ services:
     ports:
       - "8081:8081"
     environment:
+      AUTH_DB_URL: ${AUTH_DB_URL}
       AUTH_DB_NAME: ${AUTH_DB_NAME}
       AUTH_DB_PASSWORD: ${AUTH_DB_PASSWORD}
       AUTH_DB_USERNAME: ${AUTH_DB_USERNAME}
@@ -59,6 +60,7 @@ services:
     ports:
       - "8083:8083"
     environment:
+      MINIO_URL: ${MINIO_URL}
       MINIO_USERNAME: ${MINIO_USERNAME}
       MINIO_PASSWORD: ${MINIO_PASSWORD}
     healthcheck:
