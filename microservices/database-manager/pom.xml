@@ -50,7 +50,18 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 			<version>4.0.1</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/com.lordofthejars/nosqlunit-neo4j -->
+		<dependency>
+			<groupId>com.lordofthejars</groupId>
+			<artifactId>nosqlunit-neo4j</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j.test</groupId>
+			<artifactId>neo4j-harness</artifactId>
+			<version>5.5.0</version>
+			<scope>test</scope>
+		</dependency>
 
 
 	</dependencies>

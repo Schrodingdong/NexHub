@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-@SpringBootTest
 class UserServiceTest {
     @Mock
     private UserRepository userRepository;

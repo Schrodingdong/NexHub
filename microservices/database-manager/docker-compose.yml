@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  neo4j-test-db:
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - $HOME/neo4j/data:/data
+    container_name: neo4jTestDatabase
+    image: neo4j:latest
+    environment:
+      NEO4J_AUTH: none

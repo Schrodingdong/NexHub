@@ -22,19 +22,17 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
 @WebMvcTest(controllers = UserController.class)
-@AutoConfigureMockMvc(addFilters = false)
-@ExtendWith(MockitoExtension.class)
 class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
     @MockBean
     private UserService userService;
+    private ObjectMapper objectMapper;
 
     private User user,user_noMail;
     @BeforeEach
     void setUp(){
+        objectMapper = new ObjectMapper();
         user = new User("schrodingdong","schrodingdong@gmail.com","bucketId");
         user_noMail = new User("schrodingdong", null,"bucketId");
     }

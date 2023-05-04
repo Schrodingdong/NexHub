@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/res")
 @CrossOrigin
 public class ResourceController implements IResourceController {
-    @Autowired
     private final ResourceService resourceService;
 
     public ResourceController(ResourceService resourceService) {
