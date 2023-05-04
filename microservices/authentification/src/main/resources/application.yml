@@ -20,7 +20,7 @@ spring:
 #    url: jdbc:postgresql://postgres-db:5432/registration
 #    password: password
 #    username: postgres
-    url: jdbc:postgresql://postgres-db:5432/${AUTH_DB_NAME}
+    url: ${AUTH_DB_URL}/${AUTH_DB_NAME}
     db_name: ${AUTH_DB_NAME}
     password: ${AUTH_DB_PASSWORD}
     username: ${AUTH_DB_USERNAME}
