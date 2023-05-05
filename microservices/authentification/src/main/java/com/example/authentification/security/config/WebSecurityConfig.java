@@ -33,19 +33,20 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf().disable().authorizeHttpRequests()
-                .requestMatchers("/api/v*/registration/**").permitAll().requestMatchers("/login").permitAll().anyRequest()
-                .authenticated().and()
-                .formLogin();
+                .requestMatchers("/api/v*/registration/**").permitAll()
+                .requestMatchers("/login")
+                .permitAll();
+
         return http.build();
     }
+
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-        source.registerCorsConfiguration("/login",configuration);
         return source;
     }
 
