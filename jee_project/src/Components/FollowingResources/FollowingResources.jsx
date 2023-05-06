@@ -3,6 +3,7 @@ import './FollowingResources.css'
 import axios from "axios"; */
 import prflimg from '../../images/profile.webp';
 import rscimg from '../../images/postpic.webp';
+import { FaMinus } from 'react-icons/fa';
 
 const FollowingResources = ({ userId }) => {
   /* const [followingPosts, setFollowingPosts] = useState([]);
@@ -19,21 +20,24 @@ const FollowingResources = ({ userId }) => {
   return (
     <div  className='home-page-resources'>
       <div className='resource-user-profile'>
-      <img src={prflimg} alt='profle'></img><span>Full Name</span></div>
+            <img src={prflimg} alt='profile '></img>
+            <span> Username</span>
+            <button><i><FaMinus/></i></button></div>
       
       <div className='resource-user-info'>
       <h4>Resource Title</h4>
       <p>Resource Description</p>
-      <img alt='file'></img></div>
+      <img alt='file'></img>      </div>
       
-      {/* {followi
-      ngPosts.map((post) => (
+      {/* {followingPosts.map((post) => (
         <div key={post.id}>
           <img src={post.image} alt={post.title} />
           <h3>{post.title}</h3>
         </div>
       ))} */}
+
     </div>
+
   );
 };
 export default FollowingResources;

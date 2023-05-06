@@ -1,6 +1,6 @@
 import React, {  useState} from 'react';
 import { FaEnvelope, FaLock, FaFacebook, FaGoogle, FaApple, FaEyeSlash, FaEye } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { isEmail } from "validator";
 
 
@@ -64,6 +64,8 @@ const Register = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const navigate = useNavigate();
+
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
@@ -95,22 +97,28 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:8080/authentication-service/api/v1/registration`,  {
-        firstName : firstName,
-        lastName : lastName,
-        email : email,
-        password : password
-      },{
-        withCredentials: true},
-      {headers: {
-        'Access-Control-Allow-Origin': '*',
-    }});
+      const response = await axios.post(
+        `http://localhost:8080/authentication-service/api/v1/registration`,
+        {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+          },
+        }
+      );
       console.log(response.data);
+      navigate('/login');
     } catch (error) {
       console.error(error);
     }
   };
-
+  
   
 
   return (

@@ -29,7 +29,7 @@ const FollowingCard = ({ userId }) => {
       <Link to ='#'><h3>Following</h3><br/></Link>
           <div>
             <img src={prflimg} alt='profile '></img>
-            <span> Full Name</span>
+            <span> Username</span>
             <button><i><FaMinus/></i></button>
           </div>
         {/* {following.map((user) => (

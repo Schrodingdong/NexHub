@@ -53,18 +53,32 @@ const LoginPage = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-
-    axios.post(
-      "http://localhost:8080/authentication-service/login",
-      document.querySelector("#login-form"),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  
+    axios
+      .post(
+        "http://localhost:8080/authentication-service/login",
+        document.querySelector("#login-form"),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        // Check if login was successful
+        if (response.status === 200) {
+          // Redirect to user page
+          navigate("/userpage");
+        } else {
+          // Display error message
+          alert("Login failed");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Login failed");
+      });
   };
-
   return (
     <div className="login-page">
       <NavBar />
