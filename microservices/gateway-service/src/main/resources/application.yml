@@ -9,20 +9,25 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-#    gateway:
-#      routes:
-#      - id: r1
-#        uri: http://lb:RESOURCE-MANAGER/
-#        predicates :
-#          - Path= /buckets/**,/resource/**
-#      - id : r2
-#        uri: http://lb:AUTHENTIFICATION-SERVICE/
-#        predicates:
-#          - Path= /api/v1/registration/**
-#      - id : r3
-#        uri: http://lb:DATABASE-MANAGER/
-#        predicates:
-#          - Path= /res/**,/users/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            maxAge: 3600
+            allowCredentials: true
+            allowedHeaders:
+              - Origin
+              - Content-type
+              - Access-Control-Allow-Origin
+              - Accept
+              - responseType
+              - Authorization
+            allowedMethods:
+              - GET
+              - POST
+              - OPTIONS
+              - DELETE
+              - PUT
 
 
 server:

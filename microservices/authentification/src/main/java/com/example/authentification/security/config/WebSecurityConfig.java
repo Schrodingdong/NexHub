@@ -29,26 +29,25 @@ public class WebSecurityConfig {
     //private final UserDetailsService userDetailsService;
     private final AppUserService appUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and()
-                .csrf().disable().authorizeHttpRequests()
-                .requestMatchers("/api/v*/registration/**").permitAll()
-                .requestMatchers("/login")
-                .permitAll();
-
+        http.cors().and().authorizeHttpRequests()
+            .requestMatchers("/api/v*/registration/**").permitAll()
+            .requestMatchers("/login").permitAll();
+        http.csrf().disable();
         return http.build();
     }
 
-    @Bean
-        CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("*"));
+//        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

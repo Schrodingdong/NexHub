@@ -12,7 +12,6 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/buckets")
-@CrossOrigin
 public class BucketController {
     @Autowired
     private BucketService bucketService;

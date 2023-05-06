@@ -17,7 +17,6 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/resource")
-@CrossOrigin
 public class ResourceController {
     @Autowired
     private ResourceService resourceService;

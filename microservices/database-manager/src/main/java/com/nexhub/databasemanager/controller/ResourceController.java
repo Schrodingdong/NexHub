@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/res")
-@CrossOrigin
 public class ResourceController implements IResourceController {
     @Autowired
     private final ResourceService resourceService;
