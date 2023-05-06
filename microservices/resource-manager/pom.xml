@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.schrodingdong</groupId>
 	<artifactId>resource-manager</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>resource-manager</name>
 	<description>Resource manager service to fetch the actual resources</description>
 	<properties>
@@ -31,6 +31,13 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -40,6 +47,11 @@
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
 			<version>8.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<version>4.0.1</version>
 		</dependency>
 	</dependencies>
 

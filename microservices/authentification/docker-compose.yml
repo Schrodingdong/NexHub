@@ -2,21 +2,46 @@ version: '3.3'
 services:
   postgres-db:
     container_name: postgres-db
-    image: postgres
+    image: postgres:latest
     restart: always
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-      POSTGRES_DB: registration
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
+      POSTGRES_USER: ${AUTH_DB_USERNAME}
+      POSTGRES_DB: ${AUTH_DB_NAME}
     ports:
       - "5432:5432"
-    expose:
-      - 5432
 
   authentication-service:
     container_name: auth-service
     image: authentication-service
     ports:
-      - "8888:8888"
-    expose:
-      - 8888
+      - "8081:8081"
+    environment:
+      AUTH_DB_NAME: ${AUTH_DB_NAME}
+      AUTH_DB_PASSWORD: ${AUTH_DB_PASSWORD}
+      AUTH_DB_USERNAME: ${AUTH_DB_USERNAME}
+
+
+  metadata-db-manager-service:
+    container_name: metadata-db-manager-service
+    image: metadata-db-manager-service
+    ports:
+      - "8082:8082"
+
+  resource-service:
+    image: resource-manager-service
+    container_name: resource-manager-service
+    ports:
+      - "8083:8083"
+  minio-db:
+    container_name: minio-db
+    image: quay.io/minio/minio:latest
+    command: server --console-address ":9090" /data
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: miniominio
+    volumes:
+      - $HOME/minio/data:/data
+    ports:
+      - "9000:9000"
+      - "9090:9090"

@@ -17,18 +17,18 @@ public class BucketController {
     @Autowired
     private BucketService bucketService;
 
-    @PostMapping("/create/{name}")
-    public void createBucket(@PathVariable("name") String name) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        bucketService.createBucket(name);
+    @PostMapping("/create/{bucketId}")
+    public void createBucket(@PathVariable("bucketId") String bucketId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        bucketService.createBucket(bucketId);
     }
 
-    @DeleteMapping("/delete/{name}")
-    public void deleteBucket(@PathVariable("name")String name) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        bucketService.removeBucket(name);
+    @DeleteMapping("/delete/{bucketId}")
+    public void deleteBucket(@PathVariable("bucketId")String bucketId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        bucketService.deleteBucket(bucketId);
     }
 
-    @GetMapping("/exists/{name}")
-    public boolean doesBucketExists(@PathVariable("name")String name) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
-        return bucketService.doesBucketExists(name);
+    @GetMapping("/exists/{bucketId}")
+    public boolean doesBucketExists(@PathVariable("bucketId")String bucketId) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        return bucketService.doesBucketExists(bucketId);
     }
 }

@@ -29,11 +29,11 @@ class UserServiceTest {
         autoCloseable = MockitoAnnotations.openMocks(this);
         testUserService = new UserService(userRepository);
 
-        user_old = new User("schrodingdong","schrodingdong@gmail.com"); // added because passing by reference problems
-        user = new User("schrodingdong","schrodingdong@gmail.com");
-        modifiedUser_sameId_diffUsername = new User("newName","schrodingdong@gmail.com");
-        modifiedUser_sameId_diffMail = new User("schrodingdong","othermail@gmail.com");
-        modifiedUser_diffId = new User("newName","schrodingdong@gmail.com");
+        user_old = new User("schrodingdong","schrodingdong@gmail.com","bucketId2"); // added because passing by reference problems
+        user = new User("schrodingdong","schrodingdong@gmail.com","bucketId2");
+        modifiedUser_sameId_diffUsername = new User("newName","schrodingdong@gmail.com","bucketId2");
+        modifiedUser_sameId_diffMail = new User("schrodingdong","othermail@gmail.com","bucketId2");
+        modifiedUser_diffId = new User("newName","schrodingdong@gmail.com","bucketId2");
     }
 
     @AfterEach
@@ -92,11 +92,14 @@ class UserServiceTest {
         testUserService.saveUser(user);
         ArgumentCaptor<String> captoe1 = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> captoe2 = ArgumentCaptor.forClass(String.class);
-        Mockito.verify(userRepository).saveToGraph(captoe1.capture(), captoe2.capture());
+        ArgumentCaptor<String> captoe3 = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(userRepository).saveToGraph(captoe1.capture(), captoe2.capture(), captoe3.capture());
         Assertions.assertThat(captoe1.getValue())
                 .isEqualTo(user.getUsername());
         Assertions.assertThat(captoe2.getValue())
                 .isEqualTo(user.getMail());
+        Assertions.assertThat(captoe3.getValue())
+                .isEqualTo(user.getBucketId());
     }
 
     @Test

@@ -1,0 +1,156 @@
+name: Nexhub CICD for microservices
+
+on:
+  push:
+    branches: [ "main" ]
+    paths: 'microservices/**'
+  pull_request:
+    branches: [ "main" ]
+    paths: 'microservices/**'
+
+jobs:
+  build-microservices:
+    name: build-microservices
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: build
+        run: mvn package -DskipTests
+
+      - name: upload artefacts for authentication-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: authentication-service
+          path: ./microservices/authentification
+
+      - name: upload artefacts for metadata-db-manager-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: metadata-db-manager-service
+          path: ./microservices/database-manager
+
+      - name: upload artefacts for resource-manager-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: resource-manager-service
+          path: ./microservices/resource-manager
+
+      - name: upload artefacts for gateway-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: gateway-service
+          path: ./microservices/gateway-service
+
+      - name: upload artefacts for discovery-service
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: discovery-service
+          path: ./microservices/discovery-service
+
+  push-to-dockerhub-authentication-service:
+    name: push-to-dockerhub-authentication-service
+    runs-on: ubuntu-latest
+    needs: build-microservices
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: authentication-service
+      - name: List contents of the folders
+        run: ls -R
+      - name: Build & push Docker image authentication-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-authentication-service
+          tags: latest
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+  push-to-dockerhub-metadata-db-manager-service:
+    name: push-to-dockerhub-metadata-db-manager-service
+    runs-on: ubuntu-latest
+    needs: build-microservices
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: metadata-db-manager-service
+      - name: List contents of the folders
+        run: ls -R
+      - name: Build & push Docker image metadata-db-manager-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-metadata-db-manager-service
+          tags: latest
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+  push-to-dockerhub-resource-manager-service:
+    name: push-to-dockerhub-resource-manager-service
+    runs-on: ubuntu-latest
+    needs: build-microservices
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: resource-manager-service
+      - name: List contents of the folders
+        run: ls -R
+      - name: Build & push Docker image resource-manager-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-resource-manager-service
+          tags: latest
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+  push-to-dockerhub-gateway-service:
+    name: push-to-dockerhub-gateway-service
+    runs-on: ubuntu-latest
+    needs: build-microservices
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: gateway-service
+      - name: List contents of the folders
+        run: ls -R
+      - name: Build & push Docker image gateway-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-gateway-service
+          tags: latest
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+  push-to-dockerhub-discovery-service:
+    name: push-to-dockerhub-discovery-service
+    runs-on: ubuntu-latest
+    needs: build-microservices
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: discovery-service
+      - name: List contents of the folders
+        run: ls -R
+      - name: Build & push Docker image discovery-service
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: schrodingdong/nexhub-discovery-service
+          tags: latest
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}

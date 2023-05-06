@@ -1,4 +1,5 @@
 HELP.md
+.env
 _misc
 target/
 !.mvn/wrapper/maven-wrapper.jar

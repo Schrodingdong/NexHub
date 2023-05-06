@@ -3,6 +3,9 @@ package com.nexhub.databasemanager.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -17,6 +20,7 @@ import static org.springframework.data.neo4j.core.schema.Relationship.Direction.
 
 
 @Node
+@Getter @Setter @ToString
 public class Resource {
     @Id
     @GeneratedValue
@@ -43,9 +47,12 @@ public class Resource {
         this.resourceBucketId = resourceBucketIdGenerator();
         this.resourceVisibility = resourceVisibility;
     }
-
+    public void addHolder(User u){
+        resourceHolders.add(u);
+    }
     private String resourceBucketIdGenerator(){
-        String resName = this.resourceName;
+        String extension = this.resourceName.substring(this.resourceName.indexOf('.')+1);
+        String resName = this.resourceName.substring(0,this.resourceName.indexOf('.'));
         resName = resName.replaceAll("\\s+","_");
         // Salt generation
         byte[] array = new byte[15];
@@ -53,65 +60,9 @@ public class Resource {
         String salt = new String(array, Charset.forName("UTF-8"));
         // result string
         String result = resName+salt;
-        result = resName+"-"+Math.abs(result.hashCode());
+        result = resName+"-"+Math.abs(result.hashCode())+"."+extension;
         return result;
     }
-    public void addHolder(User u){
-        resourceHolders.add(u);
-    }
 
-    public long getResourceId() {
-        return resourceId;
-    }
 
-    public String getResourceName() {
-        return resourceName;
-    }
-
-    public String getResourceBucketId() {
-        return resourceBucketId;
-    }
-
-    public String getResourceVisibility() {
-        return resourceVisibility;
-    }
-
-    public Set<User> getResourceHolders() {
-        return resourceHolders;
-    }
-
-    public void setResourceName(String resourceName) {
-        this.resourceName = resourceName;
-    }
-
-    public void setResourceVisibility(String resourceVisibility) {
-        this.resourceVisibility = resourceVisibility;
-    }
-
-    public void setResourceBucketId(String resourceBucketId) {
-        this.resourceBucketId = resourceBucketId;
-    }
-
-    public void setResourceHolders(Set<User> resourceHolders) {
-        this.resourceHolders = resourceHolders;
-    }
-
-    @Override
-    public String toString() {
-        return "Resource{" +
-                "resourceId=" + resourceId +
-                ", resourceName='" + resourceName + '\'' +
-                ", resBucketId='" + resourceBucketId + '\'' +
-                ", resVisibility=" + resourceVisibility +
-                ", resourceHolders=" + resourceHolders +
-                '}';
-    }
-
-    public String getResourceDescription() {
-        return resourceDescription;
-    }
-
-    public void setResourceDescription(String resourceDescription) {
-        this.resourceDescription = resourceDescription;
-    }
 }

@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    discovery:
+      enabled: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+#    gateway:
+#      routes:
+#      - id: r1
+#        uri: http://lb:RESOURCE-MANAGER/
+#        predicates :
+#          - Path= /buckets/**,/resource/**
+#      - id : r2
+#        uri: http://lb:AUTHENTIFICATION-SERVICE/
+#        predicates:
+#          - Path= /api/v1/registration/**
+#      - id : r3
+#        uri: http://lb:DATABASE-MANAGER/
+#        predicates:
+#          - Path= /res/**,/users/**
+
+
+server:
+  port: 8080
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://discovery-service:8761/eureka

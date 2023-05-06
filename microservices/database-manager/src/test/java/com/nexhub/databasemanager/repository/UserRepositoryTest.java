@@ -30,11 +30,11 @@ class UserRepositoryTest {
     List<User> allUsers;
     @BeforeEach
     void setUp() {
-        user = new User("hamza", "hamzaalami@gmail.com");
-        user1 = new User( "hamza", "hamzaalami1@gmail.com");
-        user2 = new User( "hamza", "hamzaalami2@gmail.com");
-        user3 = new User( "oumaima", "oumaimaAitBouchouar@gmail.com");
-        user4 = new User( "ali", "aliNabloussi@gmail.com");
+        user = new User("hamza", "hamzaalami@gmail.com","bucketId2");
+        user1 = new User( "hamza", "hamzaalami1@gmail.com","bucketId2");
+        user2 = new User( "hamza", "hamzaalami2@gmail.com","bucketId2");
+        user3 = new User( "oumaima", "oumaimaAitBouchouar@gmail.com","bucketId2");
+        user4 = new User( "ali", "aliNabloussi@gmail.com","bucketId2");
         allUsers = new ArrayList<>();
         allUsers.add(user);
         allUsers.add(user1);
@@ -140,4 +140,5 @@ class UserRepositoryTest {
                 .hasSize(2)
                 .filteredOn(inUser -> inUser.getUserId() == u2.getUserId() || inUser.getUserId() == u1.getUserId());
     }
+
 }

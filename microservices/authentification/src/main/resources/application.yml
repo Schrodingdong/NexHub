@@ -1,13 +1,29 @@
 server:
+  port: 8081
   error:
     include-message: always
     include-binding-errors: always
 
+metadata-db:
+  url: lb://metadata-db-manager-service
+  name: metadata-db-manager-service
+resource-manager-db:
+  url: lb://resource-manager-service
+  name: resource-manager-service
 spring:
+  cloud:
+    discovery:
+      enabled: true
+  application:
+    name: authentication-service
   datasource:
-    url: jdbc:postgresql://postgres-db:5432/registration
-    password: password
-    username: postgres
+#    url: jdbc:postgresql://postgres-db:5432/registration
+#    password: password
+#    username: postgres
+    url: ${AUTH_DB_URL}/${AUTH_DB_NAME}
+    db_name: ${AUTH_DB_NAME}
+    password: ${AUTH_DB_PASSWORD}
+    username: ${AUTH_DB_USERNAME}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -35,3 +51,11 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://discovery-service:8761/eureka
+
+

@@ -48,7 +48,7 @@ class ResourceControllerTest {
                 "description1-u1",
                 ResVisibility.PUBLIC.name()
         );
-        user = new User("schrodingdong","schrodingdong@gmail.com");
+        user = new User("schrodingdong","schrodingdong@gmail.com","bucketId");
     }
     @AfterEach
     void tearDown() throws Exception {

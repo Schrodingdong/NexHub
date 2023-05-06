@@ -1,2 +1,29 @@
 server:
-  port: 8080
+  port: 8083
+
+spring:
+  application:
+    name: resource-manager-service
+  cloud:
+    discovery:
+      enabled: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  main:
+    allow-bean-definition-overriding: true
+
+minio:
+  url: ${MINIO_URL}
+  username: ${MINIO_USERNAME}
+  password: ${MINIO_PASSWORD}
+
+metadata-db:
+  url: lb://metadata-db-manager-service
+  name: metadata-db-manager-service
+
+eureka:
+  client:
+    service-url:
+        defaultZone: http://discovery-service:8761/eureka
