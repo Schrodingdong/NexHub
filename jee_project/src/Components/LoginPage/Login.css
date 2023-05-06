@@ -16,6 +16,13 @@
 #form-item input{
     padding-left: 15px;
 }
+
+.form-item-file{
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
 .login-card {
     width: 450px;
     background: rgba(255, 255, 255, 0.5);
@@ -228,4 +235,8 @@ new-acc{
         padding: 2rem;
     }
 
+}
+
+.ress-desc{
+    height: 150px;
 }

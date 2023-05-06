@@ -22,9 +22,15 @@
 }
 
 
+.following-card>h3{
+    font-family: 'Roboto' sans-serif;
+    text-align: center;
+    font-size: 15px;
+}
+
 .following-card img{
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: 50%;
 }
 

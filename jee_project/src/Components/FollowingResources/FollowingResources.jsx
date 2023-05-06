@@ -19,11 +19,12 @@ const FollowingResources = ({ userId }) => {
   return (
     <div  className='home-page-resources'>
       <div className='resource-user-profile'>
-      <img src={prflimg} alt='user profile picture'></img><span>Full Name</span></div>
+      <img src={prflimg} alt='profle'></img><span>Full Name</span></div>
       
       <div className='resource-user-info'>
+      <h4>Resource Title</h4>
       <p>Resource Description</p>
-      <img src = {rscimg}></img></div>
+      <img alt='file'></img></div>
       
       {/* {followi
       ngPosts.map((post) => (

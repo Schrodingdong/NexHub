@@ -5,6 +5,7 @@ import AppBar from '../AppBar/AppBar';
 import FollowingResources from '../FollowingResources/FollowingResources';
 import './User.css'
 import FollowingCard from '../FollowingCard/FollowingCard';
+import FollowerCard from '../FollowersCard/FollowerCard';
 
 const User = () => {
   return (
@@ -15,7 +16,9 @@ const User = () => {
       <div className='resource'>
       <div><NewRessources/></div>
       <div><FollowingResources /></div> </div> 
-      <div className='right'><FollowingCard className='right'/></div>
+      <div className='right'>
+      <FollowingCard className='right'/>
+      <FollowerCard className='right'/></div>
       </div>
     </div>
   )

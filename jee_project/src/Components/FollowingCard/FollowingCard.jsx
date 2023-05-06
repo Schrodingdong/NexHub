@@ -1,6 +1,7 @@
 import './FollowingCard.css'
 import { FaMinus } from 'react-icons/fa';
 import prflimg from '../../images/profile.webp'
+import { Link } from 'react-router-dom';
 /* import { useEffect, useState } from "react";
 import axios from "axios"; */
 
@@ -25,8 +26,9 @@ const FollowingCard = ({ userId }) => {
 
   return (
     <div className='following-card'>
+      <Link to ='#'><h3>Following</h3><br/></Link>
           <div>
-            <img src={prflimg}></img>
+            <img src={prflimg} alt='profile '></img>
             <span> Full Name</span>
             <button><i><FaMinus/></i></button>
           </div>

@@ -7,31 +7,27 @@ import UserPage from './Components/UserPage/User.jsx'
 import ProfilePage from './Components/ProfilePage/profile.jsx'
 import UpdateProfile from './Components/UpdateProfile/UpdateProfile.jsx';
 import AddResource from './Components/AddResource/AddResource.jsx';
-import { BrowserRouter as Router, Route ,Switch} from 'react-router-dom';
+import { BrowserRouter, Route ,Routes} from 'react-router-dom';
 
 
 const App = () => {
   return( 
-   <Router>
-        <div>
-                <Switch>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/userpage" component={UserPage} />
-                <Route exact path="/profilepage" component={ProfilePage} />
-                <Route exact path='/about' component={About}/>
-                <Route exact path='/footer' component={Footer}/>
-                <Route exact path='/updateprofile' component={UpdateProfile}/>
-                <Route exact path='/addresource' component={AddResource}/>
-                <Route exact path='/' component={Home}/>
-                </Switch>
-        </div>
-        </Router>
-
-       
-
-);
-
+    <BrowserRouter basename="/">
+      <div>
+        <Routes>
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/userpage" element={<UserPage />} />
+          <Route exact path="/profilepage" element={<ProfilePage />} />
+          <Route exact path='/about' element={<About />}/>
+          <Route exact path='/footer' element={<Footer />}/>
+          <Route exact path='/updateprofile' element={<UpdateProfile />} />
+          <Route exact path='/addresource' element={<AddResource />} />
+          <Route exact path='/' element={<Home />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

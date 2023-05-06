@@ -197,26 +197,26 @@
     font-family: 'Josefin Sans', sans-serif;
   }
   nav ul{
-   padding-left: 800px;
-  }
-  nav ul li{
-    list-style-type: none;
-    display: inline-block;
-    padding: 10px 20px;
-  }
-  nav ul li a{
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 20px;
-    font-family: 'Josefin Sans', sans-serif;
-  }
-  
-  nav ul li a:hover{
-    color: #7A0BC0;
-    transition: .3s;
-    text-decoration: underline;
-  }
+    padding-left: 800px;
+   }
+   nav ul li{
+     list-style-type: none;
+     display: inline-block;
+     padding: 10px 20px;
+   }
+   nav ul li a{
+     color: white;
+     text-decoration: none;
+     font-weight: bold;
+     font-size: 20px;
+     font-family: 'Josefin Sans', sans-serif;
+   }
+   
+   nav ul li a:hover{
+     color: #7A0BC0;
+     transition: .3s;
+     text-decoration: underline;
+   } 
   .button-login {
     border: none;
     background-color: #7A0BC0;

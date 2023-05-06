@@ -1,7 +1,7 @@
 import '../LoginPage/Login';
 
 import { Link } from 'react-router-dom';
-import { FaEnvelope , FaUpload } from 'react-icons/fa';
+import { FaEnvelope} from 'react-icons/fa';
 
 import './UpdateProfile.css'
 const UpdateProfile = () => {
@@ -22,17 +22,12 @@ const UpdateProfile = () => {
               <i><FaEnvelope size={'1.3em'} color='#37018e' className='form-item-icon'/></i>
               <input type="text" placeholder="Enter Email" className="form-input" />
             </div>
-            <div className='update-image'>
-                <div className="form-item">        
-            <label forHtml="inputTag">
-                Select Image
-                <input id="inputTag" type="file"/>
-                
-                </label>
-            </div>
+            <div>  
+              <input type='file' className='form-input'/>  
+         
             </div>
             
-            <Link to='/userpage'><button type="submit" className='login-btn'>Update</button></Link>
+            <Link to='#'><button type="submit" className='login-btn'>Update</button></Link>
           </form>
         
         </div>

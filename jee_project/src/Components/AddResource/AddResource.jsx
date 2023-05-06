@@ -14,17 +14,17 @@ const AddResource = () => {
           </div>
           <form className="login-card-form">
             <div  id='form-item'>
-              <input type="text" placeholder="Resource" className="form-input" />
+              <input type="text" placeholder="Resource Title" className="form-input" />
             </div>
             <div  id='form-item'>
               <input type="text" placeholder="Resource Description" className="form-input" />
             </div>
             <div  id='form-item'>
-                <label for="pic-res"> Select File</label>
-              <input type="file" placeholder="Resource Description"  id ='pic-res' className="form-input" />
+            <label for="file" class="form-input-file">Choose file</label>
+                  <input id="file" class="form-input" type="file"/>  
             </div>
             
-            <Link to='/userpage'><button type="submit" className='login-btn'>Update</button></Link>
+            <Link to='/userpage'><button type="submit" className='login-btn'>Add</button></Link>
           </form>
         
         </div>

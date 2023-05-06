@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import LeftSide from '../LeftSide/LeftSide';
 import NewResources from '../NewResources/NewResources';
 import AppBar from '../AppBar/AppBar';
 import FollowingResources from '../FollowingResources/FollowingResources';
 import FollowingCard from '../FollowingCard/FollowingCard';
 import { FaPen } from 'react-icons/fa';
-
+import FollowersCard from '../FollowersCard/FollowerCard'
 
 
 import './profile.css'
@@ -39,7 +37,7 @@ const Profile = ({ userId }) => {
     <div className='user-page'>
       <div className='user-header'><AppBar /></div>
       <div className='user-profile'>
-        <img src={profileimg}></img>
+        <img src={profileimg} alt='imgprfl' ></img>
         <p>Full <span>Name</span></p>
         <a href='/updateprofile'><FaPen/></a>
         </div>
@@ -56,6 +54,7 @@ const Profile = ({ userId }) => {
           <div><NewResources/></div>
           <div>
             <FollowingResources/>
+            
           </div>
          
             
@@ -74,7 +73,8 @@ const Profile = ({ userId }) => {
         ))} */} 
 
         </div>
-        <div className='user-following'><FollowingCard/></div>
+        <div className='user-following'><FollowingCard/>
+        <FollowersCard/></div>
         </div>
         </div>
       

@@ -1,11 +1,12 @@
 .user-profile{
-    background-color: #EBDAF6;
+    background-color: #1A1A40;
     height: 300px;
     padding-top: 12%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    
 
 }
 .user-profile p{

@@ -3,7 +3,7 @@ import React from 'react'
 import {FaFile, FaImage,FaVideo, FaLink,FaPlus } from 'react-icons/fa';
 
 import './NewResources.css'
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link } from 'react-router-dom';
 
 const NewResources = () => {
   return (
