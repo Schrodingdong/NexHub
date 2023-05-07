@@ -9,6 +9,7 @@ import com.example.authentification.registration.token.ConfirmationToken;
 import com.example.authentification.registration.token.ConfirmationTokenService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -23,6 +24,9 @@ public class RegistrationService {
 
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
+
+    @Autowired
+    private JwtService jwtService;
 
     /*public RegistrationService(AppUserService appUserService, EmailValidator emailValidator, ConfirmationTokenService confirmationTokenService
     ,EmailSender emailSender) {
@@ -78,6 +82,14 @@ public class RegistrationService {
         appUserService.enableAppUser(
                 confirmationToken.getAppUser().getEmail());
         return "confirmed";
+    }
+
+    public String generateToken(String username) {
+        return jwtService.generateToken(username);
+    }
+
+    public void validateToken(String token) {
+        jwtService.validateToken(token);
     }
 
 

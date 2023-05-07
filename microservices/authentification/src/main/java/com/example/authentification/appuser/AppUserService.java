@@ -1,5 +1,6 @@
 package com.example.authentification.appuser;
 
+import com.example.authentification.registration.JwtService;
 import com.example.authentification.registration.token.ConfirmationToken;
 import com.example.authentification.registration.token.ConfirmationTokenService;
 import com.example.authentification.util.FeignClientBucketManager;
@@ -28,6 +29,7 @@ public class AppUserService implements UserDetailsService {
     private FeignClientBucketManager bucketFeign;
     @Autowired
     private FeignClientUserMetadataDbManager userMetadataFeign;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -61,6 +63,10 @@ public class AppUserService implements UserDetailsService {
         ///TODO: SEND EMAIL
         return token ;
     }
+
+
+
+
 
     private MetadataUserModel saveUserToMetadataDb(AppUser appUser) {
         String accountUsername = appUser.getFirstName()+appUser.getLastName();
