@@ -54,15 +54,22 @@ const LoginPage = () => {
   const handleLogin = (event) => {
     event.preventDefault();
 
-    axios.post(
-      "http://localhost:8080/authentication-service/login",
-      document.querySelector("#login-form"),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    axios
+      .post(
+        "http://localhost:8080/authentication-service/login",
+        document.querySelector("#login-form"),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("here");
+          navigate("/userpage");
+        }
+      });
   };
 
   return (

@@ -1,8 +1,10 @@
 package com.example.authentification.registration;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,14 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class RegistrationController {
     private final RegistrationService registrationService;
-
+    private final ObjectMapper objectMapper;
     @PostMapping
-    public String register (@RequestBody RegistrationRequest request){
-        return registrationService.register(request);
+    public ResponseEntity<?> register (@RequestBody RegistrationRequest request){
+        RegistrationResponse responseData = registrationService.register(request);
+
+        return ResponseEntity.ok().body(
+                objectMapper.createObjectNode()
+                        .put("email",responseData.getEmail())
+                        .put("firstName",responseData.getFirstName())
+                        .put("lastName",responseData.getLastName())
+        );
     }
 
-    @GetMapping(path = "/confirm")
-    public String confirm(@RequestParam("token") String token) {
-        return registrationService.confirmToken(token);
-    }
 }

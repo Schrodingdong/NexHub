@@ -1,5 +1,6 @@
 package com.example.authentification.appuser;
 
+import com.example.authentification.registration.RegistrationResponse;
 import com.example.authentification.registration.token.ConfirmationToken;
 import com.example.authentification.registration.token.ConfirmationTokenService;
 import com.example.authentification.util.FeignClientBucketManager;
@@ -34,7 +35,7 @@ public class AppUserService implements UserDetailsService {
         return appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, email)));
     }
 
-    public String signUpUser(AppUser appUser) {
+    public RegistrationResponse signUpUser(AppUser appUser) {
         boolean userExists = appUserRepository.findByEmail(appUser.getEmail()).isPresent();
         if (userExists){
             throw new IllegalStateException("email already taken");
@@ -57,9 +58,12 @@ public class AppUserService implements UserDetailsService {
                 appUser);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-
-        ///TODO: SEND EMAIL
-        return token ;
+        return new RegistrationResponse(
+                appUser.getEmail(),
+                appUser.getFirstName(),
+                appUser.getLastName(),
+                token
+        );
     }
 
     private MetadataUserModel saveUserToMetadataDb(AppUser appUser) {
