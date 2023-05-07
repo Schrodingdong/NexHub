@@ -42,36 +42,48 @@
   }
 
   .user-page-search {
+    position: relative;
     height: 40px;
     background-color: #ffffff;
     display: flex;
     align-items: center;
     border-radius: 50px;
   }
-  .user-page-search input{
+  
+  .user-page-search input {
     background: transparent;
     border: 0;
     outline: none;
     padding-left: 20px;
     font-size: 20px;
     color: rgb(0, 0, 0);
+    flex-grow: 1;
+    margin-right: 10px;
   }
-  ::placeholder{
+  
+  ::placeholder {
     color: #00000030;
   }
-.user-page-search button{
-    border: 0;
-    border-radius: 30px;
-    background-color:transparent;
+  
+  .user-page-search button {
     width: 60px;
     height: 40px;
     cursor: pointer;
-    background-color: rgb(237, 237, 237);
-}
-
-.search-users{
-  background-color: #e1d8e7;
-
-
-
-}
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+  
+  }
+  
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+  }

@@ -20,6 +20,19 @@
     gap: 10px;
     align-items: center;
 }
+.following-card a{
+    background: none;
+    color: black;
+    text-align: center;
+    font-size: 13px;
+    text-decoration: none;
+    font-family:'Josefin Sans', sans-serif ;
+}
+.following-card a:hover{
+
+    color: #7A0BC0;
+
+}
 
 
 .following-card>h3{

@@ -21,10 +21,10 @@ const FollowerCard = ({ userId }) => {
   return (
     <div className='following-card'>
          
-        <Link to ='#'><h3>Followers</h3><br/></Link>
+        <Link to ='#' ><h3>Followers</h3><br/></Link>
           <div>
             <img src={prflimg} alt='profile '></img>
-            <span> Full Name</span>
+            <span> Username</span>
           </div>
         {/* {following.map((user) => (
           <li key={user.id}>

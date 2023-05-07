@@ -3,13 +3,11 @@
       {
         "id": 1,
         "name": "John Doe",
-        "bio": "Lorem ipsum dolor sit amet.",
         "profilePicture": "/path/to/profile/picture.jpg"
       },
       {
         "id": 2,
         "name": "Jane Smith",
-        "bio": "Lorem ipsum dolor sit amet.",
         "profilePicture": "/path/to/profile/picture.jpg"
       }
     ]

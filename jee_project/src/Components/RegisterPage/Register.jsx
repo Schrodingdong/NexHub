@@ -9,6 +9,7 @@ import {
   FaEye,
 } from "react-icons/fa";
 import { Link, Navigate } from "react-router-dom";
+
 import { isEmail } from "validator";
 
 import axios from "axios";
@@ -31,6 +32,9 @@ const required = (value) => {
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -75,6 +79,7 @@ const Register = () => {
         return nonValidElements;
       });
       return false;
+6
     }
     return true;
   };
@@ -121,6 +126,7 @@ const Register = () => {
     return true;
   };
 
+
   // on submit method
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -134,6 +140,7 @@ const Register = () => {
       setShowValidationError(true);
       return;
     }
+
 
     // if all good, send request
     setShowValidationError(false);

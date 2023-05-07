@@ -65,13 +65,21 @@ const LoginPage = () => {
         }
       )
       .then((response) => {
+
+        // Check if login was successful
         if (response.status === 200) {
-          console.log("here");
+          // Redirect to user page
           navigate("/userpage");
+        } else {
+          // Display error message
+          alert("Login failed");
         }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Login failed");
       });
   };
-
   return (
     <div className="login-page">
       <NavBar />
