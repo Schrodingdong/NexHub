@@ -30,6 +30,7 @@ public class AppUserService implements UserDetailsService {
     @Autowired
     private FeignClientUserMetadataDbManager userMetadataFeign;
 
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, email)));
@@ -65,6 +66,10 @@ public class AppUserService implements UserDetailsService {
                 token
         );
     }
+
+
+
+
 
     private MetadataUserModel saveUserToMetadataDb(AppUser appUser) {
         String accountUsername = appUser.getFirstName()+appUser.getLastName();

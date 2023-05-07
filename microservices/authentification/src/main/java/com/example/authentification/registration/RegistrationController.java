@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
     private final RegistrationService registrationService;
     private final ObjectMapper objectMapper;
+
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
     @PostMapping
     public ResponseEntity<?> register (@RequestBody RegistrationRequest request){
         RegistrationResponse responseData = registrationService.register(request);
@@ -24,5 +31,7 @@ public class RegistrationController {
                         .put("lastName",responseData.getLastName())
         );
     }
+
+
 
 }

@@ -17,9 +17,9 @@ spring:
   application:
     name: authentication-service
   datasource:
-#    url: jdbc:postgresql://postgres-db:5432/registration
-#    password: password
-#    username: postgres
+    #url: jdbc:postgresql://postgres-db:5432/registration
+    #password: password
+    #username: postgres
     url: ${AUTH_DB_URL}/${AUTH_DB_NAME}
     db_name: ${AUTH_DB_NAME}
     password: ${AUTH_DB_PASSWORD}

@@ -4,7 +4,9 @@ package com.example.authentification.registration;
 import com.example.authentification.appuser.AppUser;
 import com.example.authentification.appuser.AppUserRole;
 import com.example.authentification.appuser.AppUserService;
+import com.example.authentification.email.EmailSender;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -31,5 +33,4 @@ public class RegistrationService {
         );
         return registrationResponse;
     }
-
 }
