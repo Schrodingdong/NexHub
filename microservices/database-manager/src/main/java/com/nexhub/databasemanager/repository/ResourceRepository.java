@@ -13,11 +13,23 @@ public interface ResourceRepository extends Neo4jRepository<Resource, Long> {
     @Query("MATCH (r:Resource) WHERE ID(r) = $resId " +
             "SET r.resourceName=$newName " +
             "SET r.resourceDescription=$newDesc " +
-            "SET r.resourceVisibility=$vis" +
-            "RETURN u")
-    Resource updateResource(@Param("resId") long resId, @Param("name") String name, @Param("resDesc") String resDesc, @Param("vis") String vis);
-    @Query("MERGE (r:Resource {resourceName: $name, resourceDescription: $resDesc, resourceBucketId: $resBucketId, resourceVisibility: $vis}) RETURN r")
-    Resource saveToGraph(@Param("name") String name, @Param("resDesc") String resDesc, @Param("resBucketId") String resBucketId, @Param("vis") String vis);
+            "SET r.resourceVisibility=$newVis " +
+            "RETURN r")
+    Resource updateResource(@Param("resId") long resId,
+                            @Param("newName") String name,
+                            @Param("newDesc") String resDesc,
+                            @Param("newVis") String vis);
+    @Query("MERGE (r:Resource {resourceName: $name, " +
+            "resourceDescription: $resDesc, " +
+            "resourceBucketId: $resBucketId, " +
+            "resourceVisibility: $vis, " +
+            "resourceHolderId: $userId}) " +
+            "RETURN r")
+    Resource saveToGraph(@Param("name") String name,
+                         @Param("resDesc") String resDesc,
+                         @Param("resBucketId") String resBucketId,
+                         @Param("userId") long userId,
+                         @Param("vis") String vis);
     @Query( "MATCH (r:Resource {resourceName: $name}) RETURN r")
     List<Resource> getResourceByName(@Param("name") String name);
     @Query("MATCH (r:Resource) WHERE ID(r)=$resId RETURN r")
@@ -35,4 +47,8 @@ public interface ResourceRepository extends Neo4jRepository<Resource, Long> {
             "WHERE ID(u) = $userId " +
             "RETURN r")
     List<Resource> getAllPublicResourcesFromUser(@Param("userId") long userId);
+    @Query( "MATCH (r:Resource)<-[:HAS_A]-(u:User) " +
+            "WHERE ID(u) = $userId " +
+            "DETACH DELETE r")
+    void deleteResourcesOfUser(@Param("userId") long userId);
 }

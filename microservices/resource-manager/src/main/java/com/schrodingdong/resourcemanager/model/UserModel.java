@@ -1,5 +1,6 @@
 package com.schrodingdong.resourcemanager.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,28 +10,14 @@ import java.util.Random;
 
 
 @Getter @Setter @ToString
+@AllArgsConstructor
 public class UserModel {
     private long userId;
     private String username;
-    private String mail;
+    private String firstName;
+    private String lastName;
+    private String email;
     private String bucketId;
 
-    public UserModel(long userId, String username, String mail) {
-        this.userId = userId;
-        this.username = username;
-        this.mail = mail;
-        this.bucketId = generateBucketIdViaUserMail(this.mail);
-    }
 
-    public String generateBucketIdViaUserMail(String userMail) {
-        String firstPartOfMail = userMail.substring(0,userMail.indexOf('@'));
-        // Salt generation
-        byte[] array = new byte[15];
-        new Random().nextBytes(array);
-        String salt = new String(array, Charset.forName("UTF-8"));
-        // result string
-        String result = userMail+salt;
-        result = firstPartOfMail+"-"+Math.abs(result.hashCode());
-        return result;
-    }
 }

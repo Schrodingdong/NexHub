@@ -1,18 +1,19 @@
 package com.nexhub.databasemanager.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nexhub.databasemanager.model.Resource;
-import com.nexhub.databasemanager.model.User;
-
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 public interface IResourceController {
-    Resource addResourceForUser(Resource resource,long userId);
-    Resource getResource(long resId);
-    List<Resource> getAllResources();
-    List<Resource> getAllResourcesOfName(String name);
-    List<Resource> getALlResourcesFromUser(long userId);
-    List<Resource> getAllPublicResourcesFromUser(long userId);
-    Resource updateResourceForUser(long resId, Resource resource);
-    void deleteResourceFromUser(long resId);
-    void deleteAll();
+    ResponseEntity<?> addResourceForUser(Resource resource, long userId);
+    ResponseEntity<?> getResource(long resId);
+    ResponseEntity<?> getAllResources() throws JsonProcessingException;
+    ResponseEntity<?> getAllResourcesOfName(String name) throws JsonProcessingException;
+    ResponseEntity<?> getALlResourcesFromUser(long userId) throws JsonProcessingException;
+    ResponseEntity<?> getAllPublicResourcesFromUser(long userId) throws JsonProcessingException;
+    ResponseEntity<?> updateResourceForUser(long resId, Resource resource);
+    ResponseEntity<?> deleteResource(long resId);
+    ResponseEntity<?> deleteAll();
+    ResponseEntity<?> deleteAllResourcesOdUser(long userId);
 }

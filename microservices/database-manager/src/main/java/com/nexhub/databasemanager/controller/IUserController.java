@@ -1,21 +1,20 @@
 package com.nexhub.databasemanager.controller;
 
-import com.nexhub.databasemanager.model.Resource;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nexhub.databasemanager.model.User;
-import jakarta.validation.constraints.NotNull;
-
-import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 public interface IUserController {
-    User addUser(User newUser) throws Exception;
-    void followUser(long userId, long followId);
-    User getUser(long userId);
-    User getUserByMail(String mail);
-    List<User> getAllUsers();
-    List<User> getUserFollowing(long userId);
-    List<User> getUserFollowers(long userId);
-    User updateUser(long userId, User modifiedUser);
-    void deleteUser(long userId);
-    void deleteAll();
-    List<User> getAllUsersOfName(String name);
+    ResponseEntity<?> addUser(User newUser) throws Exception;
+    ResponseEntity<?> followUser(long userId, long followId);
+    ResponseEntity<?> unfollowUser(long userId, long toUnfollow);
+    ResponseEntity<?> getUser(long userId);
+    ResponseEntity<?> getUserByMail(String mail);
+    ResponseEntity<?> getAllUsers() throws JsonProcessingException;
+    ResponseEntity<?> getUserFollowing(long userId) throws JsonProcessingException;
+    ResponseEntity<?> getUserFollowers(long userId) throws JsonProcessingException;
+    ResponseEntity<?> updateUser(long userId, User modifiedUser);
+    ResponseEntity<?> deleteUser(long userId);
+    ResponseEntity<?> deleteAll();
+    ResponseEntity<?> getAllUsersOfName(String name) throws JsonProcessingException;
 }

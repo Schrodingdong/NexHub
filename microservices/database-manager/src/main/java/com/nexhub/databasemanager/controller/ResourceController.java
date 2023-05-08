@@ -1,89 +1,143 @@
 package com.nexhub.databasemanager.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nexhub.databasemanager.model.Resource;
 import com.nexhub.databasemanager.service.ResourceService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/res")
+@AllArgsConstructor
 public class ResourceController implements IResourceController {
-    @Autowired
     private final ResourceService resourceService;
-
-    public ResourceController(ResourceService resourceService) {
-        this.resourceService = resourceService;
-    }
+    private final ObjectMapper objectMapper;
 
 
     @Override
     @PostMapping("/add/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public Resource addResourceForUser(@RequestBody @Valid Resource resource,@PathVariable long userId) {
-        return resourceService.saveResourceForUser(resource,userId);
+    public ResponseEntity<?> addResourceForUser(@RequestBody @Valid Resource resource, @PathVariable long userId) {
+        Resource resource1 = resourceService.saveResourceForUser(resource, userId);
+        return ResponseEntity.ok().body(
+                objectMapper.createObjectNode()
+                        .put("resourceId",resource1.getResourceId())
+                        .put("resourceName",resource1.getResourceName())
+                        .put("resourceDescription",resource1.getResourceDescription())
+                        .put("resourceBucketId",resource1.getResourceBucketId())
+                        .put("resourceHolderId",resource1.getResourceHolderId())
+                        .put("resourceVisibility",resource1.getResourceVisibility())
+        );
     }
 
     @Override
     @GetMapping("/get/{resId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Resource getResource(@PathVariable @NotNull long resId) {
-        return resourceService.getResourceById(resId);
+    public ResponseEntity<?> getResource(@PathVariable @NotNull long resId) {
+        Resource resource1 = resourceService.getResourceById(resId);
+        return ResponseEntity.ok().body(
+                objectMapper.createObjectNode()
+                        .put("resourceId",resource1.getResourceId())
+                        .put("resourceName",resource1.getResourceName())
+                        .put("resourceDescription",resource1.getResourceDescription())
+                        .put("resourceBucketId",resource1.getResourceBucketId())
+                        .put("resourceHolderId",resource1.getResourceHolderId())
+                        .put("resourceVisibility",resource1.getResourceVisibility())
+        );
     }
 
     @Override
     @GetMapping("/get/all")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Resource> getAllResources() {
-        return resourceService.getAllResources();
+    public ResponseEntity<?> getAllResources() throws JsonProcessingException {
+        List<Resource> allResources = resourceService.getAllResources();
+        return ResponseEntity.ok().body(
+                allResources
+        );
     }
 
     @Override
     @GetMapping("/get/from-res-name/{name}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Resource> getAllResourcesOfName(@PathVariable @NotNull String name) {
-        return resourceService.getResourcesByName(name);
+    public ResponseEntity<?> getAllResourcesOfName(@PathVariable @NotNull String name) throws JsonProcessingException {
+        List<Resource> resourcesByName = resourceService.getResourcesByName(name);
+        return ResponseEntity.ok().body(
+                resourcesByName
+        );
     }
 
     @Override
     @GetMapping("/get/all-from-user/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Resource> getALlResourcesFromUser(@PathVariable @NotNull long userId) {
-        return resourceService.getAllResourcesFromUser(userId);
+    public ResponseEntity<?> getALlResourcesFromUser(@PathVariable @NotNull long userId) throws JsonProcessingException {
+        List<Resource> allResourcesFromUser = resourceService.getAllResourcesFromUser(userId);
+        return ResponseEntity.ok().body(
+                allResourcesFromUser
+        );
     }
 
     @Override
     @GetMapping("/get/public-from-user/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Resource> getAllPublicResourcesFromUser(@PathVariable @NotNull long userId) {
-        return resourceService.getAllPublicResourcesFromUser(userId);
+    public ResponseEntity<?> getAllPublicResourcesFromUser(@PathVariable @NotNull long userId) throws JsonProcessingException {
+        List<Resource> allPublicResourcesFromUser = resourceService.getAllPublicResourcesFromUser(userId);
+        return ResponseEntity.ok().body(
+                allPublicResourcesFromUser
+        );
     }
 
     @Override
     @PutMapping("/update/{resId}")
-    @ResponseStatus(HttpStatus.OK)
-    public Resource updateResourceForUser(@PathVariable long resId,@RequestBody @Valid Resource resource) {
-        return resourceService.updateResource(resId, resource);
+    public ResponseEntity<?> updateResourceForUser(@PathVariable long resId, @RequestBody Resource resource) {
+        if (resource.getResourceBucketId() != null){
+            return ResponseEntity.badRequest().body(
+                    objectMapper.createObjectNode()
+                            .put("message","Resource bucketId cannot be updated")
+            );
+        }
+        Resource resource1 = resourceService.updateResource(resId, resource);
+        return ResponseEntity.ok().body(
+                objectMapper.createObjectNode()
+                        .put("resourceId",resource1.getResourceId())
+                        .put("resourceName",resource1.getResourceName())
+                        .put("resourceDescription",resource1.getResourceDescription())
+                        .put("resourceBucketId",resource1.getResourceBucketId())
+                        .put("resourceHolderId",resource1.getResourceHolderId())
+                        .put("resourceVisibility",resource1.getResourceVisibility())
+        );
     }
 
     @Override
     @DeleteMapping("/delete/{resId}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteResourceFromUser(@PathVariable long resId) {
+    public ResponseEntity<?> deleteResource(@PathVariable long resId) {
         resourceService.deleteResource(resId);
+        return ResponseEntity.accepted().body(
+                objectMapper.createObjectNode()
+                        .put("message","Resource deleted successfully")
+        );
     }
 
     @Override
     @DeleteMapping("/delete/all")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteAll(){
+    public ResponseEntity<?> deleteAll(){
         resourceService.deleteAll();
+        return ResponseEntity.accepted().body(
+                objectMapper.createObjectNode()
+                        .put("message","All resources deleted successfully")
+        );
     }
 
+
+    @Override
+    @DeleteMapping("/delete/all-of-user/{userId}")
+    public ResponseEntity<?> deleteAllResourcesOdUser(@PathVariable long userId) {
+        resourceService.deleteResourcesOfUser(userId);
+        return ResponseEntity.accepted().body(
+                objectMapper.createObjectNode()
+                        .put("message","Resource deleted successfully")
+        );
+    }
 
 }

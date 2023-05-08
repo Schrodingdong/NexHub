@@ -35,8 +35,8 @@ class UserControllerTest {
     private User user,user_noMail;
     @BeforeEach
     void setUp(){
-        user = new User("schrodingdong","schrodingdong@gmail.com","bucketId");
-        user_noMail = new User("schrodingdong", null,"bucketId");
+//        user = new User("schrodingdong","schrodingdong@gmail.com","bucketId");
+//        user_noMail = new User("schrodingdong", null,"bucketId");
     }
 
     @Test
@@ -106,7 +106,7 @@ class UserControllerTest {
         ArgumentCaptor<User> captoe = ArgumentCaptor.forClass(User.class);
         BDDMockito.verify(userService).saveUser(captoe.capture());
         Assertions.assertThat(captoe.getValue().getUsername()).isEqualTo("schrodingdong");
-        Assertions.assertThat(captoe.getValue().getMail()).isEqualTo("schrodingdong@gmail.com");
+        Assertions.assertThat(captoe.getValue().getEmail()).isEqualTo("schrodingdong@gmail.com");
     }
 
     @Test

@@ -35,8 +35,12 @@ public class ResourceService {
         return resourceRepository.getAllPublicResourcesFromUser(userId);
     }
     public Resource saveResourceForUser(@NotNull Resource r, @NotNull long userId){
-        Resource rSaved = resourceRepository.saveToGraph(r.getResourceName(), r.getResourceDescription(), r.getResourceBucketId(), r.getResourceVisibility());
-        resourceRepository.linkToUser(rSaved.getResourceId(), userId);
+        Resource rSaved = resourceRepository.saveToGraph(r.getResourceName(),
+                r.getResourceDescription(),
+                r.getResourceBucketId(),
+                userId,
+                r.getResourceVisibility());
+        resourceRepository.linkToUser(rSaved.getResourceId(), rSaved.getResourceHolderId());
         return rSaved;
     }
     public Resource updateResource (
@@ -67,7 +71,10 @@ public class ResourceService {
                             resDescription
             );
 
-            return resourceRepository.updateResource(selectedRes.getResourceId(), selectedRes.getResourceName(), selectedRes.getResourceDescription(), selectedRes.getResourceVisibility());
+            return resourceRepository.updateResource(selectedRes.getResourceId(),
+                    selectedRes.getResourceName(),
+                    selectedRes.getResourceDescription(),
+                    selectedRes.getResourceVisibility());
         } else {
             throw new BadRequestException("Resource doesn't exist");
         }
@@ -79,6 +86,8 @@ public class ResourceService {
     public void deleteAll(){
         resourceRepository.deleteAll();
     }
-
+    public void deleteResourcesOfUser(@NotNull long userId) {
+        resourceRepository.deleteResourcesOfUser(userId);
+    }
 
 }

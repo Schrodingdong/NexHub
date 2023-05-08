@@ -13,6 +13,8 @@ import {
 } from "react-icons/fa";
 import { isEmail } from "validator";
 import axios from "axios";
+import verifyJwtToken from "../../auth/verifyJwtToken";
+import { useEffect } from "react";
 
 const required = (value) => {
   if (!value) {
@@ -65,13 +67,15 @@ const LoginPage = () => {
         }
       )
       .then((response) => {
-
-        // Check if login was successful
+        console.log(response);
         if (response.status === 200) {
-          // Redirect to user page
+          document.cookie = `token=${
+            response.data.jwtToken
+          }; email=${email}; expires=${
+            new Date().getTime() + 10 * 1000
+          }; path=/; `;
           navigate("/userpage");
         } else {
-          // Display error message
           alert("Login failed");
         }
       })
@@ -80,90 +84,103 @@ const LoginPage = () => {
         alert("Login failed");
       });
   };
+  useEffect(() => {
+    verifyJwtToken(document.cookie).then((response) => {
+      if (response) {
+        navigate("/userpage");
+      }
+    });
+  }, []);
+
   return (
-    <div className="login-page">
-      <NavBar />
-      <div className="login-card-container">
-        <div className="login-card">
-          <div className="login-card-header">
-            <h1>Sign In</h1>
-            <div>Please login to use the platform</div>
-          </div>
-          <form
-            className="login-card-form"
-            onSubmit={handleLogin}
-            id="login-form"
-          >
-            <div className="form-item">
-              <i>
-                <FaEnvelope
+    verifyJwtToken(document.cookie) && (
+      <div className="login-page">
+        <NavBar />
+        <div className="login-card-container">
+          <div className="login-card">
+            <div className="login-card-header">
+              <h1>Sign In</h1>
+              <div>Please login to use the platform</div>
+            </div>
+            <form
+              className="login-card-form"
+              onSubmit={handleLogin}
+              id="login-form"
+            >
+              <div className="form-item">
+                <i>
+                  <FaEnvelope
+                    size={"1.3em"}
+                    color="#37018e"
+                    className="form-item-icon"
+                  />
+                </i>
+                <input
+                  type="email"
+                  placeholder="Enter Email"
+                  className="form-input"
+                  name="email"
+                  value={email}
+                  onChange={onchangeEmail}
+                  validations={[required, vemail]}
+                />
+              </div>
+              <div className="form-item">
+                <FaLock
                   size={"1.3em"}
                   color="#37018e"
                   className="form-item-icon"
                 />
-              </i>
-              <input
-                type="email"
-                placeholder="Enter Email"
-                className="form-input"
-                name="username"
-                value={email}
-                onChange={onchangeEmail}
-                validations={[required, vemail]}
-              />
-            </div>
-            <div className="form-item">
-              <FaLock
-                size={"1.3em"}
-                color="#37018e"
-                className="form-item-icon"
-              />
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                placeholder="Enter Password"
-                className="form-input"
-                name="password"
-                value={password}
-                onChange={onChangePassword}
-                validations={[required]}
-              />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="Enter Password"
+                  className="form-input"
+                  name="password"
+                  value={password}
+                  onChange={onChangePassword}
+                  validations={[required]}
+                />
 
-              <i onClick={handleTogglePassword} className="form-item-icon-eye">
-                {showPassword ? (
-                  <FaEye size={"1.3em"} color="#37018e" />
-                ) : (
-                  <FaEyeSlash size={"1.3em"} color="#37018e" />
-                )}
-              </i>
+                <i
+                  onClick={handleTogglePassword}
+                  className="form-item-icon-eye"
+                >
+                  {showPassword ? (
+                    <FaEye size={"1.3em"} color="#37018e" />
+                  ) : (
+                    <FaEyeSlash size={"1.3em"} color="#37018e" />
+                  )}
+                </i>
+              </div>
+              <button type="submit" className="login-btn">
+                Sign In
+              </button>
+            </form>
+            <div className="login-card-footer">
+              Don't have an account?{" "}
+              <Link to="/register" className="new-acc">
+                Create a free account.
+              </Link>
             </div>
-            <button type="submit" className="login-btn">
-              Sign In
-            </button>
-          </form>
-          <div className="login-card-footer">
-            Don't have an account?{" "}
-            <Link to="/register" className="new-acc">
-              Create a free account.
-            </Link>
           </div>
-        </div>
-        <div className="login-card-social">
-          <div>Other Sign-In Options</div>
-          <div className="login-card-social-btns">
-            <a href="/">
-              <FaFacebook size={"2em"} />
-            </a>
-            <a href="/">
-              <FaGoogle size={"2em"} />
-            </a>
-            <a href="/">
-              <FaApple size={"2em"} />
-            </a>
+          <div className="login-card-social">
+            <div>Other Sign-In Options</div>
+            <div className="login-card-social-btns">
+              <a href="/">
+                <FaFacebook size={"2em"} />
+              </a>
+              <a href="/">
+                <FaGoogle size={"2em"} />
+              </a>
+              <a href="/">
+                <FaApple size={"2em"} />
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    )
   );
 };
 

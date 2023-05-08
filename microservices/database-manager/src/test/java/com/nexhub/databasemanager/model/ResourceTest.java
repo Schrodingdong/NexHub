@@ -15,23 +15,23 @@ class ResourceTest {
 
     @BeforeEach
     void setUp() {
-
-        u = new User(
-                "schrodingdong",
-                "schrodingdong@gmail.com","bucketId2"
-        );
-        Set<User> userSet=new HashSet<>();
-
-        r = new Resource(
-                "Guide To java",
-                "Simple guide for java haha",
-                ResVisibility.PUBLIC.name()
-        );
-        r2 = new Resource(
-                "Guide To java",
-                "Simple guidefjdsqolifj for java haha",
-                ResVisibility.PUBLIC.name()
-        );
+//
+//        u = new User(
+//                "schrodingdong",
+//                "schrodingdong@gmail.com","bucketId2"
+//        );
+//        Set<User> userSet=new HashSet<>();
+//
+//        r = new Resource(
+//                "Guide To java",
+//                "Simple guide for java haha",
+//                ResVisibility.PUBLIC.name()
+//        );
+//        r2 = new Resource(
+//                "Guide To java",
+//                "Simple guidefjdsqolifj for java haha",
+//                ResVisibility.PUBLIC.name()
+//        );
     }
 
     @Test

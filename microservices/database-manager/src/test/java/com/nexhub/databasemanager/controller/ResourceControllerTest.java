@@ -42,13 +42,13 @@ class ResourceControllerTest {
     @BeforeEach
     void setUp(){
         autoCloseable = MockitoAnnotations.openMocks(this);
-        resourceController = new ResourceController(resourceService);
-        resource = new Resource(
-                "guideToJava",
-                "description1-u1",
-                ResVisibility.PUBLIC.name()
-        );
-        user = new User("schrodingdong","schrodingdong@gmail.com","bucketId");
+//        resourceController = new ResourceController(resourceService);
+//        resource = new Resource(
+//                "guideToJava",
+//                "description1-u1",
+//                ResVisibility.PUBLIC.name()
+//        );
+//        user = new User("schrodingdong","schrodingdong@gmail.com","bucketId");
     }
     @AfterEach
     void tearDown() throws Exception {

@@ -75,7 +75,9 @@ public class AppUserService implements UserDetailsService {
         String accountUsername = appUser.getFirstName()+appUser.getLastName();
         MetadataUserModel metadataUserModel = new MetadataUserModel(
                 accountUsername,
-                appUser.getEmail()
+                appUser.getEmail(),
+                appUser.getFirstName(),
+                appUser.getLastName()
         );
         userMetadataFeign.addNewUser(metadataUserModel);
         return metadataUserModel;

@@ -10,13 +10,17 @@ import java.util.Random;
 @Getter @Setter @ToString
 public class MetadataUserModel {
     private String username;
-    private String mail;
+    private String firstName;
+    private String lastName;
+    private String email;
     private String bucketId;
 
-    public MetadataUserModel(String username, String mail) {
+    public MetadataUserModel(String username, String email, String firstName, String lastName) {
         this.username = username;
-        this.mail = mail;
-        this.bucketId = generateBucketIdViaUserMail(this.mail);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.bucketId = generateBucketIdViaUserMail(this.email);
     }
 
     public String generateBucketIdViaUserMail(String userMail) {

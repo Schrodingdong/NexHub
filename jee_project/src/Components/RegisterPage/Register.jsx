@@ -8,8 +8,7 @@ import {
   FaEyeSlash,
   FaEye,
 } from "react-icons/fa";
-import { Link, Navigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import { isEmail } from "validator";
 
 import axios from "axios";
@@ -32,12 +31,10 @@ const required = (value) => {
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const navigate = useNavigate();
-
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
+  const Navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -79,7 +76,6 @@ const Register = () => {
         return nonValidElements;
       });
       return false;
-6
     }
     return true;
   };
@@ -126,7 +122,6 @@ const Register = () => {
     return true;
   };
 
-
   // on submit method
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -140,7 +135,6 @@ const Register = () => {
       setShowValidationError(true);
       return;
     }
-
 
     // if all good, send request
     setShowValidationError(false);
@@ -157,14 +151,13 @@ const Register = () => {
         { withCredentials: true }
       )
       .then((response) => {
-        console.log(response.status);
+        console.log(response);
         if (response.status === 200) {
           Navigate("/login");
         }
       })
       .catch((error) => {
         alert(error);
-        console.log(error);
       });
   };
 
