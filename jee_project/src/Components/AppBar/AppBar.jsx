@@ -1,33 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './AppBar.css';
 import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import usersData from '../../data/users.json';
 import UserProfile from '../ProfilePage/profile';
 import profile_img from '../../images/profile.webp';
 import axios from 'axios';
 
-const AppBar = () => {
+const AppBar = ({userId}) => {
+
+  const generateProfilePicture = (username) => {
+    const color = Math.floor(Math.random() * 16777215).toString(16); // generate a random color
+    const firstLetter = username ? username.charAt(0).toUpperCase() : ''; // check if username is defined before calling the charAt method
+    return `https://via.placeholder.com/150/${color}/FFFFFF?text=${firstLetter}`; // return the URL of the image
+  };
+  
+
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
 
-  const handleSearch = (event) => {
-    event.preventDefault();
-    axios.get("http://localhost:8080/metadata-db-manager-service/users/get/all")
-    const filteredUsers = usersData.users.filter((user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setSearchResults(filteredUsers);
-    setShowResults(true);
-  };
-
   const handleInputChange = (event) => {
-    setSearchQuery(event.target.value);
-    if (event.target.value === '') {
+    const query = event.target.value;
+    setSearchQuery(query);
+    if (query === '') {
       setShowResults(false);
+      setSearchResults([]);
+    } else {
+      axios
+        .get('http://localhost:8080/metadata-db-manager-service/users/get/all')
+        .then((response) => {
+          const filteredUsers = response.data.filter((user) =>
+            user.username.toLowerCase().includes(query.toLowerCase())
+          );
+          setSearchResults(filteredUsers);
+          setShowResults(true);
+        });
     }
   };
+  const [users,setUsers]= useState("");
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await axios.get(`http://localhost:8080/metadata-db-manager-service/users/get/id/5`);
+      setUsers(response.data);
+    };
+    fetchUsers();
+  }, [userId]);
+
+  
 
   return (
     <div className='user-page-header'>
@@ -37,7 +57,7 @@ const AppBar = () => {
         </h2>
       </div>
       <div className='user-page-search'>
-        <form onSubmit={handleSearch} data-test id='search-form'>
+        <form data-test id='search-form'>
           <input
             type='text'
             placeholder='Search users...'
@@ -51,19 +71,15 @@ const AppBar = () => {
           </button>
           <div className='search-results' style={{ display: showResults ? 'block' : 'none' }}>
             {searchResults.map((user) => (
-              <div key={user.id} onClick={() => <UserProfile id={user.id} />}>
-                {user.name}
-                {user.profilePicture}
+              <div key={user.userId}  className='users-search'>
+                <img src={generateProfilePicture(user.username)} alt={user.username} />
+                <button onClick={() => <UserProfile id={user.userId} />}>{user.username}</button>
               </div>
             ))}
           </div>
         </form>
       </div>
-      <div className='user-page-info'>
-        <Link to='/profilepage'>
-          <img src={profile_img} alt='profile' />
-        </Link>
-      </div>
+
     </div>
   );
 };

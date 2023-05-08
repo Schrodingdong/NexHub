@@ -45,3 +45,18 @@
     margin-top: 1.5cm;
  
 }
+.resource-user-profile a{
+    background: none;
+    color: black;
+    text-align: center;
+    font-size: 15px;
+    text-decoration: none;
+    font-family:'Josefin Sans', sans-serif ;
+
+}
+.resource-user-profile a:hover{
+
+    color: #7A0BC0;
+
+}
+

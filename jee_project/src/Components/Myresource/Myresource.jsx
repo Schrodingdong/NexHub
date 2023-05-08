@@ -1,29 +1,30 @@
-import './FollowingResources.css'
+import '../FollowingResources/FollowingResources.css'
 import { useEffect, useState } from "react";
 import axios from "axios";
-import prflimg from '../../images/profile.webp';
 
-const FollowingResources = () => {
+const MyResources = ({userId}) => {
 
 
 
 
     
-  const [followingPosts, setFollowingPosts] = useState([]);
+  const [myposts, setMyposts] = useState([]);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchFollowingPosts = async () => {
-      const response = await axios.get('http://localhost:8080/metadata-db-manager-service/res/get/all');
-      setFollowingPosts(response.data);
+    const fetchMyPosts = async () => {
+      const response = await axios.get(`http://localhost:8080/metadata-db-manager-service/res/get/all-from-user/${userId}`,
+   );
+      setMyposts(response.data);
     };
 
-    fetchFollowingPosts();
+    fetchMyPosts();
   }, []);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await axios.get('http://localhost:8080/metadata-db-manager-service/users/get/id/5');
+      const response = await axios.get(`http://localhost:8080/metadata-db-manager-service/users/get/id/${userId}`,
+   );
       setUsers(response.data);
     };
 
@@ -32,7 +33,7 @@ const FollowingResources = () => {
 
   return (
     <div>
-      {followingPosts.map((post) => (
+      {myposts.map((post) => (
         <div className='home-page-resources' key={post.resourceId}>
           <div className='resource-user-profile'>
           <img  alt={users.username} />
@@ -49,4 +50,4 @@ const FollowingResources = () => {
   );
 };
 
-export default FollowingResources;
+export default MyResources;

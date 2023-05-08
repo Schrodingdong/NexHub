@@ -15,11 +15,20 @@
 }
 
 
-.following-card>div{
-    display: flex;
+.following-card-div{
     gap: 10px;
     align-items: center;
+    display: flex;
 }
+
+.following-card-body{
+    display: grid;
+    gap: 15px;
+    align-items: center;
+
+}
+
+
 .following-card a{
     background: none;
     color: black;

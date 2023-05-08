@@ -52,6 +52,8 @@ const LoginPage = () => {
     const password = e.target.value;
     setPassword(password);
   };
+  const userId = localStorage.getItem("userId");
+
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -81,9 +83,9 @@ const LoginPage = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert("Login failed");
       });
   };
+
   useEffect(() => {
     verifyJwtToken(document.cookie).then((response) => {
       if (response) {
@@ -91,6 +93,7 @@ const LoginPage = () => {
       }
     });
   }, []);
+
 
   return (
     verifyJwtToken(document.cookie) && (

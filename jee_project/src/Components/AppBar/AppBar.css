@@ -87,3 +87,13 @@
     max-height: 200px;
     overflow-y: auto;
   }
+  .search-results img{
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+  }
+  .users-search{
+    display: flex;
+  align-items: center;
+gap: 1rem; }
+
