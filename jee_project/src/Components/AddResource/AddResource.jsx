@@ -1,13 +1,14 @@
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../LoginPage/Login";
-
-
 import { Link, useNavigate } from "react-router-dom";
 import verifyJwtToken from "../../auth/verifyJwtToken";
+import {
+  getMailFromCookie,
+  getUserIdFromCookie,
+  initializeAxios,
+} from "../../api/springApi";
 
 const AddResource = () => {
-
   const navigate = useNavigate();
   useEffect(() => {
     verifyJwtToken(document.cookie).then((response) => {
@@ -17,36 +18,49 @@ const AddResource = () => {
     });
   }, []);
 
-
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [file, setFile] = useState('');
-  const [visibility,setVisibility] = useState('')
-
-
+  const [myUserData, setMyUserData] = useState({});
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [file, setFile] = useState("");
+  const [visibility, setVisibility] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const data = {
-      resourceName: title,
-      resourceDescription: description,
-      resourceBucketId: file,
-      resourceVisibility : visibility
-    };
-
-    try {
-      // Make a POST request to the API to add the resource
-
-      const res = await axios.post(`http://localhost:8080/metadata-db-manager-service/res/add/${userId}`, data);
-
-      // Redirect the user to their user page after the resource has been added
-      navigate('/userpage');
-    } catch (err) {
-      console.error(err);
+    console.log(file);
+    if (description === "" || file === "" || visibility === "") {
+      alert("Please fill all the fields");
+      return;
     }
+
+    const { resourceService } = initializeAxios();
+    // send file to backend
+    const formdata = new FormData();
+    formdata.append("file", file);
+    resourceService
+      .post(
+        `/resource/upload?userMail=${getMailFromCookie()}&resourceDescription=${description}&resourceVisibility=${visibility}`,
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          alert("Resource added successfully");
+          navigate("/userPage");
+        }
+      });
   };
 
+  useEffect(() => {
+    const { metadataService } = initializeAxios();
+    const userId = getUserIdFromCookie();
+    metadataService.get(`/users/get/id/${userId}`).then((res) => {
+      if (res.data != null) setMyUserData(res.data);
+    });
+  }, []);
 
   return (
     <div className="login-page">
@@ -56,9 +70,8 @@ const AddResource = () => {
             <h1>Add Resource</h1>
           </div>
 
-          <form className="login-card-form">
-            <div id="form-item">
-
+          <form className="login-card-form" onSubmit={handleSubmit}>
+            {/* <div id="form-item">
               <input
                 type="text"
                 placeholder="Resource Title"
@@ -66,8 +79,8 @@ const AddResource = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-            </div>
-            <div id='form-item'>
+            </div> */}
+            <div id="form-item">
               <input
                 type="text"
                 placeholder="Resource Description"
@@ -76,7 +89,19 @@ const AddResource = () => {
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-            <div id='form-item'>
+            <div id="form-item">
+              <select
+                value={visibility}
+                onChange={(e) => setVisibility(e.target.value)}
+              >
+                <option value="" defaultChecked>
+                  select an option..
+                </option>
+                <option value="PUBLIC">Public</option>
+                <option value="PRIVATE">Private</option>
+              </select>
+            </div>
+            <div id="form-item">
               <label htmlFor="file" className="form-input-file">
                 Choose file
               </label>
@@ -87,7 +112,9 @@ const AddResource = () => {
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </div>
-            <button type="submit" className='login-btn'>Add</button>
+            <button type="submit" className="login-btn">
+              Add
+            </button>
           </form>
         </div>
       </div>

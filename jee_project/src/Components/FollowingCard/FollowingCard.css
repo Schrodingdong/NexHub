@@ -1,17 +1,14 @@
 
 .following-card{
     background-color: #fff;
-    margin-left: 30px;
-    margin-top: 80px;
-    width: 300px;
-    height: 350px;
     border: 0;
+    width: 90%;
+    margin: 0 auto;
     border-radius: 30px;
     justify-items: center;
     align-content: stretch;
-    padding-top: 10px;
-    padding-left: 30px;
-    box-shadow: 3px 3px #edecec;
+    padding: 1.5rem;
+    box-shadow: 0 0 10px 1px#00000022;
 }
 
 

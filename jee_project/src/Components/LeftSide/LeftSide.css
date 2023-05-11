@@ -1,22 +1,23 @@
 .user-page-card{
     background-color: #fff;
-    margin-left: 30px;
-    margin-top: 80px;
-    width: 300px;
-    height: 250px;
+    margin: auto;
+    width: 90%;
     border: 0;
+    padding: 1.5rem;
+    gap: 1rem;
     border-radius: 30px;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     justify-items: center;
-    align-content: stretch;
-    padding-top: 10px;
-    box-shadow: 3px 3px #edecec;
+    flex-wrap: wrap;
+    align-content: space-around;
+    box-shadow: 0 0 10px 1px#00000022;
 
 }
 .user-page-card button{
     background-color: #1A1A40;
     color: white;
-    width: 250px;
+    width: 100%;
     border: 0;
     border-radius: 30px;
     height: 50px;
@@ -24,6 +25,7 @@
     font-size: 15px;
     font-family: 'Roboto', sans-serif;
     display: inline-flex;
+    gap: 1rem;
     justify-content: flex-start;
     align-items: center;
     padding: 20px;

@@ -1,11 +1,9 @@
 import axios from "axios";
 
 const verifyJwtToken = async (cookie) => {
-  if (!cookie) return false;
-  // call the auth api
+  if (!cookie.includes("token")) return false;
   try{
-    // extract the token from the cookie
-    const token = cookie.split("=")[1];
+    let token = cookie.split(";").find((item) => item.includes("token")).split("=")[1];
     const res = await axios.get(
       "http://localhost:8080/authentication-service/validateToken?token=" + token
     )

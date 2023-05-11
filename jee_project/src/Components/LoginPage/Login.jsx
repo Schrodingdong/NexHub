@@ -15,7 +15,7 @@ import { isEmail } from "validator";
 import axios from "axios";
 import verifyJwtToken from "../../auth/verifyJwtToken";
 import { useEffect } from "react";
-
+import { getUserIdFromMail, initializeAxios } from "../../api/springApi";
 const required = (value) => {
   if (!value) {
     return (
@@ -54,7 +54,6 @@ const LoginPage = () => {
   };
   const userId = localStorage.getItem("userId");
 
-
   const handleLogin = (event) => {
     event.preventDefault();
 
@@ -68,14 +67,21 @@ const LoginPage = () => {
           },
         }
       )
-      .then((response) => {
+      .then(async (response) => {
         console.log(response);
         if (response.status === 200) {
-          document.cookie = `token=${
-            response.data.jwtToken
-          }; email=${email}; expires=${
-            new Date().getTime() + 10 * 1000
-          }; path=/; `;
+          let tokenCookie = `token=${response.data.jwtToken};`;
+          let emailCookie = `email=${response.data.email};`;
+          let expirationCookie = `expires=${new Date().getTime() + 10 * 1000};`;
+          let pathCookie = `path=/;`;
+          document.cookie = tokenCookie;
+          document.cookie = emailCookie;
+          document.cookie = expirationCookie;
+          document.cookie = pathCookie;
+          initializeAxios();
+          let userId = await getUserIdFromMail(response.data.email);
+          let userIdCookie = `userId=${userId};`;
+          document.cookie = userIdCookie;
           navigate("/userpage");
         } else {
           alert("Login failed");
@@ -93,7 +99,6 @@ const LoginPage = () => {
       }
     });
   }, []);
-
 
   return (
     verifyJwtToken(document.cookie) && (

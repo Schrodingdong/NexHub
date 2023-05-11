@@ -1,49 +1,48 @@
-import './FollowingResources.css'
+import "./FollowingResources.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import prflimg from '../../images/profile.webp';
+import prflimg from "../../images/profile.webp";
+import generateProfilePicture from "../../api/generateProfilePicture";
+import { Link } from "react-router-dom";
+import { FaUserTimes } from "react-icons/fa";
+import FollowingResourceCard from "./FollowingResourceCard";
 
-const FollowingResources = () => {
-
-
-
-
-    
+const FollowingResources = ({
+  followingResourceList,
+  followingList,
+  myUserData,
+}) => {
   const [followingPosts, setFollowingPosts] = useState([]);
+  const [following, setFollowing] = useState([]);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchFollowingPosts = async () => {
-      const response = await axios.get('http://localhost:8080/metadata-db-manager-service/res/get/all');
-      setFollowingPosts(response.data);
-    };
-
-    fetchFollowingPosts();
-  }, []);
+    setFollowingPosts(followingResourceList);
+    console.log(followingResourceList);
+  }, [followingResourceList]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await axios.get('http://localhost:8080/metadata-db-manager-service/users/get/id/5');
-      setUsers(response.data);
-    };
+    setFollowing(followingList);
+  }, [followingList]);
 
-    fetchUsers();
-  }, []);
+  const wrapperStyle = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    gap: "1rem",
+    padding: "2rem",
+  };
 
   return (
-    <div>
-      {followingPosts.map((post) => (
-        <div className='home-page-resources' key={post.resourceId}>
-          <div className='resource-user-profile'>
-          <img  alt={users.username} />
-            <span>{users.username}</span>
-          </div>
-          <div className='resource-user-info'>
-            <h4>{post.resourceName}</h4>
-            <p>{post.resourceDescription}</p>
-            <img  alt='file' />
-          </div>
-        </div>
+    <div style={wrapperStyle}>
+      {followingPosts.map((resource) => (
+        <FollowingResourceCard
+          resource={resource}
+          myUserData={myUserData}
+          following={following}
+        />
       ))}
     </div>
   );

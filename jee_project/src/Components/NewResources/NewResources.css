@@ -1,27 +1,45 @@
+.resource-page{
+    padding: 0 2rem;
+}
+
 .resource-page-header{
     display: inline-flex;
     gap: 1.1rem;
-    width: 90%;
+    width: 100%;
     background-color: #fff;
     justify-content: center;
-    margin-top: 80px;
-    margin-left: 20px;
     height: 60px;
     border-radius: 30px;
     justify-items: center;
-    padding-top: 10px;
-    box-shadow: 3px 3px #edecec;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 0 10px 1px#00000022;
 }
-.resource-page-header button{
+
+.resource-page-header > button,
+.resource-page-header > a { 
     border: 0;
     border-radius: 30px;
-    background-color: #1A1A40;
-    width: 100px;
-    height: 40px;
+    background-color: #7A0BC0;
     cursor: pointer;
-    display: inline;
-
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;    
+    max-width: 25%;
+    min-width: 15%;
+    height: 40px;
 }
+.resource-page-header > a > button{
+    width: 100%;
+    background: none;
+    border: none;
+}
+.resource-page-header  button > svg{
+    cursor: pointer;
+}
+
+
 .Post
 {
     display: flex;
