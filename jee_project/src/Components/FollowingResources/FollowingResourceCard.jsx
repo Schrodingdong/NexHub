@@ -3,22 +3,29 @@ import { initializeAxios } from "../../api/springApi";
 
 const FollowingResourceCard = ({ resource, myUserData, following }) => {
   const downloadHandler = () => {
-    const { resourceService } = initializeAxios();
-    resourceService
-      .get(
-        `/resource/download?resourceId=${resource.resourceBucketId}&userMail=${myUserData.email}&downloadName=${resource.resourceName}`,
-        { responseType: "blob" }
-      )
-      .then((res) => {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", resource.resourceName);
-        document.body.appendChild(link);
-        link.click();
+    const { resourceService, metadataService } = initializeAxios();
 
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+    metadataService
+      .get(`/users/get/id/${resource.resourceHolderId}`)
+      .then((res) => {
+        const linkedMail = res.data.email;
+
+        resourceService
+          .get(
+            `/resource/download?resourceId=${resource.resourceBucketId}&userMail=${linkedMail}&downloadName=${resource.resourceName}`,
+            { responseType: "blob" }
+          )
+          .then((res) => {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", resource.resourceName);
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+          });
       });
   };
 
