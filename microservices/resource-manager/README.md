@@ -11,7 +11,7 @@ In order to use this service we need to initialise a MINIO docker image :
 
 # How to start the service ?
 To start the service, we have to follow these steps :
-- Build the application
+- Build the application 
     ```
   ./mvnw package
     ```
